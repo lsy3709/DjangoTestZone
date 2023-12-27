@@ -17,3 +17,11 @@ def burger_list(request):
     }
 
     return render(request, 'burger_list.html', context)
+
+def burger_search(request):
+    # print(request.GET)
+    keyword = request.GET.get('keyword')
+    print(keyword)
+    burgers = Burger.objects.filter(name__contains=keyword)
+    print(burgers)
+    return render(request, 'burger_search.html')
