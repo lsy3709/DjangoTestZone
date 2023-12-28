@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Post List</title>
+</head>
+<body>
+    <h1>Post List</h1>
+
+    <ul>
+        {% for post in posts %}
+            <li>
+                <h2>{{post.title}}</h2>
+                <p>{{post.content}}</p>
+<!--                추가-->
+                <ul>
+                    {% for comment in post.comment_set.all %}
+                        <li>{{comment.content}}</li>
+                    {% empty %}
+                        <li>아직 댓글이 없음</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
