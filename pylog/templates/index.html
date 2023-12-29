@@ -1,10 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>index</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h1>pylog</h1>
+    <div id="index">
+       <h1><a href="/posts/">pylog</a></h1>
+        <small>Life is short, Hello Python</small>
+    </div>
 </body>
 </html>
