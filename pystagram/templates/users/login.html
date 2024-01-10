@@ -1,19 +1,16 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
-    <h1>Login</h1>
+<!--추가-->
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div id = "login">
     <form method="post">
+        <h1>Pystagram</h1>
         {% csrf_token %}
         <!--    추가-->
-    {{form.as_p}}
-        <button type="submit">로그인</button>
+        {{form.as_p}}
+        <button type="submit" class="btn btn-login">로그인</button>
+        <a href="/users/signup/">회원가입 페이지 이동</a>
     </form>
-
-
-
-</body>
-</html>
+    </div>
+{% endblock %}
