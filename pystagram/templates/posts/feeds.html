@@ -5,12 +5,13 @@
     <h1>
         <a href="/posts/feeds/">Pystagram</a>
     </h1>
+    <a href="/posts/post_add/">Add post</a>
     <a href="/users/logout/">Logout</a>
 </nav>
 <div id="feeds" class="post-container">
     <!-- 전달된 Post QuerySet객체를 순회 -->
     {% for post in posts %}
-    <article class="post">
+    <article id="post-{{ post.id }}" class="post">
         <header class="post-header">
             {% if post.user.profile_image %}
                 <img src="{{ post.user.profile_image.url }}">
@@ -34,13 +35,13 @@
         </div>
         <!-- 이미지 슬라이드 영역 종료 -->
 
-        <div class="post-content">
-            {{ post.content|linebreaksbr }}
+        <div  class="post-content">
+{{ post.content|linebreaksbr }}
         </div>
 
         <div class="post-buttons">
             <button>Likes(0)</button>
-            <span>Comments(0)</span>
+            <span>Comments({{ post.comment_set.count}})</span>
         </div>
 
         <div class="post-comments">
@@ -50,6 +51,12 @@
                     <li>
                         <span>{{ comment.user.username }}</span>
                         <span>{{ comment.content }}</span>
+                        {% if user == comment.user %}
+                            <form method="post" action="/posts/comment_delete/{{comment.id}}/">
+                                {% csrf_token %}
+                                <button type="submit">삭제</button>
+                            </form>
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>
@@ -57,8 +64,14 @@
 
         <small>{{ post.created }}</small>
         <div class="post-comment-create">
-            <input type="text" placeholder="댓글 달기...">
+<!--            추가 및 수정 -->
+            <form method="post" action="/posts/comment_add/">
+            {% csrf_token %}
+<!--                추가-->
+            <input type="hidden" name="post" value="{{post.id}}">
+            {{ comment_form.content}}
             <button type="submit">게시</button>
+            </form>
         </div>
     </article>
     {% endfor %}
