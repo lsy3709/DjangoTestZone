@@ -10,7 +10,9 @@
         <!--    추가-->
         {{form.as_p}}
         <button type="submit" class="btn btn-login">로그인</button>
-        <a href="/users/signup/">회원가입 페이지 이동</a>
+<!--        <a href="/users/signup/">회원가입 페이지 이동</a>-->
+<!--        수정-->
+        <a href="{% url 'users:signup'%}">회원가입 페이지 이동</a>
     </form>
     </div>
 {% endblock %}

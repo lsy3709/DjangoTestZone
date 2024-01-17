@@ -1,6 +1,8 @@
 from django.contrib import admin
+
+from posts.forms import PostForm
 # 추가
-from posts.models import Post, PostImage, Comment
+from posts.models import Post, PostImage, Comment, HashTag
 # 추가
 # from django.contrib.admin.widgets import AdminFileWidget
 # from django.db import models
@@ -8,6 +10,10 @@ from posts.models import Post, PostImage, Comment
 
 # 방법2
 import admin_thumbnails
+
+#추가
+from django.db.models import ManyToManyField
+from django.forms import CheckboxSelectMultiple
 
 
 # Register your models here.
@@ -55,6 +61,11 @@ class PostAdmin(admin.ModelAdmin):
 
     ]
 
+    #추가
+    formfield_overrides = {
+        ManyToManyField: {'widget': CheckboxSelectMultiple},
+    }
+
 
 @admin.register(PostImage)
 class PostImageAdmin(admin.ModelAdmin):
@@ -72,3 +83,8 @@ class CommentAdmin(admin.ModelAdmin):
         "post",
         "content",
     ]
+
+@admin.register(HashTag)
+class HashTagAdmin(admin.ModelAdmin):
+    pass
+

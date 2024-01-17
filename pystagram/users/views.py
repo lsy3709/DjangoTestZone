@@ -9,7 +9,8 @@ from users.models import User
 # Create your views here.
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect("/posts/feeds/")
+        # 수정
+        return redirect("posts:feeds")
 
     #수정
     if request.method == "POST":
@@ -23,7 +24,8 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user :
                 login(request, user)
-                return redirect("/posts/feeds/")
+                #수정
+                return redirect("posts:feeds")
             else:
                 # print("로그인에 실패했습니다.")
                 form.add_error(None, "입력한 자격증명에 해당하는 사용자가 없습니다.")
@@ -43,8 +45,8 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-
-    return redirect("/users/login/")
+    #수정
+    return redirect("users:login")
 
 def signup(request):
     # 추가
@@ -53,7 +55,8 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect("/posts/feeds/")
+            # 수정
+            return redirect("posts:feeds")
 
     else:
         form = SignupForm()

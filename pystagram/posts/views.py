@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 #추가
 from posts.forms import CommentForm, PostForm
 #추가
-from posts.models import Post, Comment, PostImage
+from posts.models import Post, Comment, PostImage, HashTag
 
 #추가
 from django.views.decorators.http import require_POST
@@ -11,10 +11,14 @@ from django.views.decorators.http import require_POST
 #추가
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 
+#추가
+from django.urls import reverse
+
 # Create your views here.
 def feeds(request):
     if not request.user.is_authenticated:
-        return redirect("/users/login")
+        #수정
+        return redirect("users:login")
 
 
     # 요청(request)에서 사용자 정보 가져오기
@@ -45,18 +49,23 @@ def comment_add(reqeust):
         comment.user = reqeust.user
         comment.save()
 
-        print(comment.id)
-        print(comment.content)
-        print(comment.user)
-        # 수정
-        return HttpResponseRedirect(f"/posts/feeds/#post-{comment.post.id}")
+        #추가
+        if reqeust.GET.get("next"):
+            url_next = reqeust.GET.get("next")
+        else:
+            url_next = reverse("posts:feeds") + f"#post-{comment.post.id}"
+
+        return HttpResponseRedirect(url_next)
 
 @require_POST
 def comment_delete(request, comment_id):
     comment = Comment.objects.get(id=comment_id)
     if comment.user == request.user:
         comment.delete()
-        return HttpResponseRedirect(f"/posts/feeds/#post-{comment.post.id}")
+        # 수정
+        url = reverse("posts:feeds") + f"#post-{comment.post.id}"
+        return HttpResponseRedirect(url)
+        # return HttpResponseRedirect(f"/posts/feeds/#post-{comment.post.id}")
     else:
         return HttpResponseForbidden("댓글 삭제 권한이 없습니다.")
 
@@ -74,7 +83,16 @@ def post_add(request):
                     post=post,
                     photo=image_file,
                 )
-            url = f"/posts/feeds/#post-{post.id}"
+            #추가
+            tag_string = request.POST.get("tags")
+            if tag_string:
+                tag_names = [tag_name.strip() for tag_name in tag_string.split(',')]
+                for tag_name in tag_names:
+                    tag, _ = HashTag.objects.get_or_create(name=tag_name)
+                    post.tags.add(tag)
+
+                #수정
+            url = reverse("posts:feeds") + f"#post-{post.id}"
             return HttpResponseRedirect(url)
     else:
         form = PostForm()
@@ -83,4 +101,32 @@ def post_add(request):
         "form" : form
     }
     return render(request, 'posts/post_add.html',context)
+
+
+#추가
+def tags(request, tag_name):
+    # 추가
+    try:
+        tag = HashTag.objects.get(name=tag_name)
+    except HashTag.DoesNotExist:
+        posts = Post.objects.none()
+    # 추가
+    else:
+        posts = Post.objects.filter(tags = tag)
+    context = {
+        "tag_name" : tag_name,
+        "posts" : posts,
+    }
+
+    return render(request, 'posts/tags.html', context)
+
+#추가
+def post_detail(request, post_id):
+    post = Post.objects.get(id=post_id)
+    # 추가
+    comment_form = CommentForm()
+    context = {"post" : post ,
+               "comment_form" : comment_form,}
+    return render(request, 'posts/post_detail.html', context)
+
 
