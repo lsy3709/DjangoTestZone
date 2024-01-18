@@ -570,3 +570,23 @@ body > nav > a {
 #tags .tags-header {
   margin-bottom: 10px;
 }
+
+/*본문 줄이기*/
+  .word {
+
+        display: block;
+        color: black;
+        width: 630px;
+        font-size: 20px;
+        font-weight: bolder !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+        line-height: 1.2;
+        height: 3.6em;
+        text-align: left;
+        word-wrap: break-word;
+        display: -webkit-box;
+        -webkit-line-clamp: 3 ;
+        -webkit-box-orient: vertical;
+    }

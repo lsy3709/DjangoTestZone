@@ -32,3 +32,7 @@ class CustomUserAdmin(UserAdmin):
         ),
         ("중요한 일정", {'fields': ('last_login', 'date_joined')}),
     ]
+    inlines = [
+        FollowersInline,
+        FollowingInline
+    ]

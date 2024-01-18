@@ -2,10 +2,12 @@
 
     <article id="post-{{ post.id }}" class="post">
         <header class="post-header">
+            <a href="{% url 'users:profile' user_id=post.user.id %}">
             {% if post.user.profile_image %}
                 <img src="{{ post.user.profile_image.url }}">
             {% endif %}
             <span>{{ post.user.username }}</span>
+                </a>
         </header>
 
         <!-- 이미지 슬라이드 영역 시작 -->
@@ -25,7 +27,7 @@
         <!-- 이미지 슬라이드 영역 종료 -->
 
         <div  class="post-content">
-{{ post.content|linebreaksbr }}
+            <a href="{% url 'posts:post_detail' post_id=post.id %}">{{ post.content|linebreaksbr }}</a>
 
 <!--            추가-->
             <div class="post-tags">
