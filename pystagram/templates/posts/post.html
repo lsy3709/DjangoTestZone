@@ -35,10 +35,27 @@
             </div>
         </div>
 
+<!--        수정-->
         <div class="post-buttons">
-            <button>Likes(0)</button>
+            <form action="{% url 'posts:post_like' post_id=post.id %}?next={{ action_redirect_url }}" method="post">
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  {% if user in post.like_users.all %}
+                    style="color: red"
+                  {% endif %}>
+                  <img
+                          {% if user in post.like_users.all %}
+                          src="/static/image/like.png" style="width: 15px; height: 15px"
+                  {% endif %}
+                          src="/static/image/unlike.png" style="width: 15px; height: 15px">({{post.like_users.count}})
+                </button>
+
+
+            </form>
             <span>Comments({{ post.comment_set.count}})</span>
         </div>
+
 
         <div class="post-comments">
             <ul>
