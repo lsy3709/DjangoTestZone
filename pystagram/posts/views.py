@@ -29,8 +29,8 @@ def feeds(request):
     #print("user : ", user)
     #print("is_authenticated : ", is_authenticated)
 
-    #추가
-    posts = Post.objects.all()
+    #추가 , 포스트 글 생성일로 최신순 변경
+    posts = Post.objects.all().order_by('-created')
     # 추가
     comment_form = CommentForm()
 
