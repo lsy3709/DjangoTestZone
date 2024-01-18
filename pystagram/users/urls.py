@@ -1,5 +1,5 @@
 from django.urls import path
-from users.views import login_view, logout_view, signup, profile, followers, following
+from users.views import login_view, logout_view, signup, profile, followers, following, follow
 
 #추가
 app_name = 'users'
@@ -10,5 +10,6 @@ urlpatterns = [
     path('<int:user_id>/profile/', profile, name='profile'),
     path('<int:user_id>/followers/', followers, name='followers'),
     path('<int:user_id>/following/', following, name='following'),
+    path('<int:user_id>/follow/', follow, name='follow'),
 
 ]

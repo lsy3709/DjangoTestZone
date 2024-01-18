@@ -8,6 +8,21 @@
             {% endif %}
             <span>{{ post.user.username }}</span>
                 </a>
+
+<!--            추가-->
+            {% if user != post.user %}
+                <form action="{% url 'users:follow' user_id=post.user.id %}?next={{action_redirect_url }} " method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">
+                        {% if post.user in user.following.all %}
+                            Unfollow
+                        {% else %}
+                            Follow
+                        {% endif %}
+                    </button>
+                </form>
+            {% endif %}
+
         </header>
 
         <!-- 이미지 슬라이드 영역 시작 -->
