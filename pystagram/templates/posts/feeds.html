@@ -5,13 +5,23 @@
 {% block content %}
 <div id="feeds" class="post-container">
     <!-- 전달된 Post QuerySet객체를 순회 -->
-    {% for post in posts %}
+    {% for post in page_obj %}
 <!--        수정3-->
         {% url 'posts:feeds' as action_redirect_to %}
 <!--    수정-->
         {% include 'posts/post.html' with action_redirect_url=action_redirect_to|concat:'#post-'|concat:post.id %}
     {% endfor %}
+    <br/>
+<br/>
+<div>
+    <ul style="display: flex; list-style: none;">
+        {% for page in paginator.page_range %}
+            <li style="margin: 3px;"><a style="text-decoration: none; color: blue;" href="?page={{page}}">{{page}}</a></li>
+        {% endfor %}
+    </ul>
 </div>
+</div>
+
 
 
 {% endblock %}

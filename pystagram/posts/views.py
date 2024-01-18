@@ -14,6 +14,10 @@ from django.http import HttpResponseRedirect, HttpResponseForbidden
 #추가
 from django.urls import reverse
 
+#추가
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
+
 # Create your views here.
 def feeds(request):
     if not request.user.is_authenticated:
@@ -34,10 +38,24 @@ def feeds(request):
     # 추가
     comment_form = CommentForm()
 
+    page = request.GET.get('page')
+    paginator = Paginator(posts,2)
+
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        page_obj = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        page_obj = paginator.page(page)
+
     context = {
         "posts": posts,
         # 추가
         "comment_form": comment_form,
+        "page_obj": page_obj,
+        "paginator": paginator
     }
     return render(request, 'posts/feeds.html',context)
 
