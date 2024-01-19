@@ -2,15 +2,29 @@
 
 {% block bottom_data %}
    {% if login_user == user %}
-     <div>
-         <h1>유저 수정폼</h1>
-          <form method="post" enctype="multipart/form-data" action="{% url 'users:user_edit'%}">
-
+ <div id="post-add">
+        <h1>프로필 수정</h1>
+<!--        수정-->
+        <form method="post" enctype="multipart/form-data"  action="{% url 'users:user_edit'%}">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-signup">수정하기</button>
+<!--            {{ form.as_p}}-->
+               <p>
+    <label for="id_email">이메일 주소:</label>
+    <input type="email" name="email" value="{{user.email}}" maxlength="254" id="id_email">
+  </p>
+              <p>
+    <label for="id_short_description">소개글:</label>
+    <textarea name="short_description" cols="40" rows="10" id="id_short_description">{{user.short_description}}</textarea>
+  </p>
+  <p>
+    <label for="id_profile_image">프로필 이미지:</label>
+<input type="file" name="profile_image" accept="image/*" id="id_profile_image">
+  </p>
+
+
+            <button type="submit">게시</button>
         </form>
-     </div>
+    </div>
 
      {% endif %}
 {% endblock %}

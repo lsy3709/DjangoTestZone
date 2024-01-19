@@ -23,6 +23,16 @@
 
                 {% endif %}
               </span>
+            <span>
+                 {% if login_user == user %}
+                      <form action="{% url 'users:update_password' user_id=user.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">
+                        비번변경
+                    </button>
+                </form>
+                {% endif %}
+              </span>
             <div class="counts">
                 <dl>
                     <dt>Posts</dt>

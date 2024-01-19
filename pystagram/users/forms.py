@@ -64,6 +64,5 @@ class SignupForm(forms.Form):
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
-        model = User
+        model = get_user_model()
         fields = ['email', 'short_description', 'profile_image']
-

@@ -1,9 +1,10 @@
 #추가
+from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 #추가
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 #추가
 from django.shortcuts import render, redirect, get_object_or_404
 #추가
@@ -111,6 +112,28 @@ def profile_edit(request, user_id):
         "form" :form
     }
     return render(request, 'users/profile_edit.html',context)
+
+def update_password(request, user_id):
+    if request.method == "GET":
+        form = PasswordChangeForm(request.user)
+
+    else:
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect("posts:feeds")
+
+    user = get_object_or_404(User, id=user_id)
+    login_user = request.user
+    relationships = user.follower_relationships.all()
+    context = {
+        "user": user,
+        "relationships": relationships,
+        "login_user": login_user,
+        "form" :form
+    }
+    return render(request, 'users/profile_edit_password.html',context)
 
 def followers(request, user_id):
     user = get_object_or_404(User, id=user_id)
