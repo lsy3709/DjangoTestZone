@@ -13,12 +13,28 @@
     {% endfor %}
     <br/>
 <br/>
-<div>
-    <ul style="display: flex; list-style: none;">
-        {% for page in paginator.page_range %}
-            <li style="margin: 3px;"><a style="text-decoration: none; color: blue;" href="?page={{page}}">{{page}}</a></li>
+<div >
+     {% if page_obj.has_other_pages %}
+    <ul style="display: flex;  justify-content: center;   align-items: center;">
+<!--        이전 버튼-->
+        {% if page_obj.has_previous %}
+    <li style="margin:3px;"><a style="text-decoration:none; color: blue;" href="?page={{page_obj.previous_page_number}}">&#10094; Prev</a></li>
+    {% endif %}
+
+        {% for page in custom_range %}
+         {% if page == page_obj.number %}
+        <li style="margin:3px;"><a style="text-decoration:underline; color: red; font-size:1.5rem ; font-weight: 700 " href="?page={{page}}">{{page}}</a></li>
+         {% else %}
+        <li style="margin:3px;"><a style="text-decoration:none; color: blue;" href="?page={{page}}">{{page}}</a></li>
+         {% endif %}
         {% endfor %}
+
+<!--        이후버튼-->
+         {% if page_obj.has_next %}
+    <li style="margin:3px;"><a style="text-decoration:none; color: blue;" href="?page={{page_obj.next_page_number}}">Next &#10095;</a></li>
+    {% endif %}
     </ul>
+     {% endif%}
 </div>
 </div>
 

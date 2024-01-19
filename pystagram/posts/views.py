@@ -50,12 +50,26 @@ def feeds(request):
         page = paginator.num_pages
         page_obj = paginator.page(page)
 
+#추가
+    leftIndex = (int(page) - 2)
+    if leftIndex < 1:
+        leftIndex = 1
+
+    rightIndex = (int(page) + 2)
+
+    if rightIndex > paginator.num_pages:
+        rightIndex = paginator.num_pages
+
+    custom_range = range(leftIndex, rightIndex + 1)
+
     context = {
         "posts": posts,
         # 추가
         "comment_form": comment_form,
         "page_obj": page_obj,
-        "paginator": paginator
+        "paginator": paginator,
+        # 추가
+        "custom_range":custom_range
     }
     return render(request, 'posts/feeds.html',context)
 
