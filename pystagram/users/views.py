@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 #추가
 from django.shortcuts import render, redirect, get_object_or_404
 #추가
-from users.forms import LoginForm, SignupForm
+from users.forms import LoginForm, SignupForm, CustomUserChangeForm
 from users.models import User
 
 
@@ -70,6 +70,8 @@ def signup(request):
     return render(request, 'users/signup.html', context)
 
 
+
+
 def profile(request, user_id):
     user = get_object_or_404(User, id=user_id)
     login_user = request.user
@@ -82,22 +84,42 @@ def profile(request, user_id):
     }
     return render(request, 'users/profile.html',context)
 
+def user_edit(request):
+    # 추가
+    if request.method == "POST":
+        form = CustomUserChangeForm(request.POST, instance=request.user, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            # 수정
+            return redirect("posts:feeds")
 
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+
+    context = {"form": form,
+               }
+    return render(request, 'users/profile.html',context)
 def profile_edit(request, user_id):
+    form = CustomUserChangeForm(instance=request.user)
     user = get_object_or_404(User, id=user_id)
+    login_user = request.user
     relationships = user.follower_relationships.all()
     context = {
         "user": user,
         "relationships": relationships,
+        "login_user": login_user,
+        "form" :form
     }
     return render(request, 'users/profile_edit.html',context)
 
 def followers(request, user_id):
     user = get_object_or_404(User, id=user_id)
     relationships = user.follower_relationships.all()
+    login_user = request.user
     context = {
         "user" : user,
         "relationships" : relationships,
+        "login_user": login_user,
     }
     return render(request, 'users/followers.html', context)
 
@@ -105,9 +127,11 @@ def followers(request, user_id):
 def following(request, user_id):
     user = get_object_or_404(User, id=user_id)
     relationships = user.following_relationships.all()
+    login_user = request.user
     context = {
         "user" : user,
         "relationships" : relationships,
+        "login_user": login_user,
     }
     return render(request, 'users/following.html', context)
 

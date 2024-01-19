@@ -1,7 +1,13 @@
 from django import forms
+
 #추가
 from django.core.exceptions import ValidationError
 from users.models import User
+#추가
+from django.contrib.auth.forms import UserChangeForm
+from django.contrib.auth import get_user_model
+
+
 
 
 class LoginForm(forms.Form):
@@ -55,3 +61,9 @@ class SignupForm(forms.Form):
             short_description=short_description,
         )
         return user
+
+class CustomUserChangeForm(UserChangeForm):
+    class Meta(UserChangeForm.Meta):
+        model = User
+        fields = ['email', 'short_description', 'profile_image']
+

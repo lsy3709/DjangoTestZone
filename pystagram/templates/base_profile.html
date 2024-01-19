@@ -13,9 +13,14 @@
             <h1>{{ user.username }}</h1>
             <span>
                  {% if login_user == user %}
-                    <button class="btn btn-primary">
-                            회원 수정
+                      <form action="{% url 'users:profile_edit' user_id=user.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">
+                        회원수정
                     </button>
+                </form>
+
+
                 {% endif %}
               </span>
             <div class="counts">
@@ -35,8 +40,10 @@
                 </dl>
             </div>
             <p>소개글 : {{ user.short_description }}</p>
+             {% if login_user == user %}
             <p>email : {{ user.email }}</p>
             <p>마지막 접속일 : {{ user.last_login }}</p>
+             {% endif %}
         </div>
     </div>
     {% block bottom_data %}{% endblock %}

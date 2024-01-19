@@ -1,8 +1,16 @@
 {% extends 'base_profile.html' %}
 
 {% block bottom_data %}
-
+   {% if login_user == user %}
      <div>
          <h1>유저 수정폼</h1>
+          <form method="post" enctype="multipart/form-data" action="{% url 'users:user_edit'%}">
+
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-signup">수정하기</button>
+        </form>
      </div>
+
+     {% endif %}
 {% endblock %}
