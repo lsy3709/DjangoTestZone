@@ -27,7 +27,9 @@
                     </dd>
                 </dl>
             </div>
-            <p>{{ user.short_description }}</p>
+            <p>소개글 : {{ user.short_description }}</p>
+            <p>email : {{ user.email }}</p>
+            <p>마지막 접속일 : {{ user.last_login }}</p>
         </div>
     </div>
     {% block bottom_data %}{% endblock %}
