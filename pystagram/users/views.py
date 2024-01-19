@@ -72,16 +72,23 @@ def signup(request):
 
 def profile(request, user_id):
     user = get_object_or_404(User, id=user_id)
+    login_user = request.user
+    print("user", user)
+    print("login_user", login_user)
+    print("request.user.is_authenticated",request.user.is_authenticated)
     context = {
         "user": user,
+        "login_user":login_user
     }
     return render(request, 'users/profile.html',context)
 
 
 def profile_edit(request, user_id):
     user = get_object_or_404(User, id=user_id)
+    relationships = user.follower_relationships.all()
     context = {
         "user": user,
+        "relationships": relationships,
     }
     return render(request, 'users/profile_edit.html',context)
 
