@@ -14,6 +14,19 @@
             <div class="relationship-info">
               <sapn>{{ relationship.to_user.username}}</sapn>
               <span>{{ relationship.created|date:"y.m.d"}}</span>
+<!--              추가 부분-->
+              <span>
+                  <form action="{% url 'users:follow' user_id=relationship.to_user.id %}?next={{action_redirect_url }} " method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">
+                        {% if relationship.to_user in user.following.all %}
+                            Unfollow
+                        {% else %}
+                            Follow
+                        {% endif %}
+                    </button>
+                </form>
+              </span>
             </div>
           </a>
         </div>
