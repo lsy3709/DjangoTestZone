@@ -78,6 +78,13 @@ def profile(request, user_id):
     return render(request, 'users/profile.html',context)
 
 
+def profile_edit(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    context = {
+        "user": user,
+    }
+    return render(request, 'users/profile_edit.html',context)
+
 def followers(request, user_id):
     user = get_object_or_404(User, id=user_id)
     relationships = user.follower_relationships.all()
