@@ -33,6 +33,17 @@
                 </form>
                 {% endif %}
               </span>
+             <span>
+                 {% if login_user == user %}
+                      <form action="{% url 'users:delete_user' user_id=user.id %}" method="POST" onsubmit="return confirm('정말 회원탈퇴 하시나요?');">
+
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">
+                        회원탈퇴
+                    </button>
+                </form>
+                {% endif %}
+              </span>
             <div class="counts">
                 <dl>
                     <dt>Posts</dt>

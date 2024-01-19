@@ -135,6 +135,13 @@ def update_password(request, user_id):
     }
     return render(request, 'users/profile_edit_password.html',context)
 
+def delete_user(request,user_id):
+     request.user.delete()
+     logout(request)
+     return redirect("users:login")
+
+
+
 def followers(request, user_id):
     user = get_object_or_404(User, id=user_id)
     relationships = user.follower_relationships.all()
