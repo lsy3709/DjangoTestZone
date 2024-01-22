@@ -26,13 +26,16 @@
         </header>
 
         <!-- 이미지 슬라이드 영역 시작 -->
+
         <div class="post-images splide">
             <div class="splide__track">
                 <ul class="splide__list">
                     {% for image in post.postimage_set.all %}
                         {% if image.photo %}
                             <li class="splide__slide">
+                                      <a href="{% url 'posts:post_detail' post_id=post.id %}">
                                 <img src="{{ image.photo.url }}">
+                                          </a>
                             </li>
                         {% endif %}
                     {% endfor %}
