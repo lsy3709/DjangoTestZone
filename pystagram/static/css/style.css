@@ -270,9 +270,21 @@ article.post header.post-header span {
   font-weight: bold;
   margin-right: auto;
 }
-article.post .post-images img {
-  width: 100%;
+article.post .post-images  {
+   width: 600px;
+    height: 600px;
+    position: relative;
+    margin: auto;
+    overflow: hidden;
+    /*border: 1px solid red;*/
 }
+
+article.post .post-images img {
+     width: 100%;
+    /*height: 100%;*/
+    object-fit: cover;
+}
+
 article.post .post-content {
   padding: 10px;
   box-sizing: border-box;
