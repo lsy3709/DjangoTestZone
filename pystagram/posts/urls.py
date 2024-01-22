@@ -1,11 +1,13 @@
 from django.urls import path
 # 추가
-from posts.views import feeds, comment_add, comment_delete, post_add, tags, post_detail, post_like
+from posts.views import feeds, comment_add, comment_delete, post_add, tags, post_detail, post_like, feed_delete
 
 # 추가
 app_name = 'posts'
 urlpatterns = [
     path('feeds/', feeds, name="feeds"),
+#추가
+    path('feed_delete/<int:feed_id>/', feed_delete, name="feed_delete"),
     #추가
     path('comment_add/', comment_add, name="comment_add"),
 #추가

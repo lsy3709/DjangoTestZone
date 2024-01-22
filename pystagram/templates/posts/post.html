@@ -54,6 +54,18 @@
                 {% endfor %}
 
             </div>
+<span>
+                  {% if user == post.user %}
+                      <form action="{% url 'posts:feed_delete' feed_id=post.id %}" method="POST" onsubmit="return confirm('정말 게시글 삭제 하시나요?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">
+                        글 삭제
+                    </button>
+                </form>
+
+
+                {% endif %}
+              </span>
         </div>
 
 <!--        수정-->

@@ -41,6 +41,7 @@ def feeds(request):
     page = request.GET.get('page')
     paginator = Paginator(posts,2)
 
+
     try:
         page_obj = paginator.page(page)
     except PageNotAnInteger:
@@ -88,6 +89,19 @@ def comment_add(reqeust):
             url_next = reverse("posts:feeds") + f"#post-{comment.post.id}"
 
         return HttpResponseRedirect(url_next)
+
+
+@require_POST
+def feed_delete(request, feed_id):
+    post = Post.objects.get(id=feed_id)
+    if post.user == request.user:
+        post.delete()
+        # 수정
+        url = reverse("posts:feeds")
+        return HttpResponseRedirect(url)
+        # return HttpResponseRedirect(f"/posts/feeds/#post-{comment.post.id}")
+    else:
+        return HttpResponseForbidden("게시글 삭제 권한이 없습니다.")
 
 @require_POST
 def comment_delete(request, comment_id):
