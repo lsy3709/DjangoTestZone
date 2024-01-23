@@ -2,6 +2,7 @@ from django import forms
 # 추가
 from posts.models import Comment, Post
 
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
@@ -25,3 +26,4 @@ class PostForm(forms.ModelForm):
         fields = [
             "content",
         ]
+

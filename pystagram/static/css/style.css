@@ -414,6 +414,16 @@ article.post .post-comment-create button:hover {
   width: 100%;
   box-sizing: border-box;
 }
+
+#post-add  #id_delete_images {
+  display: flex; /* 요소들을 가로로 나란히 배치 */
+  align-items: flex-start; /* 세로 중앙 정렬 */
+  width: 30px;
+  height: 30px;
+
+}
+
+
 #post-add button {
   color: #0095f6;
   background-color: transparent;
@@ -609,3 +619,4 @@ body > nav > a {
 .funtion-btn span form  {
   display :inline-block;
 }
+

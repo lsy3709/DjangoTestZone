@@ -57,7 +57,7 @@
             <div class="funtion-btn">
 <span>
                   {% if user == post.user %}
-                      <form action="{% url 'posts:feed_delete' feed_id=post.id %}" method="POST" onsubmit="return confirm('정말 게시글 삭제 하시나요?');">
+                      <form action="{% url 'posts:post_delete' post_id=post.id %}" method="POST" onsubmit="return confirm('정말 게시글 삭제 하시나요?');">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-primary">
                         글 삭제
@@ -69,12 +69,11 @@
               </span>
             <span>
                   {% if user == post.user %}
-                      <form action="{% url 'posts:feed_delete' feed_id=post.id %}" method="POST" onsubmit="return confirm('정말 게시글 삭제 하시나요?');">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">
-                        글 수정
+
+                    <button class="btn btn-primary">
+                          <a href="{% url 'posts:post_edit' post_id=post.id %}">글 수정</a>
                     </button>
-                </form>
+
 
 
                 {% endif %}

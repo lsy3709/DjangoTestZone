@@ -92,18 +92,6 @@ def comment_add(reqeust):
 
 
 @require_POST
-def feed_delete(request, feed_id):
-    post = Post.objects.get(id=feed_id)
-    if post.user == request.user:
-        post.delete()
-        # 수정
-        url = reverse("posts:feeds")
-        return HttpResponseRedirect(url)
-        # return HttpResponseRedirect(f"/posts/feeds/#post-{comment.post.id}")
-    else:
-        return HttpResponseForbidden("게시글 삭제 권한이 없습니다.")
-
-@require_POST
 def comment_delete(request, comment_id):
     comment = Comment.objects.get(id=comment_id)
     if comment.user == request.user:
@@ -114,6 +102,35 @@ def comment_delete(request, comment_id):
         # return HttpResponseRedirect(f"/posts/feeds/#post-{comment.post.id}")
     else:
         return HttpResponseForbidden("댓글 삭제 권한이 없습니다.")
+
+@require_POST
+def post_delete(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if post.user == request.user:
+        post.delete()
+        # 수정
+        url = reverse("posts:feeds")
+        return HttpResponseRedirect(url)
+    else:
+        return HttpResponseForbidden("게시글 삭제 권한이 없습니다.")
+
+
+
+def post_edit(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if request.method == "POST":
+        if post.user == request.user:
+            post.delete()
+            # 수정
+            url = reverse("posts:feeds")
+            return HttpResponseRedirect(url)
+
+    else:
+        form = PostForm()
+    context = {
+        "post": post,
+    }
+    return render(request, 'posts/post_edit.html', context)
 
 def post_add(request):
     if request.method == "POST":
