@@ -1,6 +1,6 @@
 from django import forms
 # 추가
-from posts.models import Comment, Post
+from posts.models import Comment, Post, PostImage
 
 
 class CommentForm(forms.ModelForm):
@@ -27,3 +27,8 @@ class PostForm(forms.ModelForm):
             "content",
         ]
 
+
+class PostImageForm(forms.ModelForm):
+    class Meta:
+        model = PostImage
+        fields = ['photo']

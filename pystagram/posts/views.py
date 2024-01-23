@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 #추가
-from posts.forms import CommentForm, PostForm
+from posts.forms import CommentForm, PostForm, PostImageForm
 #추가
 from posts.models import Post, Comment, PostImage, HashTag
 
@@ -120,7 +120,14 @@ def post_edit(request, post_id):
     post = Post.objects.get(id=post_id)
     if request.method == "POST":
         if post.user == request.user:
-            post.delete()
+            post_form = PostForm(request.POST, instance=post)
+            # image_form = PostImageForm(request.POST, request.FILES)
+            # if post_form.is_valid() and image_form.is_valid():
+            if post_form.is_valid():
+                post_form.save()
+                # image_instance = image_form.save(commit=False)
+                # image_instance.post = post
+                # image_instance.save()
             # 수정
             url = reverse("posts:feeds")
             return HttpResponseRedirect(url)
