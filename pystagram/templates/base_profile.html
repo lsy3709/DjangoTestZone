@@ -11,6 +11,7 @@
         <!-- 사용자 정보 영역 -->
         <div class="info-texts">
             <h1>{{ user.username }}</h1>
+              <div class="funtion-btn">
             <span>
                  {% if login_user == user %}
                       <form action="{% url 'users:profile_edit' user_id=user.id %}" method="POST">
@@ -44,6 +45,7 @@
                 </form>
                 {% endif %}
               </span>
+              </div>
             <div class="counts">
                 <dl>
                     <dt>Posts</dt>

@@ -605,3 +605,7 @@ body > nav > a {
         -webkit-line-clamp: 3 ;
         -webkit-box-orient: vertical;
     }
+
+.funtion-btn span form  {
+  display :inline-block;
+}
