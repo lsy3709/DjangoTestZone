@@ -1,5 +1,5 @@
 from django.db import models
-
+import os
 
 # Create your models here.
 class Post(models.Model):
@@ -23,6 +23,7 @@ class PostImage(models.Model):
         on_delete=models.CASCADE,
     )
     photo = models.ImageField("사진", upload_to="post")
+
 
 class Comment(models.Model):
     user = models.ForeignKey(
