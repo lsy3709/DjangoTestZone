@@ -1,5 +1,6 @@
 #추가
 from django.contrib.auth.forms import PasswordChangeForm
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
@@ -7,6 +8,8 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 #추가
 from django.shortcuts import render, redirect, get_object_or_404
+
+from posts.models import Post
 #추가
 from users.forms import LoginForm, SignupForm, CustomUserChangeForm
 from users.models import User
@@ -76,12 +79,41 @@ def signup(request):
 def profile(request, user_id):
     user = get_object_or_404(User, id=user_id)
     login_user = request.user
-    print("user", user)
-    print("login_user", login_user)
-    print("request.user.is_authenticated",request.user.is_authenticated)
+    posts = Post.objects.filter(user = user).order_by('-created')
+    # print("user", user)
+    # print("login_user", login_user)
+    # print("request.user.is_authenticated",request.user.is_authenticated)
+    # print("posts",posts)
+    page = request.GET.get('page')
+    paginator = Paginator(posts, 18)
+
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        page_obj = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        page_obj = paginator.page(page)
+
+    leftIndex = (int(page) - 2)
+    if leftIndex < 1:
+        leftIndex = 1
+
+    rightIndex = (int(page) + 2)
+
+    if rightIndex > paginator.num_pages:
+        rightIndex = paginator.num_pages
+
+    custom_range = range(leftIndex, rightIndex + 1)
+
     context = {
         "user": user,
-        "login_user":login_user
+        "login_user":login_user,
+        "page_obj": page_obj,
+        "paginator": paginator,
+        # 추가
+        "custom_range": custom_range
     }
     return render(request, 'users/profile.html',context)
 
