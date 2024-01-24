@@ -28,7 +28,7 @@
     <ul style="display: flex;  justify-content: center;   align-items: center;">
 <!--        이전 버튼-->
         {% if page_obj.has_previous %}
-    <li style="margin:3px;"><a style="text-decoration:none; color: blue;" href="?page={{page_obj.previous_page_number}}">&#10094; Prev</a></li>
+    <li style="margin:3px;"><a style="text-decoration:none; color: blue;" href="?page={{page_obj.previous_page_number}}&searchDB={{searchDB}}&content={{content}}">&#10094; Prev</a></li>
     {% endif %}
 
         {% for page in custom_range %}
@@ -41,7 +41,7 @@
 
 <!--        이후버튼-->
          {% if page_obj.has_next %}
-    <li style="margin:3px;"><a style="text-decoration:none; color: blue;" href="?page={{page_obj.next_page_number}}">Next &#10095;</a></li>
+    <li style="margin:3px;"><a style="text-decoration:none; color: blue;" href="?page={{page_obj.next_page_number}}&searchDB={{searchDB}}&content={{content}}">Next &#10095;</a></li>
     {% endif %}
     </ul>
      {% endif%}
