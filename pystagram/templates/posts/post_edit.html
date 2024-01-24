@@ -15,8 +15,8 @@
                     <div class="funtion-btn">
                     <span >
                   {% if user == post.user %}
-                      <form action="{% url 'posts:post_delete' post_id=post.id %}" method="POST"
-                            onsubmit="return confirm('정말 게시글 삭제 하시나요?');">
+                      <form action="{% url 'posts:post_image_delete' image_id=image.id post_id=image.post.id %}" method="POST"
+                            onsubmit="return confirm('정말 사진 삭제 하시나요?');">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-primary" style="margin-left: 10px">
                         사진삭제
