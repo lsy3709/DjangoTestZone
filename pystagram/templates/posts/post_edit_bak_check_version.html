@@ -1,34 +1,26 @@
-{% extends 'base_slider.html' %}
-<!--추가-->
-{% load custom_tags %}
+{% extends 'base_nav.html' %}
 
 {% block content %}
-<article id="post-{{ post.id }}" class="post">
-
-
-   <div class="post-images splide">
-            <div class="splide__track">
-                <ul class="splide__list">
-                    {% for image in post.postimage_set.all %}
-                        {% if image.photo %}
-                            <li class="splide__slide">
-
-                                <img src="{{ image.photo.url }}">
-
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </article>
 
 <div id="post-add">
     <h1>포스트 수정</h1>
     <!--        수정-->
+
+
+
     <form method="post" action="{% url 'posts:post_edit' post_id=post.id %}" enctype="multipart/form-data"
           onsubmit="return confirm('게시글 수정 하시나요?');">
         {% csrf_token %}
+                 {% for image in post.postimage_set.all %}
+                        {% if image.photo %}
+
+
+                                 <label for="id_delete_images">삭제 이미지 체크  <input id="id_delete_images" type="checkbox" name="selected_images" value="{{ image.id }}"></label>
+                                <img src="{{ image.photo.url }}">
+
+
+                        {% endif %}
+                    {% endfor %}
         <div>
             <label for="id_images">이미지</label>
             <input id="id_images" name="images" type="file" multiple></div>
