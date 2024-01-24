@@ -150,9 +150,14 @@ def post_edit(request, post_id):
             # if post_form.is_valid() and image_form.is_valid():
             if post_form.is_valid():
                 post_form.save()
-                # image_instance = image_form.save(commit=False)
-                # image_instance.post = post
-                # image_instance.save()
+
+            if request.FILES.getlist("images"):
+                for image_file in request.FILES.getlist("images"):
+                    PostImage.objects.create(
+                        post=post,
+                        photo=image_file,
+                    )
+
             # 수정
             url = reverse("posts:feeds")
             return HttpResponseRedirect(url)
