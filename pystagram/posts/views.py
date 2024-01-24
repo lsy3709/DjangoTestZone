@@ -158,6 +158,13 @@ def post_edit(request, post_id):
                         photo=image_file,
                     )
 
+            if request.POST.get("tags"):
+                tag_string = request.POST.get("tags")
+                if tag_string:
+                    tag_names = [tag_name.strip() for tag_name in tag_string.split(',')]
+                    for tag_name in tag_names:
+                        tag, _ = HashTag.objects.get_or_create(name=tag_name)
+                        post.tags.add(tag)
             # 수정
             url = reverse("posts:feeds")
             return HttpResponseRedirect(url)
