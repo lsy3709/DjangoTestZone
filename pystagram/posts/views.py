@@ -17,6 +17,8 @@ from django.urls import reverse
 # 추가
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
+from users.models import User
+
 
 # Create your views here.
 def feeds(request):
@@ -197,7 +199,9 @@ def post_search_do(request):
                 posts = Post.objects.filter(content__icontains=content)
             elif searchDB == "tag":
                 posts = Post.objects.filter(tags__name__icontains=content)
-
+            elif searchDB == "user":
+                users = User.objects.filter(username__icontains=content)
+                posts = Post.objects.filter(user__in=users)
             context = {
                 "posts": posts
             }
