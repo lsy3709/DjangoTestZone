@@ -192,8 +192,12 @@ def post_search_do(request):
         content = request.POST.get('content')
         print("searchDB", searchDB)
         print("content", content)
-        if content and searchDB :
-            posts = Post.objects.filter(content__icontains=content)
+        if content :
+            if searchDB == "content":
+                posts = Post.objects.filter(content__icontains=content)
+            elif searchDB == "tag":
+                posts = Post.objects.filter(tags__name__icontains=content)
+
             context = {
                 "posts": posts
             }
