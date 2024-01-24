@@ -222,7 +222,7 @@ def tags(request, tag_name):
         posts = Post.objects.filter(tags = tag).order_by('-created')
         #페이징 추가
         page = request.GET.get('page')
-        paginator = Paginator(posts, 9)
+        paginator = Paginator(posts, 18)
 
         try:
             page_obj = paginator.page(page)
