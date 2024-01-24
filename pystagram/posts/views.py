@@ -39,7 +39,7 @@ def feeds(request):
     comment_form = CommentForm()
 
     page = request.GET.get('page')
-    paginator = Paginator(posts,2)
+    paginator = Paginator(posts,10)
 
 
     try:
@@ -219,10 +219,38 @@ def tags(request, tag_name):
         posts = Post.objects.none()
     # 추가
     else:
-        posts = Post.objects.filter(tags = tag)
+        posts = Post.objects.filter(tags = tag).order_by('-created')
+        #페이징 추가
+        page = request.GET.get('page')
+        paginator = Paginator(posts, 9)
+
+        try:
+            page_obj = paginator.page(page)
+        except PageNotAnInteger:
+            page = 1
+            page_obj = paginator.page(page)
+        except EmptyPage:
+            page = paginator.num_pages
+            page_obj = paginator.page(page)
+
+        leftIndex = (int(page) - 2)
+        if leftIndex < 1:
+            leftIndex = 1
+
+        rightIndex = (int(page) + 2)
+
+        if rightIndex > paginator.num_pages:
+            rightIndex = paginator.num_pages
+
+        custom_range = range(leftIndex, rightIndex + 1)
+
     context = {
         "tag_name" : tag_name,
         "posts" : posts,
+        "page_obj": page_obj,
+        "paginator": paginator,
+        # 추가
+        "custom_range": custom_range
     }
 
     return render(request, 'posts/tags.html', context)
