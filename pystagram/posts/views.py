@@ -1,46 +1,44 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-#추가
+# 추가
 from posts.forms import CommentForm, PostForm, PostImageForm
-#추가
+# 추가
 from posts.models import Post, Comment, PostImage, HashTag
 
-#추가
+# 추가
 from django.views.decorators.http import require_POST
 
-#추가
+# 추가
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 
-#추가
+# 추가
 from django.urls import reverse
 
-#추가
+# 추가
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
 # Create your views here.
 def feeds(request):
     if not request.user.is_authenticated:
-        #수정
+        # 수정
         return redirect("users:login")
 
-
     # 요청(request)에서 사용자 정보 가져오기
-    #user = request.user
+    # user = request.user
     # 가져온 사용자의 로그인 여부 확인.
-    #is_authenticated = user.is_authenticated
+    # is_authenticated = user.is_authenticated
 
-    #print("user : ", user)
-    #print("is_authenticated : ", is_authenticated)
+    # print("user : ", user)
+    # print("is_authenticated : ", is_authenticated)
 
-    #추가 , 포스트 글 생성일로 최신순 변경
+    # 추가 , 포스트 글 생성일로 최신순 변경
     posts = Post.objects.all().order_by('-created')
     # 추가
     comment_form = CommentForm()
 
     page = request.GET.get('page')
-    paginator = Paginator(posts,10)
-
+    paginator = Paginator(posts, 10)
 
     try:
         page_obj = paginator.page(page)
@@ -51,7 +49,7 @@ def feeds(request):
         page = paginator.num_pages
         page_obj = paginator.page(page)
 
-#추가
+    # 추가
     leftIndex = (int(page) - 2)
     if leftIndex < 1:
         leftIndex = 1
@@ -70,9 +68,10 @@ def feeds(request):
         "page_obj": page_obj,
         "paginator": paginator,
         # 추가
-        "custom_range":custom_range
+        "custom_range": custom_range
     }
-    return render(request, 'posts/feeds.html',context)
+    return render(request, 'posts/feeds.html', context)
+
 
 @require_POST
 def comment_add(reqeust):
@@ -82,7 +81,7 @@ def comment_add(reqeust):
         comment.user = reqeust.user
         comment.save()
 
-        #추가
+        # 추가
         if reqeust.GET.get("next"):
             url_next = reqeust.GET.get("next")
         else:
@@ -103,6 +102,7 @@ def comment_delete(request, comment_id):
     else:
         return HttpResponseForbidden("댓글 삭제 권한이 없습니다.")
 
+
 @require_POST
 def post_delete(request, post_id):
     post = Post.objects.get(id=post_id)
@@ -113,6 +113,7 @@ def post_delete(request, post_id):
         return HttpResponseRedirect(url)
     else:
         return HttpResponseForbidden("게시글 삭제 권한이 없습니다.")
+
 
 @require_POST
 def post_image_delete(request, post_id, image_id):
@@ -138,7 +139,6 @@ def post_tag_delete(request, post_id, tag_id):
         return HttpResponseRedirect(url)
     else:
         return HttpResponseForbidden("태그 삭제 권한이 없습니다.")
-
 
 
 def post_edit(request, post_id):
@@ -176,6 +176,21 @@ def post_edit(request, post_id):
     }
     return render(request, 'posts/post_edit.html', context)
 
+
+def post_search(request):
+    if request.method == "POST":
+        # 수정
+        url = reverse("posts:feeds")
+        return HttpResponseRedirect(url)
+
+    else:
+        form = PostForm()
+    context = {
+
+    }
+    return render(request, 'posts/post_search.html', context)
+
+
 def post_add(request):
     if request.method == "POST":
         form = PostForm(request.POST)
@@ -190,7 +205,7 @@ def post_add(request):
                     post=post,
                     photo=image_file,
                 )
-            #추가
+            # 추가
             tag_string = request.POST.get("tags")
             if tag_string:
                 tag_names = [tag_name.strip() for tag_name in tag_string.split(',')]
@@ -198,19 +213,19 @@ def post_add(request):
                     tag, _ = HashTag.objects.get_or_create(name=tag_name)
                     post.tags.add(tag)
 
-                #수정
+                # 수정
             url = reverse("posts:feeds") + f"#post-{post.id}"
             return HttpResponseRedirect(url)
     else:
         form = PostForm()
 
     context = {
-        "form" : form
+        "form": form
     }
-    return render(request, 'posts/post_add.html',context)
+    return render(request, 'posts/post_add.html', context)
 
 
-#추가
+# 추가
 def tags(request, tag_name):
     # 추가
     try:
@@ -219,8 +234,8 @@ def tags(request, tag_name):
         posts = Post.objects.none()
     # 추가
     else:
-        posts = Post.objects.filter(tags = tag).order_by('-created')
-        #페이징 추가
+        posts = Post.objects.filter(tags=tag).order_by('-created')
+        # 페이징 추가
         page = request.GET.get('page')
         paginator = Paginator(posts, 18)
 
@@ -245,8 +260,8 @@ def tags(request, tag_name):
         custom_range = range(leftIndex, rightIndex + 1)
 
     context = {
-        "tag_name" : tag_name,
-        "posts" : posts,
+        "tag_name": tag_name,
+        "posts": posts,
         "page_obj": page_obj,
         "paginator": paginator,
         # 추가
@@ -255,16 +270,18 @@ def tags(request, tag_name):
 
     return render(request, 'posts/tags.html', context)
 
-#추가
+
+# 추가
 def post_detail(request, post_id):
     post = Post.objects.get(id=post_id)
     # 추가
     comment_form = CommentForm()
-    context = {"post" : post ,
-               "comment_form" : comment_form,}
+    context = {"post": post,
+               "comment_form": comment_form, }
     return render(request, 'posts/post_detail.html', context)
 
-#추가
+
+# 추가
 def post_like(request, post_id):
     post = Post.objects.get(id=post_id)
     user = request.user
@@ -273,6 +290,5 @@ def post_like(request, post_id):
         user.like_posts.remove(post)
     else:
         user.like_posts.add(post)
-    url_next = request.GET.get("next") or reverse("posts:feeds")+f"#post-{post.id}"
+    url_next = request.GET.get("next") or reverse("posts:feeds") + f"#post-{post.id}"
     return HttpResponseRedirect(url_next)
-

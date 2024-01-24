@@ -1,7 +1,8 @@
 from django.urls import path
-from users.views import login_view, logout_view, signup, profile, followers, following, follow, profile_edit, user_edit, update_password, delete_user
+from users.views import login_view, logout_view, signup, profile, followers, following, follow, profile_edit, user_edit, \
+    update_password, delete_user
 
-#추가
+# 추가
 app_name = 'users'
 urlpatterns = [
     path('login/', login_view, name='login'),
@@ -15,6 +16,5 @@ urlpatterns = [
     path('<int:user_id>/followers/', followers, name='followers'),
     path('<int:user_id>/following/', following, name='following'),
     path('<int:user_id>/follow/', follow, name='follow'),
-
 
 ]

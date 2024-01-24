@@ -1,0 +1,18 @@
+{% extends 'base_nav.html' %}
+
+{% block content %}
+
+<div id="post-add">
+    <h1>포스트 검색</h1>
+    <!--        수정-->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>
+            <label for="id_content">내용:</label>
+            <input  type="text" name="content"  required id="id_content">
+</input>
+        </p>
+        <button type="submit">검색</button>
+    </form>
+</div>
+{% endblock %}
