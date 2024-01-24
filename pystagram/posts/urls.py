@@ -1,7 +1,7 @@
 from django.urls import path
 # 추가
 from posts.views import feeds, comment_add, comment_delete, post_add, tags, post_detail, post_like, post_delete, \
-    post_edit, post_image_delete, post_tag_delete, post_search
+    post_edit, post_image_delete, post_tag_delete, post_search, post_search_do
 
 # 추가
 app_name = 'posts'
@@ -15,6 +15,8 @@ urlpatterns = [
     path('post_add/', post_add, name="post_add"),
     # 추가
     path('post_search/', post_search, name="post_search"),
+# 추가
+    path('post_search_do/', post_search_do, name="post_search_do"),
     # 추가,
     path('post_edit/<int:post_id>/', post_edit, name='post_edit'),
     # 추가

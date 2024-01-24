@@ -1,0 +1,30 @@
+{% extends 'base_nav.html' %}
+
+{% block content %}
+
+<div id="tags">
+    <h1>검색 결과 </h1>
+    <h2>총 : {{posts.count}} 개</h2>
+    <div class="post-grid-container">
+        {% for post in posts %}
+        <!--            추가-->
+        {% if post.postimage_set.first and post.postimage_set.first.photo %}
+        <div class="post-grid">
+            <a href="{% url 'posts:post_detail' post_id=post.id %}">
+                <img src="{{ post.postimage_set.first.photo.url }}" alt="">
+            </a>
+        </div>
+        {% endif %}
+        <!--            추가-->
+        {% empty %}
+        <p>검색된 게시물이 없습니다. </p>
+        {% endfor %}
+    </div>
+    <button id="scroll-to-top" class="btn btn-primary">Top</button>
+    <br/>
+    <br/>
+
+</div>
+
+
+{% endblock %}

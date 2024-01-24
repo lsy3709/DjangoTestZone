@@ -178,17 +178,30 @@ def post_edit(request, post_id):
 
 
 def post_search(request):
-    if request.method == "POST":
-        # 수정
-        url = reverse("posts:feeds")
-        return HttpResponseRedirect(url)
 
-    else:
-        form = PostForm()
     context = {
 
     }
     return render(request, 'posts/post_search.html', context)
+
+
+def post_search_do(request):
+    if request.method == "POST":
+        # 수정
+        searchDB = request.POST.get('searchDB')
+        content = request.POST.get('content')
+        print("searchDB", searchDB)
+        print("content", content)
+        if content and searchDB :
+            posts = Post.objects.filter(content__icontains=content)
+            context = {
+                "posts": posts
+            }
+            return render(request, 'posts/post_search_result.html', context)
+
+
+
+
 
 
 def post_add(request):
