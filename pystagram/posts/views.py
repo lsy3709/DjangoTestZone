@@ -188,24 +188,61 @@ def post_search(request):
 
 
 def post_search_do(request):
-    if request.method == "POST":
+    if request.method == "POST" :
         # 수정
         searchDB = request.POST.get('searchDB')
         content = request.POST.get('content')
-        print("searchDB", searchDB)
-        print("content", content)
-        if content :
-            if searchDB == "content":
-                posts = Post.objects.filter(content__icontains=content)
-            elif searchDB == "tag":
-                posts = Post.objects.filter(tags__name__icontains=content)
-            elif searchDB == "user":
-                users = User.objects.filter(username__icontains=content)
-                posts = Post.objects.filter(user__in=users)
-            context = {
-                "posts": posts
-            }
-            return render(request, 'posts/post_search_result.html', context)
+        print("searchDB  POST : ", searchDB)
+        print("content POST : ", content)
+    elif request.method == "GET":
+            # 수정
+        searchDB = request.GET.get('searchDB')
+        content = request.GET.get('content')
+
+        print("searchDB GET :", searchDB)
+        print("content GET : ", content)
+
+    if content :
+        if searchDB == "content":
+            posts = Post.objects.filter(content__icontains=content).order_by('-created')
+        elif searchDB == "tag":
+            posts = Post.objects.filter(tags__name__icontains=content).order_by('-created')
+        elif searchDB == "user":
+            users = User.objects.filter(username__icontains=content)
+            posts = Post.objects.filter(user__in=users).order_by('-created')
+
+    page = request.GET.get('page')
+    paginator = Paginator(posts, 18)
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        page_obj = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        page_obj = paginator.page(page)
+
+    leftIndex = (int(page) - 2)
+    if leftIndex < 1:
+        leftIndex = 1
+
+    rightIndex = (int(page) + 2)
+
+    if rightIndex > paginator.num_pages:
+        rightIndex = paginator.num_pages
+
+    custom_range = range(leftIndex, rightIndex + 1)
+
+    context = {
+        "posts": posts,
+        "page_obj": page_obj,
+        "paginator": paginator,
+        # 추가
+        "custom_range": custom_range,
+        "searchDB" : searchDB,
+        "content" : content
+    }
+    return render(request, 'posts/post_search_result.html', context)
 
 
 

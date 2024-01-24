@@ -6,7 +6,7 @@
     <h1>검색 결과 </h1>
     <h2>총 : {{posts.count}} 개</h2>
     <div class="post-grid-container">
-        {% for post in posts %}
+        {% for post in page_obj %}
         <!--            추가-->
         {% if post.postimage_set.first and post.postimage_set.first.photo %}
         <div class="post-grid">
@@ -23,7 +23,30 @@
     <button id="scroll-to-top" class="btn btn-primary">Top</button>
     <br/>
     <br/>
+<div style="margin-bottom: 100px">
+     {% if page_obj.has_other_pages %}
+    <ul style="display: flex;  justify-content: center;   align-items: center;">
+<!--        이전 버튼-->
+        {% if page_obj.has_previous %}
+    <li style="margin:3px;"><a style="text-decoration:none; color: blue;" href="?page={{page_obj.previous_page_number}}">&#10094; Prev</a></li>
+    {% endif %}
 
+        {% for page in custom_range %}
+         {% if page == page_obj.number %}
+        <li style="margin:3px;"><a style="text-decoration:underline; color: red; font-size:1.5rem ; font-weight: 700 " href="?page={{page}}&searchDB={{searchDB}}&content={{content}}">{{page}}</a></li>
+         {% else %}
+        <li style="margin:3px;"><a style="text-decoration:none; color: blue;" href="?page={{page}}&searchDB={{searchDB}}&content={{content}}">{{page}}</a></li>
+         {% endif %}
+        {% endfor %}
+
+<!--        이후버튼-->
+         {% if page_obj.has_next %}
+    <li style="margin:3px;"><a style="text-decoration:none; color: blue;" href="?page={{page_obj.next_page_number}}">Next &#10095;</a></li>
+    {% endif %}
+    </ul>
+     {% endif%}
+</div>
+    </div>
 </div>
 
 
