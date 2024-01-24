@@ -124,7 +124,20 @@ def post_image_delete(request, post_id, image_id):
         url = reverse("posts:post_edit", kwargs={"post_id": post_id})
         return HttpResponseRedirect(url)
     else:
-        return HttpResponseForbidden("게시글 삭제 권한이 없습니다.")
+        return HttpResponseForbidden("이미지 삭제 권한이 없습니다.")
+
+
+@require_POST
+def post_tag_delete(request, post_id, tag_id):
+    post = Post.objects.get(id=post_id)
+    post_tag = post.tags.get(id=tag_id)
+    if post.user == request.user:
+        post_tag.delete()
+        # 수정
+        url = reverse("posts:post_edit", kwargs={"post_id": post_id})
+        return HttpResponseRedirect(url)
+    else:
+        return HttpResponseForbidden("태그 삭제 권한이 없습니다.")
 
 
 
