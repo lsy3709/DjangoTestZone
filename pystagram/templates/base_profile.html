@@ -48,7 +48,7 @@
               </span>
                 <span>
                  {% if login_user == user %}
-                      <form action="{% url 'users:password_reset' %}" method="POST"
+                      <form action="{% url 'password_reset' %}" method="POST"
                             onsubmit="return confirm('정말 비번초기화 하시나요?');">
 
                     {% csrf_token %}
