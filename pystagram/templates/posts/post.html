@@ -78,7 +78,19 @@
                         글 수정
                     </button>
                 </form>
+<span>
+                  {% if user == post.user %}
+                      <form action="{% url 'posts:post_download_images' post_id=post.id %}" method="POST"
+                            onsubmit="return confirm('이미지를 다운로드 하시나요?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">
+                        사진받기
+                    </button>
+                </form>
 
+
+                {% endif %}
+              </span>
 
                 {% endif %}
               </span>
