@@ -22,6 +22,7 @@ from django.urls import path, include
 
 from config.views import index
 from django.contrib.auth import views as auth_views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     # 추가
