@@ -1,5 +1,6 @@
 #추가
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
+from django.core.mail import EmailMessage
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -11,7 +12,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from posts.models import Post
 #추가
-from users.forms import LoginForm, SignupForm, CustomUserChangeForm
+from users.forms import LoginForm, SignupForm, CustomUserChangeForm, CustomPasswordResetForm
 from users.models import User
 
 
@@ -213,3 +214,31 @@ def follow(request, user_id):
     url_next = request.GET.get('next') or reverse('users:profile', args=[user.id])
     return HttpResponseRedirect(url_next)
 
+def reset_password(request, user_id):
+    if request.method == "GET":
+        form = CustomPasswordResetForm()
+
+    else:
+        user = get_object_or_404(User, id=user_id)
+        form = CustomPasswordResetForm()
+        if form.is_valid():
+            form.save()
+            return redirect("posts:feeds")
+
+    user = get_object_or_404(User, id=user_id)
+    login_user = request.user
+    relationships = user.follower_relationships.all()
+    context = {
+        "user": user,
+        "relationships": relationships,
+        "login_user": login_user,
+        "form": form
+    }
+    return render(request, 'users/profile_edit_reset_password.html', context)
+
+def send_email(request):
+    subject = "message"
+    to = ["lsy3709@naver.com"]
+    from_email = "lsy3709@gmail.com"
+    message = "메지시 테스트, https://sylovestp.com"
+    EmailMessage(subject=subject, body=message, to=to, from_email=from_email).send()

@@ -5,13 +5,13 @@
     <div class="info">
         <!-- 프로필 이미지 영역 -->
         {% if user.profile_image %}
-            <img src="{{ user.profile_image.url }}">
+        <img src="{{ user.profile_image.url }}">
         {% endif %}
 
         <!-- 사용자 정보 영역 -->
         <div class="info-texts">
             <h1>{{ user.username }}</h1>
-              <div class="funtion-btn">
+            <div class="funtion-btn">
             <span>
                  {% if login_user == user %}
                       <form action="{% url 'users:profile_edit' user_id=user.id %}" method="POST">
@@ -24,7 +24,7 @@
 
                 {% endif %}
               </span>
-            <span>
+                <span>
                  {% if login_user == user %}
                       <form action="{% url 'users:update_password' user_id=user.id %}" method="POST">
                     {% csrf_token %}
@@ -34,9 +34,10 @@
                 </form>
                 {% endif %}
               </span>
-             <span>
+                <span>
                  {% if login_user == user %}
-                      <form action="{% url 'users:delete_user' user_id=user.id %}" method="POST" onsubmit="return confirm('정말 회원탈퇴 하시나요?');">
+                      <form action="{% url 'users:delete_user' user_id=user.id %}" method="POST"
+                            onsubmit="return confirm('정말 회원탈퇴 하시나요?');">
 
                     {% csrf_token %}
                     <button type="submit" class="btn btn-primary">
@@ -45,7 +46,19 @@
                 </form>
                 {% endif %}
               </span>
-              </div>
+                <span>
+                 {% if login_user == user %}
+                      <form action="{% url 'users:password_reset' %}" method="POST"
+                            onsubmit="return confirm('정말 비번초기화 하시나요?');">
+
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">
+                        비번초기화
+                    </button>
+                </form>
+                {% endif %}
+              </span>
+            </div>
             <div class="counts">
                 <dl>
                     <dt>Posts</dt>
@@ -63,10 +76,10 @@
                 </dl>
             </div>
             <p>소개글 : {{ user.short_description }}</p>
-             {% if login_user == user %}
+            {% if login_user == user %}
             <p>email : {{ user.email }}</p>
             <p>마지막 접속일 : {{ user.last_login }}</p>
-             {% endif %}
+            {% endif %}
         </div>
     </div>
     {% block bottom_data %}{% endblock %}
