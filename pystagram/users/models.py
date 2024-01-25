@@ -21,6 +21,8 @@ class User(AbstractUser):
         symmetrical=False,
         through="users.Relationship",
     )
+    #로그인 횟수 컬럼
+    login_attempts = models.PositiveIntegerField(default=0)
     #추가
     def __str__(self):
         return self.username

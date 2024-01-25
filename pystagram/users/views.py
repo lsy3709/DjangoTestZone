@@ -15,6 +15,7 @@ from users.forms import LoginForm, SignupForm, CustomUserChangeForm
 from users.models import User
 
 
+
 # Create your views here.
 def login_view(request):
     if request.user.is_authenticated:
@@ -34,6 +35,9 @@ def login_view(request):
             if user :
                 login(request, user)
                 #수정
+                # 로그인 시도 횟수 초기화
+                user.login_attempts = 0
+                user.save()
                 return redirect("posts:feeds")
             else:
                 # print("로그인에 실패했습니다.")
@@ -208,7 +212,4 @@ def follow(request, user_id):
         user.following.add(target_user)
     url_next = request.GET.get('next') or reverse('users:profile', args=[user.id])
     return HttpResponseRedirect(url_next)
-
-
-
 

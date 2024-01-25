@@ -24,6 +24,25 @@ class LoginForm(forms.Form):
         ),
     )
 
+    class Meta:
+        model = User
+
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        if username and password:
+            user = User.objects.filter(username=username).first()
+            if user:
+                if user.login_attempts >= 5:  # 로그인 시도 횟수 제한을 5으로 설정
+                    raise forms.ValidationError("로그인 시도 횟수가 초과되었습니다. 2단계 인증 및 관리자에게 문의하세요.")
+                if not user.check_password(password):
+                    user.login_attempts += 1
+                    user.save()
+                    error_message = f"잘못된 비밀번호입니다. 로그인 시도 횟수: {user.login_attempts}/5"
+                    raise forms.ValidationError(error_message)
+            return super().clean()
+
 class SignupForm(forms.Form):
     username = forms.CharField()
     email = forms.EmailField()
