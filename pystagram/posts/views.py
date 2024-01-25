@@ -1,5 +1,8 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+import os
+import zipfile
+
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 # 추가
 from posts.forms import CommentForm, PostForm, PostImageForm
 # 추가
@@ -245,8 +248,33 @@ def post_search_do(request):
     return render(request, 'posts/post_search_result.html', context)
 
 
+def post_download_images(request, post_id):
+    # 게시글 객체 가져오기
+    post = get_object_or_404(Post, pk=post_id)
+    images = PostImage.objects.filter(post=post)
 
+    # 이미지 파일들을 임시 디렉터리에 저장
+    temp_dir = "temp_images"
+    os.makedirs(temp_dir, exist_ok=True)
 
+    zip_filename = f"images_for_post_{post_id}.zip"
+    zip_file_path = os.path.join(temp_dir, zip_filename)
+
+    with zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for image in images:
+            image_path = image.photo.path
+            zipf.write(image_path, os.path.basename(image_path))
+
+    # 압축된 파일을 응답으로 전송
+    with open(zip_file_path, 'rb') as zip_file:
+        response = HttpResponse(zip_file.read(), content_type='application/zip')
+        response['Content-Disposition'] = f'attachment; filename="{zip_filename}"'
+
+    # 임시 디렉터리와 파일 삭제
+    os.remove(zip_file_path)
+    os.rmdir(temp_dir)
+
+    return response
 
 
 def post_add(request):
