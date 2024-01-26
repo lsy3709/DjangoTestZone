@@ -1,4 +1,6 @@
 #추가
+import random
+
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
 from django.core.mail import EmailMessage
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -259,3 +261,44 @@ def forgot_id(request):
         "form": form
     }
     return render(request, 'users/forgot_id.html', context)
+
+def verify_code(request):
+    # 추가
+    if request.method == "POST":
+        form = SignupForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            # 수정
+            return redirect("posts:feeds")
+
+    else:
+        form = SignupForm()
+
+    context = {"form": form}
+    return render(request, 'users/signup.html', context)
+
+def auth_email(request):
+    if request.method == 'POST':
+        email = request.POST.get('verify_email')
+        # 임시 세션에 6자리 랜덤 숫자 저장
+        code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+        request.session['verification_code'] = code
+        subject = "인증코드"
+        to = f"{email}"
+        from_email = "lsy3709@gmail.com"
+        message = f"인증코드: [{code}]"
+
+        email_message = EmailMessage(
+        subject=subject,
+        body=message,
+        to=to,
+        from_email=from_email
+          )
+        email_message.send()
+    # 성공 시
+    return redirect("users:verify_code")  # 인증 코드 확인 페이지로 이동
+
+
+# return render(request, 'send_code.html')
+    # return render(request, 'users/auth_email.html')

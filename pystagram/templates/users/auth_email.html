@@ -3,14 +3,16 @@
 
 {% block content %}
 
-    <div id = "login">
-    <form method="post" >
-        <h1>Pystagram 본인 인증</h1>
-        {% csrf_token %}
-        <!--    추가-->
-{#        {{form.as_p}}#}
-        <button type="submit" class="btn btn-login">본인 인증</button>
+    <div id="login">
+        <form method="post" action="{% url 'users:verify_code'%}">
+            <h1>Pystagram 본인 인증</h1>
+            {% csrf_token %}
+            <p>
+                <label for="verify_code">이메일:</label>
+                <input type="email" name="verify_email" placeholder="전송 받을 이메일 입력해주세요" required id="verify_email">
+            </p>
+            <button type="submit" class="btn btn-login">본인 인증 코드 발송</button>
 
-    </form>
+        </form>
     </div>
 {% endblock %}
