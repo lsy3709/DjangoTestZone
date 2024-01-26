@@ -6,6 +6,7 @@ from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
 from django.core.mail import EmailMessage
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect
+from django.template.loader import render_to_string
 from django.urls import reverse
 
 # 추가
@@ -247,40 +248,24 @@ def reset_password(request, user_id):
 
 
 def forgot_id(request):
-    if request.method == "GET":
-        form = CustomPasswordResetForm()
 
-    else:
-        # user = get_object_or_404(User, id=user_id)
-        form = CustomPasswordResetForm()
-        # if form.is_valid():
-        #     form.save()
-        #     return redirect("posts:feeds")
-
-    context = {
-        "form": form
-    }
-    return render(request, 'users/forgot_id.html', context)
-
-
-
-def ForgotIDView(request):
-    context = {}
     if request.method == 'POST':
         email = request.POST.get('find_email')
         try:
             user = User.objects.get(email=email)
             if user is not None:
-                method_email = EmailMessage(
-                    'Your ID is in the email',
-                    str(user.username),
-                    # settings.EMAIL_HOST_USER,
-                    [email],
-                )
-                method_email.send(fail_silently=False)
-                return render(request, 'accounts/id_sent.html', context)
+                context = {
+                    'id' : user.username
+                }
+                template = render_to_string('users/email_findid_template_plain.html', context)
+                #이메일에 아이디 표시 하는 방법.
+                # send_email("Your ID is in the email", email, message)
+                # 이메일에 링크 넣기
+                send_email("Your ID is in the email", email, template)
+
+                return render(request, 'users/email_findid_template.html', context)
         except:
-            messages.info(request, "There is no username along with the email")
+            messages.info(request, "해당 이메일로 등록된 사용자 ID가 존재하지않습니다.")
     context = {}
     return render(request, 'users/forgot_id.html', context)
 
@@ -320,7 +305,8 @@ def send_email(subject, to,message):
     to_send.append(to)
     from_email = "lsy3709@gmail.com"
     message_send = message
-    EmailMessage(subject=subject_send, body=message_send, to=to_send, from_email=from_email).send()
+    # 프로덕션 환경에서는 : fail_silently=Trun 로 진행
+    EmailMessage(subject=subject_send, body=message_send, to=to_send, from_email=from_email).send(fail_silently=False)
 
 def send_email_with_code(request):
     if request.method == 'POST':
@@ -332,4 +318,5 @@ def send_email_with_code(request):
         message = f"인증코드: [{code}]"
         send_email("인증코드", email, message)
         # 성공 시
-        return redirect("users:verify_code")  # 인증 코드 확인 페이지로 이동
+        # return redirect("users:verify_code")  # 인증 코드 확인 페이지로 이동
+        return render(request, 'users/verify_code.html')

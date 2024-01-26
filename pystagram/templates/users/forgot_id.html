@@ -12,7 +12,7 @@
                 <input type="email" name="find_email" placeholder="전송 받을 이메일 입력해주세요" required id="find_email">
             </p>
             {% for message in messages %}
-                {{ message }}
+                <h3 style="color: red">{{ message }}</h3>
             {% endfor %}
             <button type="submit" class="btn btn-login">ID 찾기</button>
             <!--        <a href="/users/signup/">회원가입 페이지 이동</a>-->
