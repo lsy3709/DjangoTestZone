@@ -1,9 +1,8 @@
 from django.contrib.auth.views import PasswordResetView
 from django.urls import path
 
-
 from users.views import login_view, logout_view, signup, profile, followers, following, follow, profile_edit, user_edit, \
-    update_password, delete_user, reset_password,send_email
+    update_password, delete_user, reset_password, send_email, forgot_id
 
 # 추가
 app_name = 'users'
@@ -11,6 +10,7 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('signup/', signup, name='signup'),
+    path('forgot_id/', forgot_id, name='forgot_id'),
     path('user_edit/', user_edit, name='user_edit'),
     path('send_email/', send_email, name='send_email'),
     path('<int:user_id>/update_password/', update_password, name='update_password'),

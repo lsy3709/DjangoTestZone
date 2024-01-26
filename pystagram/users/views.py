@@ -242,3 +242,20 @@ def send_email(request):
     from_email = "lsy3709@gmail.com"
     message = "메지시 테스트, https://sylovestp.com"
     EmailMessage(subject=subject, body=message, to=to, from_email=from_email).send()
+
+def forgot_id(request):
+    if request.method == "GET":
+        form = CustomPasswordResetForm()
+
+    else:
+        # user = get_object_or_404(User, id=user_id)
+        form = CustomPasswordResetForm()
+        # if form.is_valid():
+        #     form.save()
+        #     return redirect("posts:feeds")
+
+
+    context = {
+        "form": form
+    }
+    return render(request, 'users/forgot_id.html', context)

@@ -1,0 +1,16 @@
+<!--추가-->
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div id = "login">
+    <form method="post" >
+        <h1>Pystagram 본인 인증</h1>
+        {% csrf_token %}
+        <!--    추가-->
+{#        {{form.as_p}}#}
+        <button type="submit" class="btn btn-login">본인 인증</button>
+
+    </form>
+    </div>
+{% endblock %}
