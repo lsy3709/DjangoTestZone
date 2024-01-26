@@ -296,8 +296,12 @@ def auth_email(request):
         from_email=from_email
           )
         email_message.send()
-    # 성공 시
-    return redirect("users:verify_code")  # 인증 코드 확인 페이지로 이동
+        # 성공 시
+        return redirect("users:verify_code")  # 인증 코드 확인 페이지로 이동
+
+    return render(request, 'users/auth_email.html')
+
+
 
 
 # return render(request, 'send_code.html')
