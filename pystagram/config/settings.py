@@ -22,12 +22,14 @@ secret_file = os.path.join(BASE_DIR, 'secrets.json')
 with open(secret_file) as f:
     secrets = json.loads(f.read())
 
+
 def get_secret(setting, secrets=secrets):
     try:
         return secrets[setting]
     except KeyError:
         error_msg = "Set the {} environment variable".format(setting)
         raise ImproperlyConfigured(error_msg)
+
 
 SECRET_KEY = get_secret("SECRET_KEY")
 
@@ -43,7 +45,6 @@ TEMPLATES_DIR = BASE_DIR / 'templates'
 # SECURITY WARNING: keep the secret key used in production secret!
 
 LOGIN_URL = '/users/login/'  # 변경된 URL
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -73,7 +74,6 @@ EMAIL_USE_TLS = True
 # 사이트와 관련한 자동응답을 받을 이메일 주소
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-
 INSTALLED_APPS = [
     'posts',
     'users',
@@ -84,6 +84,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_cleanup.apps.CleanupConfig',
+    'rest_framework',
+    'corsheaders',  # corsheaders 앱 추가
+]
+
+# CORS 설정 추가
+CORS_ALLOW_ALL_ORIGINS = False  # 모든 오리진을 허용하지 않음
+CORS_ALLOW_CREDENTIALS = True  # 자격증명(Credentials) 허용
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:8000',  # 허용하려는 오리진(Origin) 추가
+    'http://localhost:8000',  # 다른 오리진(Origin)도 추가할 수 있음
 ]
 
 MIDDLEWARE = [
@@ -94,6 +104,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # CorsMiddleware 추가
 ]
 
 ROOT_URLCONF = 'config.urls'

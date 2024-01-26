@@ -15,9 +15,13 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.shortcuts import render, redirect, get_object_or_404
 
 from posts.models import Post
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 # 추가
 from users.forms import LoginForm, SignupForm, CustomUserChangeForm, CustomPasswordResetForm
 from users.models import User
+from django.http import JsonResponse
 
 
 
@@ -263,7 +267,8 @@ def forgot_id(request):
                 # 이메일에 링크 넣기
                 send_email("Your ID is in the email", email, template)
 
-                return render(request, 'users/email_findid_template.html', context)
+                # return render(request, 'users/email_findid_template.html', context)
+                return render(request, 'users/email_findid_template_test.html', context)
         except:
             messages.info(request, "해당 이메일로 등록된 사용자 ID가 존재하지않습니다.")
     context = {}
@@ -319,4 +324,45 @@ def send_email_with_code(request):
         send_email("인증코드", email, message)
         # 성공 시
         # return redirect("users:verify_code")  # 인증 코드 확인 페이지로 이동
+
         return render(request, 'users/verify_code.html')
+
+class SendEmailWithCode(APIView):
+    def post(self, request, format=None):
+        email = request.data.get('verify_email')
+        print(f"요청이 왔어 확인: {email}")
+
+        if not email:
+            return Response({'error': '이메일 주소를 입력하세요.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 임시 세션에 6자리 랜덤 숫자 저장
+        code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+        request.session['verification_code'] = code
+        request.session.set_expiry(300)  # 5분 (300초) 후 세션 만료
+        message = f"인증코드: [{code}]"
+        send_email("인증코드", email, message)
+        print(f"요청이 왔어 확인: {email}")
+
+        # 성공 시, JSON 응답 반환
+        return Response({'message': '이메일 전송이 완료되었습니다.'}, status=status.HTTP_200_OK)
+
+def send_email_with_code_rest(request):
+    if request.method == 'POST':
+        email = request.POST.get('verify_email')
+        print(f"요청이 왔어 확인: {email}")
+        # 임시 세션에 6자리 랜덤 숫자 저장
+        code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+        request.session['verification_code'] = code
+        request.session.set_expiry(300)  # 5분 (300초) 후 세션 만료
+        message = f"인증코드: [{code}]"
+        send_email("인증코드", email, message)
+        # 성공 시
+        # return redirect("users:verify_code")  # 인증 코드 확인 페이지로 이동
+
+        # return render(request, 'users/verify_code.html')
+        # JSON 형식의 응답 반환
+        response_data = {
+            'message': '이메일 전송이 완료되었습니다.',
+            'email': email,
+        }
+        return JsonResponse(response_data)

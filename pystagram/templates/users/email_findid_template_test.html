@@ -1,0 +1,23 @@
+<!--추가-->
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div id="login">
+        <form method="post" >
+            <h1>Pystagram ID 찾기</h1>
+            {% csrf_token %}
+           <p>
+                <label for="find_email">이메일:</label>
+                <input type="email" name="find_email" placeholder="전송 받을 이메일 입력해주세요" required id="find_email">
+            </p>
+            {% for message in messages %}
+                <h3 style="color: red">{{ message }}</h3>
+            {% endfor %}
+            <button type="submit" class="btn btn-login">ID 찾기</button>
+            <!--        <a href="/users/signup/">회원가입 페이지 이동</a>-->
+            <!--        수정-->
+            <a href="{% url 'users:signup' %}">회원가입 페이지 이동</a>
+        </form>
+    </div>
+{% endblock %}
