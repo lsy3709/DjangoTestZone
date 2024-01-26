@@ -4,12 +4,12 @@
 {% block content %}
 
     <div id="login">
-        <form method="post">
+        <form method="post" action="{% url 'users:verify_code'%}">
             <h1>Pystagram 본인 인증 코드 확인</h1>
             {% csrf_token %}
             <p>
                 <label for="verify_code">코드 확인:</label>
-                <input type="text" name="verify_code" placeholder="6자리 숫자코드 입력해주세요" minlength="6" required id="verify_code">
+                <input type="text" name="input_code" placeholder="6자리 숫자코드 입력해주세요" minlength="6" required id="input_code">
             </p>
             <button type="submit" class="btn btn-login">코드 확인</button>
 

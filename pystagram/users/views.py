@@ -265,12 +265,19 @@ def forgot_id(request):
 def verify_code(request):
     # 추가
     if request.method == "POST":
-        form = SignupForm(data=request.POST, files=request.FILES)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            # 수정
-            return redirect("posts:feeds")
+        user_code = request.POST.get('input_code')
+        stored_code = request.session.get('verification_code')
+
+        if user_code == stored_code:
+            # 인증 성공 후 세션 제거
+            if 'verification_code' in request.session:
+                del request.session['verification_code']
+            # 인증 성공 시, 이동할 페이지 설정
+            return redirect('users:forgot_id')
+
+        else:
+            # 인증 실패 시, 에러 메세지와 다시 로그인 페이지로 리다이렉트
+            return redirect('users:login')  # 실패 시 로그인 페이지로 이동
 
     return render(request, 'users/verify_code.html')
 
@@ -284,6 +291,7 @@ def send_email_with_code(request):
         # 임시 세션에 6자리 랜덤 숫자 저장
         code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
         request.session['verification_code'] = code
+        request.session.set_expiry(300)  # 5분 (300초) 후 세션 만료
         subject = "인증코드"
         to = []
         to.append(email)
