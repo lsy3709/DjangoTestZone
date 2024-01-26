@@ -4,7 +4,7 @@
 {% block content %}
 
     <div id="login">
-        <form method="post" action="{% url 'users:verify_code'%}">
+        <form method="post" action="{% url 'users:send_email_with_code'%}">
             <h1>Pystagram 본인 인증</h1>
             {% csrf_token %}
             <p>

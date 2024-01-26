@@ -272,23 +272,24 @@ def verify_code(request):
             # 수정
             return redirect("posts:feeds")
 
-    else:
-        form = SignupForm()
-
-    context = {"form": form}
-    return render(request, 'users/signup.html', context)
+    return render(request, 'users/verify_code.html')
 
 def auth_email(request):
+    return render(request, 'users/auth_email.html')
+
+
+def send_email_with_code(request):
     if request.method == 'POST':
         email = request.POST.get('verify_email')
         # 임시 세션에 6자리 랜덤 숫자 저장
         code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
         request.session['verification_code'] = code
         subject = "인증코드"
-        to = f"{email}"
+        to = []
+        to.append(email)
         from_email = "lsy3709@gmail.com"
         message = f"인증코드: [{code}]"
-
+        print(f"code : {code}, email : {email}, subject : {subject}, to : {to}, from : {from_email}, message : {message}")
         email_message = EmailMessage(
         subject=subject,
         body=message,
@@ -298,11 +299,3 @@ def auth_email(request):
         email_message.send()
         # 성공 시
         return redirect("users:verify_code")  # 인증 코드 확인 페이지로 이동
-
-    return render(request, 'users/auth_email.html')
-
-
-
-
-# return render(request, 'send_code.html')
-    # return render(request, 'users/auth_email.html')
