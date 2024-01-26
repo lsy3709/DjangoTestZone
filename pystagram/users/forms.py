@@ -59,6 +59,12 @@ class SignupForm(forms.Form):
             raise ValidationError(f"입력한 사용자명({username})은 이미 사용 중. ")
         return username
 
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if User.objects.filter(email=email).exists():
+            raise ValidationError(f"입력한 이메일은({email})은 이미 사용 중. ")
+        return email
+
     # 추가
     def clean(self):
         password1 = self.cleaned_data.get("password1")
