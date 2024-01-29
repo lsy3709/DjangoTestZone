@@ -33,7 +33,7 @@ def login_view(request):
 
     # 수정
     if request.method == "POST":
-
+        # 인증 코드 6자리 가져와서, 세션과 일치 여부 확인 후 로그인 처리하기.
         form = LoginForm(data=request.POST)
         # 추가
         if form.is_valid():
@@ -327,6 +327,7 @@ def send_email_with_code(request):
 
         return render(request, 'users/verify_code.html')
 
+# rest 용 이메일 인증
 class SendEmailWithCode(APIView):
     def post(self, request, format=None):
         email = request.data.get('verify_email')
@@ -338,31 +339,12 @@ class SendEmailWithCode(APIView):
         # 임시 세션에 6자리 랜덤 숫자 저장
         code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
         request.session['verification_code'] = code
-        request.session.set_expiry(300)  # 5분 (300초) 후 세션 만료
+        request.session.set_expiry(180)  # 3분 (180초) 후 세션 만료
         message = f"인증코드: [{code}]"
         send_email("인증코드", email, message)
         print(f"요청이 왔어 확인: {email}")
 
         # 성공 시, JSON 응답 반환
-        return Response({'message': '이메일 전송이 완료되었습니다.'}, status=status.HTTP_200_OK)
+        return Response({'message': '이메일 전송이 완료되었습니다.!!'}, status=status.HTTP_200_OK)
 
-def send_email_with_code_rest(request):
-    if request.method == 'POST':
-        email = request.POST.get('verify_email')
-        print(f"요청이 왔어 확인: {email}")
-        # 임시 세션에 6자리 랜덤 숫자 저장
-        code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
-        request.session['verification_code'] = code
-        request.session.set_expiry(300)  # 5분 (300초) 후 세션 만료
-        message = f"인증코드: [{code}]"
-        send_email("인증코드", email, message)
-        # 성공 시
-        # return redirect("users:verify_code")  # 인증 코드 확인 페이지로 이동
 
-        # return render(request, 'users/verify_code.html')
-        # JSON 형식의 응답 반환
-        response_data = {
-            'message': '이메일 전송이 완료되었습니다.',
-            'email': email,
-        }
-        return JsonResponse(response_data)
