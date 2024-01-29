@@ -24,7 +24,6 @@ from users.models import User
 from django.http import JsonResponse
 
 
-
 # Create your views here.
 def login_view(request):
     if request.user.is_authenticated:
@@ -248,21 +247,17 @@ def reset_password(request, user_id):
     return render(request, 'users/profile_edit_reset_password.html', context)
 
 
-
-
-
 def forgot_id(request):
-
     if request.method == 'POST':
         email = request.POST.get('find_email')
         try:
             user = User.objects.get(email=email)
             if user is not None:
                 context = {
-                    'id' : user.username
+                    'id': user.username
                 }
                 template = render_to_string('users/email_findid_template_plain.html', context)
-                #이메일에 아이디 표시 하는 방법.
+                # 이메일에 아이디 표시 하는 방법.
                 # send_email("Your ID is in the email", email, message)
                 # 이메일에 링크 넣기
                 send_email("Your ID is in the email", email, template)
@@ -298,13 +293,14 @@ def verify_code(request):
 def auth_email(request):
     return render(request, 'users/auth_email.html')
 
+
 # def send_email(request):
 #     subject = "message"
 #     to = ["lsy3709@naver.com"]
 #     from_email = "lsy3709@gmail.com"
 #     message = "메지시 테스트, https://sylovestp.com"
 #     EmailMessage(subject=subject, body=message, to=to, from_email=from_email).send()
-def send_email(subject, to,message):
+def send_email(subject, to, message):
     subject_send = subject
     to_send = []
     to_send.append(to)
@@ -312,6 +308,7 @@ def send_email(subject, to,message):
     message_send = message
     # 프로덕션 환경에서는 : fail_silently=Trun 로 진행
     EmailMessage(subject=subject_send, body=message_send, to=to_send, from_email=from_email).send(fail_silently=False)
+
 
 def send_email_with_code(request):
     if request.method == 'POST':
@@ -327,6 +324,7 @@ def send_email_with_code(request):
 
         return render(request, 'users/verify_code.html')
 
+
 # rest 용 이메일 인증
 class SendEmailWithCode(APIView):
     def post(self, request, format=None):
@@ -338,7 +336,7 @@ class SendEmailWithCode(APIView):
 
         # 임시 세션에 6자리 랜덤 숫자 저장
         code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
-        request.session['verification_code_'+email] = code
+        request.session['verification_code_' + email] = code
         request.session.set_expiry(180)  # 3분 (180초) 후 세션 만료
         message = f"인증코드: [{code}]"
         send_email("인증코드", email, message)
@@ -348,24 +346,25 @@ class SendEmailWithCode(APIView):
         return Response({'message': '이메일 전송이 완료되었습니다.!!'}, status=status.HTTP_200_OK)
 
     # rest 용 6자리 코드 인증
-    class VerifyCode(APIView):
+class VerifyCode(APIView):
         def post(self, request, format=None):
+            verify_email = request.data.get('verify_email')
             input_code = request.data.get('input_code')
-            stored_code = request.session.get('verification_code_')
+            session_name = 'verification_code_'+verify_email
+            stored_code = request.session.get(session_name)
             print(f"코드 확인 요청이 왔어 input_code 확인: {input_code}")
 
             if not input_code:
                 return Response({'error': '6자리 코드를 입력하세요.'}, status=status.HTTP_400_BAD_REQUEST)
 
-            # 임시 세션에 6자리 랜덤 숫자 저장
-            code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
-            request.session['verification_code'] = code
-            request.session.set_expiry(180)  # 3분 (180초) 후 세션 만료
-            message = f"인증코드: [{code}]"
-            send_email("인증코드", email, message)
-            print(f"요청이 왔어 확인: {email}")
+            if input_code == stored_code:
+                # 인증 성공 후 세션 제거
+                if session_name in request.session:
+                    del request.session[session_name]
+                # 인증 성공 시, 이동할 페이지 설정
+                return Response({'message': '인증 확인 성공.'}, status=status.HTTP_200_OK)
 
-            # 성공 시, JSON 응답 반환
-            return Response({'message': '이메일 전송이 완료되었습니다.!!'}, status=status.HTTP_200_OK)
-
+            else:
+                # 인증 실패 시,
+                return Response({'error': '코드 불일치 합니다.다시 입력 해주세요.'}, status=status.HTTP_400_BAD_REQUEST)
 

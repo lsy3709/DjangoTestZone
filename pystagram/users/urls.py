@@ -16,7 +16,7 @@ urlpatterns = [
     path('send_email_with_code/', send_email_with_code, name='send_email_with_code'),
     path('send_email_with_code_rest/', SendEmailWithCode.as_view(), name='send_email_with_code'),
 
-    path('verify_code_rest/', VerifyCode, name='verify_code_rest'),
+    path('verify_code_rest/', VerifyCode.as_view(), name='verify_code_rest'),
     path('verify_code/', verify_code, name='verify_code'),
     path('user_edit/', user_edit, name='user_edit'),
     path('send_email/', send_email, name='send_email'),
