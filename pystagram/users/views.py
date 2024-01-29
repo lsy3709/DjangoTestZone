@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
 from django.core.mail import EmailMessage
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.template.loader import render_to_string
 from django.urls import reverse
 
@@ -22,6 +22,8 @@ from rest_framework.views import APIView
 from users.forms import LoginForm, SignupForm, CustomUserChangeForm, CustomPasswordResetForm
 from users.models import User
 from django.http import JsonResponse
+
+from users.models import VerificationCode
 
 
 # Create your views here.
@@ -329,15 +331,22 @@ def send_email_with_code(request):
 class SendEmailWithCode(APIView):
     def post(self, request, format=None):
         email = request.data.get('verify_email')
-        print(f"요청이 왔어 확인: {email}")
+        # print(f"요청이 왔어 확인: {email}")
 
         if not email:
             return Response({'error': '이메일 주소를 입력하세요.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # 임시 세션에 6자리 랜덤 숫자 저장
         code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
-        request.session['verification_code_' + email] = code
-        request.session.set_expiry(180)  # 3분 (180초) 후 세션 만료
+        user_email = email
+        if code:
+            # 세션에서 데이터를 가져와서 DB에 저장
+            verification_code = VerificationCode(code=code, user_email=user_email)
+            verification_code.save()
+
+        print(f"요청이 왔어 확인 stored_code : {code}")
+
+
         message = f"인증코드: [{code}]"
         send_email("인증코드", email, message)
         print(f"요청이 왔어 확인: {email}")
@@ -349,22 +358,22 @@ class SendEmailWithCode(APIView):
 class VerifyCode(APIView):
         def post(self, request, format=None):
             verify_email = request.data.get('verify_email')
-            input_code = request.data.get('input_code')
-            session_name = 'verification_code_'+verify_email
-            stored_code = request.session.get(session_name)
-            print(f"코드 확인 요청이 왔어 input_code 확인: {input_code}")
+            input_code = request.data.get('verify_input_code')
+            try:
+                # DB에서 데이터를 가져와서 확인
+                verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
+                print(f"코드 확인 요청이 왔어 verify_email 확인: {verify_email}")
+                print(f"코드 확인 요청이 왔어 input_code 확인: {input_code}")
+                print(f"코드 확인 요청이 왔어 verification_code 확인: {verification_code}")
 
-            if not input_code:
-                return Response({'error': '6자리 코드를 입력하세요.'}, status=status.HTTP_400_BAD_REQUEST)
+                # DB에서 데이터 삭제
+                verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
+                verification_code.delete()
 
-            if input_code == stored_code:
-                # 인증 성공 후 세션 제거
-                if session_name in request.session:
-                    del request.session[session_name]
-                # 인증 성공 시, 이동할 페이지 설정
                 return Response({'message': '인증 확인 성공.'}, status=status.HTTP_200_OK)
 
-            else:
-                # 인증 실패 시,
-                return Response({'error': '코드 불일치 합니다.다시 입력 해주세요.'}, status=status.HTTP_400_BAD_REQUEST)
+            except VerificationCode.DoesNotExist:
+                return Response({'error': '코드가 일치하지 않거나 DB에 없습니다..'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 

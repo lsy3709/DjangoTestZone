@@ -45,3 +45,7 @@ class Relationship(models.Model):
 
     def __str__(self):
         return f"관계 ({self.from_user} -> {self.to_user})"
+
+class VerificationCode(models.Model):
+    code = models.CharField(max_length=6)
+    user_email = models.EmailField()

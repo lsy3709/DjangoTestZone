@@ -18,8 +18,7 @@
             <p id="email-input_result"></p>
             <p id="code-input" style="display: none">
                 <label for="verify_code">코드 확인:</label>
-                <input type="text" name="input_code" placeholder="6자리 숫자코드 입력해주세요" minlength="6" required
-                       id="input_code">
+                <input type="text" name="input_code" placeholder="6자리 숫자코드 입력해주세요" minlength="6" required id="input_code">
             </p>
             <p id="input_code_result"></p>
             <div id="code-time" style="display: none">
@@ -56,10 +55,10 @@
         }
 
         // 예시: 특정 조건을 만족할 때 버튼 활성화
-    {#    if (isVariableTrue) {
-            enableLoginButton();
-        }
-#}
+    //        if (isVariableTrue) {
+      //          enableLoginButton();
+        //    }
+
 
         button.addEventListener('click', function () {
             if (isClicked) {
@@ -129,6 +128,8 @@
                 input_code.focus()
                 return false; // 이메일이 비어 있으면 유효하지 않음
             } else {
+                resultMessage.textContent = "6자리 코드 입력됨.";
+                resultMessage.style.color = "green";
                 return true; // 유효한 이메일 주소
             }
         }
@@ -208,7 +209,7 @@
 
             var email_input_Value = email_input.value;
             var input_code_Value = input_code.value;
-            {#alert("email_input_Value: " + email_input_Value);#}
+//            alert("email_input_Value: " + email_input_Value+ "input_code_Value : " + input_code_Value);
 
             // 유효성 검사.
             var isValidInputCode = validateInputCode();
@@ -245,7 +246,8 @@
                         // 서버 응답 데이터(data)를 처리
                         console.log(data);
                         // 응답오는 특정 값을, 인증 후, 로그인 버튼 활성화
-                        {#enableLoginButton()#}
+                        enableLoginButton()
+
                     })
                     .catch(error => {
                         // 오류 처리
