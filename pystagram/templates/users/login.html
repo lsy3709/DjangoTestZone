@@ -15,12 +15,13 @@
             </p>
             <button id="auth-btn" type="button" class="btn btn-login">본인인증</button>
             {#       이메일 유효성 검증 결과 뷰#}
-            <p id="result"></p>
+            <p id="email-input_result"></p>
             <p id="code-input" style="display: none">
                 <label for="verify_code">코드 확인:</label>
                 <input type="text" name="input_code" placeholder="6자리 숫자코드 입력해주세요" minlength="6" required
                        id="input_code">
             </p>
+        <p id="input_code_result"></p>
             <div id="code-time" style="display: none">
                 <span>코드 입력 남은 유효 시간 : </span> <span id="countdown" style="color: red"></span>
             </div>
@@ -71,10 +72,10 @@
         }
 
 
-        // 이메일 유효성 함수
+        // 이메일 유효성 검사 함수
         function validateEmail() {
             var emailInput = document.getElementById('email-input');
-            var resultMessage = document.getElementById('result');
+            var resultMessage = document.getElementById('email-input_result');
             var email = emailInput.value.trim();
 
             // 이메일 유효성 검사 정규식
@@ -98,7 +99,23 @@
             }
         }
 
-        // 버튼 클릭 이벤트 핸들러
+        // 6자리 유효성 검사 함수
+           function validateInputCode() {
+            var input_code = document.getElementById('input_code');
+            var resultMessage = document.getElementById('input_code_result');
+            var input_code_value = input_code.value.trim();
+
+            if (input_code_value === "") {
+                resultMessage.textContent = "6자리 코드를 입력하세요.";
+                resultMessage.style.color = "red";
+                input_code.focus()
+                return false; // 이메일이 비어 있으면 유효하지 않음
+            }  else {
+                return true; // 유효한 이메일 주소
+            }
+        }
+
+        // 본인 인증 버튼 클릭 이벤트 핸들러
         document.getElementById('auth-btn').addEventListener('click', function () {
             var div = document.getElementById('code-time');
             var paragraph = document.getElementById('code-input');
@@ -160,6 +177,66 @@
             } else {
                 // 이메일이 유효하지 않은 경우
                 alert("유효하지 않은 이메일 주소입니다.");
+            }
+
+
+        });
+
+        // 6자리 코드 버튼 클릭 이벤트 핸들러
+        document.getElementById('verify-btn').addEventListener('click', function () {
+
+            var input_code = document.getElementById('input_code');
+            var email_input = document.getElementById('email-input');
+
+            var email_input_Value = email_input.value;
+            var input_code_Value = input_code.value;
+            {#alert("email_input_Value: " + email_input_Value);#}
+
+            // 유효성 검사.
+            var isValidInputCode = validateInputCode();
+            if (isValidInputCode) {
+                // 이메일이 유효한 경우
+                // POST 요청으로 보낼 데이터 객체 생성
+                var data = {
+                    // 세션에서 확인하기 위해 필요한 이메일 값을 여기에 설정
+                    verify_email: email_input_Value,
+                    // 6자리 코드 값을 여기에 설정
+                    verify_input_code: input_code_Value,
+
+                };
+
+                // CSRF 토큰 가져오기
+                var csrfToken = getCSRFToken();
+
+// Fetch API를 사용하여 POST 요청 보내기
+                fetch('http://localhost:8000/users/verify_code_rest/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',  // 폼 데이터 형식으로 전송
+                        'X-CSRFToken': csrfToken  // CSRF 토큰 추가
+                    },
+                    body: new URLSearchParams(data).toString()  // 데이터를 URL 쿼리 문자열로 변환하여 전송
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();  // 서버에서 반환된 JSON 데이터를 파싱
+                    })
+                    .then(data => {
+                        // 서버 응답 데이터(data)를 처리
+                        console.log(data);
+
+                    })
+                    .catch(error => {
+                        // 오류 처리
+                        console.error('There was a problem with the fetch operation:', error);
+                    });
+
+
+            } else {
+                // 이메일이 유효하지 않은 경우
+                alert("6자리 코드 확인해주세요.");
             }
 
 

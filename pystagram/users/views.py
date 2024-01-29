@@ -338,7 +338,7 @@ class SendEmailWithCode(APIView):
 
         # 임시 세션에 6자리 랜덤 숫자 저장
         code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
-        request.session['verification_code'] = code
+        request.session['verification_code_'+email] = code
         request.session.set_expiry(180)  # 3분 (180초) 후 세션 만료
         message = f"인증코드: [{code}]"
         send_email("인증코드", email, message)
@@ -346,5 +346,26 @@ class SendEmailWithCode(APIView):
 
         # 성공 시, JSON 응답 반환
         return Response({'message': '이메일 전송이 완료되었습니다.!!'}, status=status.HTTP_200_OK)
+
+    # rest 용 6자리 코드 인증
+    class VerifyCode(APIView):
+        def post(self, request, format=None):
+            input_code = request.data.get('input_code')
+            stored_code = request.session.get('verification_code_')
+            print(f"코드 확인 요청이 왔어 input_code 확인: {input_code}")
+
+            if not input_code:
+                return Response({'error': '6자리 코드를 입력하세요.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            # 임시 세션에 6자리 랜덤 숫자 저장
+            code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+            request.session['verification_code'] = code
+            request.session.set_expiry(180)  # 3분 (180초) 후 세션 만료
+            message = f"인증코드: [{code}]"
+            send_email("인증코드", email, message)
+            print(f"요청이 왔어 확인: {email}")
+
+            # 성공 시, JSON 응답 반환
+            return Response({'message': '이메일 전송이 완료되었습니다.!!'}, status=status.HTTP_200_OK)
 
 
