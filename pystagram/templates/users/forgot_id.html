@@ -4,20 +4,305 @@
 {% block content %}
 
     <div id="login">
-        <form method="post" >
+        <form  method="post" >
             <h1>Pystagram ID 찾기</h1>
             {% csrf_token %}
            <p>
-                <label for="find_email">이메일:</label>
-                <input type="email" name="find_email" placeholder="전송 받을 이메일 입력해주세요" required id="find_email">
+                <label for="email-input">이메일:</label>
+                <input type="email" name="email-input" placeholder="전송 받을 이메일 입력해주세요" required id="email-input">
             </p>
+         <button id="auth-btn" type="button" class="btn btn-login">본인인증</button>
+            {#       이메일 유효성 검증 결과 뷰#}
+            <p id="email-input_result"></p>
+            <p id="code-input" style="display: none">
+                <label for="verify_code">코드 확인:</label>
+                <input type="text" name="input_code" placeholder="6자리 숫자코드 입력해주세요" minlength="6" required
+                       id="input_code">
+            </p>
+            <p id="input_code_result"></p>
+            <div id="code-time" style="display: none">
+                <span>코드 입력 남은 유효 시간 : </span> <span id="countdown" style="color: red"></span>
+            </div>
+            <button id="verify-btn" type="button" class="btn btn-login" style="display: none">코드확인</button>
             {% for message in messages %}
                 <h3 style="color: red">{{ message }}</h3>
             {% endfor %}
-            <button type="submit" class="btn btn-login">ID 찾기</button>
+            <button type="submit" id="findid_button" class="btn btn-login" disabled>ID 찾기</button>
             <!--        <a href="/users/signup/">회원가입 페이지 이동</a>-->
             <!--        수정-->
             <a href="{% url 'users:signup' %}">회원가입 페이지 이동</a>
         </form>
     </div>
+    <script>
+
+        // 로그인 버튼 클릭
+        // 버튼 엘리먼트 가져오기
+        var findIdButton = document.getElementById('findid_button');
+
+        // 버튼 클릭 이벤트를 자동으로 발생시키는 함수 정의
+        function simulateButtonClick() {
+            var event = new MouseEvent('click', {
+                bubbles: true,
+                cancelable: true,
+                view: window
+            });
+            findIdButton.dispatchEvent(event);
+        }
+
+        // 특정 조건에 따라 버튼 클릭 시키기 (예: 페이지 로딩 후)
+
+
+
+        // 버튼 추가 클릭 방지
+        var button = document.getElementById('auth-btn');
+        var clickCount = 0;
+        var isClicked = false;
+
+        // 로그인 버튼 , 평상시 비활성화, 인증 후 활성화.
+        var isVariableTrue = false; // 예시로 초기값은 false로 설정
+
+
+        // 변수 값이 true가 될 때 버튼 활성화
+        function enableLoginButton() {
+            isVariableTrue = true; // 특정 변수 값을 true로 설정
+            findIdButton.removeAttribute('disabled'); // 버튼의 'disabled' 속성 제거하여 활성화
+        }
+
+        // 예시: 특정 조건을 만족할 때 버튼 활성화
+        //        if (isVariableTrue) {
+        //          enableLoginButton();
+        //    }
+
+
+        button.addEventListener('click', function () {
+            if (isClicked) {
+                return; // 이미 클릭된 경우 추가 클릭 방지
+            }
+            isClicked = true;
+            clickCount++;
+
+            // 버튼 클릭 후 3분 동안 추가 클릭 방지
+            setTimeout(function () {
+                isClicked = false;
+            }, 18000);
+        });
+
+        // CSRF 토큰 값을 가져오는 함수
+        function getCSRFToken() {
+            var cookieValue = null;
+            var name = 'csrftoken';
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+            return cookieValue;
+        }
+
+
+        // 이메일 유효성 검사 함수
+        function validateEmail() {
+            var emailInput = document.getElementById('email-input');
+            var resultMessage = document.getElementById('email-input_result');
+            var email = emailInput.value.trim();
+
+            // 이메일 유효성 검사 정규식
+            var emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+            if (email === "") {
+                resultMessage.textContent = "이메일을 입력하세요.";
+                resultMessage.style.color = "red";
+                emailInput.focus()
+                return false; // 이메일이 비어 있으면 유효하지 않음
+            } else if (!emailRegex.test(email)) {
+                resultMessage.textContent = "유효한 이메일 주소를 입력하세요.";
+                resultMessage.style.color = "red";
+                emailInput.focus()
+                return false; // 이메일이 비어 있으면 유효하지 않음
+            } else {
+                resultMessage.textContent = "유효한 이메일 주소입니다.";
+                resultMessage.style.color = "green";
+
+                return true; // 유효한 이메일 주소
+            }
+        }
+
+        // 6자리 유효성 검사 함수
+        function validateInputCode() {
+            var input_code = document.getElementById('input_code');
+            var resultMessage = document.getElementById('input_code_result');
+            var input_code_value = input_code.value.trim();
+
+            if (input_code_value === "") {
+                resultMessage.textContent = "6자리 코드를 입력하세요.";
+                resultMessage.style.color = "red";
+                input_code.focus()
+                return false; // 이메일이 비어 있으면 유효하지 않음
+            } else {
+                return true; // 유효한 이메일 주소
+            }
+        }
+
+        // 본인 인증 버튼 클릭 이벤트 핸들러
+        document.getElementById('auth-btn').addEventListener('click', function () {
+            var div = document.getElementById('code-time');
+            var paragraph = document.getElementById('code-input');
+            var verifyBtn = document.getElementById('verify-btn');
+            var email_input = document.getElementById('email-input');
+
+            var email_input_Value = email_input.value;
+            {#alert("email_input_Value: " + email_input_Value);#}
+
+            // 유효성 검사.
+            var isValidEmail = validateEmail();
+            if (isValidEmail) {
+                // 이메일이 유효한 경우
+                // POST 요청으로 보낼 데이터 객체 생성
+                var data = {
+                    verify_email: email_input_Value  // 원하는 이메일 값을 여기에 설정
+                };
+
+                // CSRF 토큰 가져오기
+                var csrfToken = getCSRFToken();
+
+// Fetch API를 사용하여 POST 요청 보내기
+                fetch('http://localhost:8000/users/send_email_with_code_rest/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',  // 폼 데이터 형식으로 전송
+                        'X-CSRFToken': csrfToken  // CSRF 토큰 추가
+                    },
+                    body: new URLSearchParams(data).toString()  // 데이터를 URL 쿼리 문자열로 변환하여 전송
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();  // 서버에서 반환된 JSON 데이터를 파싱
+                    })
+                    .then(data => {
+                        // 서버 응답 데이터(data)를 처리
+                        console.log(data);
+                        var verifyBtn = document.getElementById('input_code');
+                        verifyBtn.focus()
+                        var button = document.getElementById('auth-btn');
+                        button.disabled = true;
+
+                    })
+                    .catch(error => {
+                        // 오류 처리
+                        console.error('There was a problem with the fetch operation:', error);
+                    });
+
+                // div와 p 태그를 토글링 (보이기/감추기)
+                if (div.style.display === 'none') {
+                    div.style.display = 'block';
+                    paragraph.style.display = 'block';
+                    verifyBtn.style.display = 'block';
+                } else {
+                    div.style.display = 'none';
+                    paragraph.style.display = 'none';
+                    verifyBtn.style.display = 'none';
+                }
+
+            } else {
+                // 이메일이 유효하지 않은 경우
+                alert("유효하지 않은 이메일 주소입니다.");
+            }
+
+
+        });
+
+        // 6자리 코드 버튼 클릭 이벤트 핸들러
+        document.getElementById('verify-btn').addEventListener('click', function () {
+
+            var input_code = document.getElementById('input_code');
+            var email_input = document.getElementById('email-input');
+
+            var email_input_Value = email_input.value;
+            var input_code_Value = input_code.value;
+            //alert("email_input_Value: " + email_input_Value+ "input_code_Value : " + input_code_Value);
+
+            // 유효성 검사.
+            var isValidInputCode = validateInputCode();
+            if (isValidInputCode) {
+                // 이메일이 유효한 경우
+                // POST 요청으로 보낼 데이터 객체 생성
+                var data = {
+                    // 세션에서 확인하기 위해 필요한 이메일 값을 여기에 설정
+                    verify_email: email_input_Value,
+                    // 6자리 코드 값을 여기에 설정
+                    verify_input_code: input_code_Value,
+
+                };
+
+                // CSRF 토큰 가져오기
+                var csrfToken = getCSRFToken();
+
+// Fetch API를 사용하여 POST 요청 보내기
+                fetch('http://localhost:8000/users/verify_code_rest/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',  // 폼 데이터 형식으로 전송
+                        'X-CSRFToken': csrfToken  // CSRF 토큰 추가
+                    },
+                    body: new URLSearchParams(data).toString()  // 데이터를 URL 쿼리 문자열로 변환하여 전송
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();  // 서버에서 반환된 JSON 데이터를 파싱
+                    })
+                    .then(data => {
+                        // 서버 응답 데이터(data)를 처리
+                        console.log(data);
+                        // 응답오는 특정 값을, 인증 후, 로그인 버튼 활성화
+                        enableLoginButton()
+                        var div = document.getElementById('code-time');
+                        div.style.display = 'none';
+                        alert("인증 성공, 이메일 발송했습니다.")
+                        simulateButtonClick();
+
+
+                    })
+                    .catch(error => {
+                        // 오류 처리
+                        alert("인증 실패")
+                    });
+
+
+            } else {
+                // 이메일이 유효하지 않은 경우
+                alert("6자리 코드 확인해주세요.");
+            }
+
+
+        });
+
+        // 3분(180초) 카운트 다운 시작
+        let countdownSeconds = 180;
+
+        function updateCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            const minutes = Math.floor(countdownSeconds / 60);
+            const seconds = countdownSeconds % 60;
+
+            // 카운트 다운 표시
+            countdownElement.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+            if (countdownSeconds > 0) {
+                countdownSeconds--;
+                setTimeout(updateCountdown, 1000); // 1초마다 업데이트
+            } else {
+                countdownElement.innerText = '시간 종료';
+            }
+        }
+
+        // 페이지 로드 후 카운트 다운 시작
+        window.addEventListener('load', updateCountdown);
+    </script>
 {% endblock %}

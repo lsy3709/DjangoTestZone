@@ -251,7 +251,8 @@ def reset_password(request, user_id):
 
 def forgot_id(request):
     if request.method == 'POST':
-        email = request.POST.get('find_email')
+        email = request.POST.get('email-input')
+        print(" forgot_id email :", email)
         try:
             user = User.objects.get(email=email)
             if user is not None:
@@ -265,7 +266,7 @@ def forgot_id(request):
                 send_email("Your ID is in the email", email, template)
 
                 # return render(request, 'users/email_findid_template.html', context)
-                return render(request, 'users/email_findid_template_test.html', context)
+                return redirect('users:login')
         except:
             messages.info(request, "해당 이메일로 등록된 사용자 ID가 존재하지않습니다.")
     context = {}
