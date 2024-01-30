@@ -79,6 +79,14 @@ PASSWORD_RESET_TIMEOUT = 600  # 비밀번호 초기화 요청의 유효시간 (�
 # PASSWORD_RESET_TIMEOUT_DAYS = 1  # 비밀번호 초기화 요청의 유효일수 (일)
 PASSWORD_RESET_EMAIL_TEMPLATE_NAME = 'registration/password_reset_email.txt'
 
+
+# crontab 설정. 잠시 보류
+# CRONJOBS = [
+    # ('*/1 * * * *', 'users.tasks.delete_records'),  # 매 5분마다 테이블 레코드 삭제 작업 실행
+# yourapp.models.YourModel' 부분을 삭제하려는 모델로 변경
+#     ('*/1 * * * *', 'python manage.py sqlsequencereset users.models.VerificationCode'),  # 매일 자정에 모델 시퀀스 리셋
+# ]
+
 INSTALLED_APPS = [
     'posts',
     'users',
@@ -91,6 +99,8 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'rest_framework',
     'corsheaders',  # corsheaders 앱 추가
+    # 'django_crontab', # crontab 설정
+    # 'django_extensions',# crontab 설정2
 ]
 
 # CORS 설정 추가
@@ -167,9 +177,10 @@ LANGUAGE_CODE = 'ko-kr'
 
 TIME_ZONE = 'Asia/Seoul'
 
-USE_I18N = True
+USE_I18N = False
 
-USE_TZ = True
+# 한국 현재 시간 설정시, False
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

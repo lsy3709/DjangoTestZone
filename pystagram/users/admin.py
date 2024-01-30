@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from users.models import User
+from users.models import User, VerificationCode
+
+
 
 # Register your models here.
 
@@ -35,4 +37,12 @@ class CustomUserAdmin(UserAdmin):
     inlines = [
         FollowersInline,
         FollowingInline
+    ]
+
+@admin.register(VerificationCode)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "code",
+        "user_email",
     ]

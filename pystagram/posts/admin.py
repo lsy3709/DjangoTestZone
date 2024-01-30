@@ -87,13 +87,7 @@ class PostImageAdmin(admin.ModelAdmin):
     ]
 
 
-@admin.register(Comment)
-class CommentAdmin(admin.ModelAdmin):
-    list_display = [
-        "id",
-        "post",
-        "content",
-    ]
+
 
 @admin.register(HashTag)
 class HashTagAdmin(admin.ModelAdmin):

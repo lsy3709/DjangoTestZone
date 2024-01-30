@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
+
 
 # Create your models here.
 class User(AbstractUser):
@@ -49,3 +51,9 @@ class Relationship(models.Model):
 class VerificationCode(models.Model):
     code = models.CharField(max_length=6)
     user_email = models.EmailField()
+    created_at = models.DateTimeField()
+    def save(self, *args, **kwargs):
+        # 등록된 시간 필드가 None 또는 다른 시간과 다른 경우에만 현재 시간으로 설정
+        if not self.created_at or self.created_at != timezone.now():
+            self.created_at = timezone.now()
+        super().save(*args, **kwargs)
