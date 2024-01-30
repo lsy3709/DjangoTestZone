@@ -4,14 +4,12 @@
 {% block content %}
 
     <div id="login">
-        <form id="login-form" method="post">
-            <h1>Pystagram</h1>
+        <form method="post">
+            <h1>Pystagram PW 찾기</h1>
             {% csrf_token %}
-            <!--    추가-->
-            {{ form.as_p }}
             <p>
-                <label for="email-input">Email:</label>
-                <input type="email" name="email-input" placeholder="본인인증 후 로그인 해주세요." required id="email-input">
+                <label for="email-input">이메일:</label>
+                <input type="email" name="email-input" placeholder="전송 받을 이메일 입력해주세요" required id="email-input">
             </p>
             <button id="auth-btn" type="button" class="btn btn-login">본인인증</button>
             {#       이메일 유효성 검증 결과 뷰#}
@@ -26,23 +24,21 @@
                 <span>코드 입력 남은 유효 시간 : </span> <span id="countdown" style="color: red"></span>
             </div>
             <button id="verify-btn" type="button" class="btn btn-login" style="display: none">코드확인</button>
-            <button type="submit" id="login-button" class="btn btn-login" disabled>로그인</button>
-            {#        오류 발생시 메세지 띄우기#}
             {% for message in messages %}
                 <h3 style="color: red">{{ message }}</h3>
             {% endfor %}
+            <button type="submit" id="findid_button" class="btn btn-login" disabled>ID 찾기</button>
             <!--        <a href="/users/signup/">회원가입 페이지 이동</a>-->
             <!--        수정-->
+            <a href="{% url 'users:login' %}">로그인 페이지 이동</a>
             <a href="{% url 'users:signup' %}">회원가입 페이지 이동</a>
-            <a href="{% url 'users:forgot_id' %}">ID 찾기 페이지 이동</a>
-{#            <a href="{% url 'users:forgot_pw' %}">Password 찾기 페이지 이동</a>#}
         </form>
     </div>
     <script>
 
         // 로그인 버튼 클릭
         // 버튼 엘리먼트 가져오기
-        var loginButton = document.getElementById('login-button');
+        var findIdButton = document.getElementById('findid_button');
 
         // 버튼 클릭 이벤트를 자동으로 발생시키는 함수 정의
         function simulateButtonClick() {
@@ -51,7 +47,7 @@
                 cancelable: true,
                 view: window
             });
-            loginButton.dispatchEvent(event);
+            findIdButton.dispatchEvent(event);
         }
 
         // 특정 조건에 따라 버튼 클릭 시키기 (예: 페이지 로딩 후)
@@ -65,13 +61,11 @@
         // 로그인 버튼 , 평상시 비활성화, 인증 후 활성화.
         var isVariableTrue = false; // 예시로 초기값은 false로 설정
 
-        // 로그인 버튼 엘리먼트 가져오기
-        var loginButton = document.getElementById('login-button');
 
         // 변수 값이 true가 될 때 버튼 활성화
         function enableLoginButton() {
             isVariableTrue = true; // 특정 변수 값을 true로 설정
-            loginButton.removeAttribute('disabled'); // 버튼의 'disabled' 속성 제거하여 활성화
+            findIdButton.removeAttribute('disabled'); // 버튼의 'disabled' 속성 제거하여 활성화
         }
 
         // 예시: 특정 조건을 만족할 때 버튼 활성화
@@ -230,7 +224,7 @@
 
             var email_input_Value = email_input.value;
             var input_code_Value = input_code.value;
-//            alert("email_input_Value: " + email_input_Value+ "input_code_Value : " + input_code_Value);
+            //alert("email_input_Value: " + email_input_Value+ "input_code_Value : " + input_code_Value);
 
             // 유효성 검사.
             var isValidInputCode = validateInputCode();
@@ -270,7 +264,7 @@
                         enableLoginButton()
                         var div = document.getElementById('code-time');
                         div.style.display = 'none';
-                        alert("인증 성공")
+                        alert("인증 성공, 이메일 발송했습니다.")
                         simulateButtonClick();
 
 

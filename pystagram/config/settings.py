@@ -74,6 +74,11 @@ EMAIL_USE_TLS = True
 # 사이트와 관련한 자동응답을 받을 이메일 주소
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+# 비밀번호 초기화 이메일 템플릿 설정
+PASSWORD_RESET_TIMEOUT = 3600  # 비밀번호 초기화 요청의 유효시간 (초)
+PASSWORD_RESET_TIMEOUT_DAYS = 1  # 비밀번호 초기화 요청의 유효일수 (일)
+PASSWORD_RESET_EMAIL_TEMPLATE_NAME = 'registration/password_reset_email.html'
+
 INSTALLED_APPS = [
     'posts',
     'users',

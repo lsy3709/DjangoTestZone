@@ -130,6 +130,7 @@ def profile(request, user_id):
     return render(request, 'users/profile.html', context)
 
 
+# 프로필 수정폼, 처리
 def user_edit(request):
     # 추가
     if request.method == "POST":
@@ -147,6 +148,7 @@ def user_edit(request):
     return render(request, 'users/profile.html', context)
 
 
+# 프로필 수정폼
 def profile_edit(request, user_id):
     form = CustomUserChangeForm(instance=request.user)
     user = get_object_or_404(User, id=user_id)
@@ -161,6 +163,7 @@ def profile_edit(request, user_id):
     return render(request, 'users/profile_edit.html', context)
 
 
+# 패스워드 수정
 def update_password(request, user_id):
     if request.method == "GET":
         form = PasswordChangeForm(request.user)
@@ -226,6 +229,8 @@ def follow(request, user_id):
     return HttpResponseRedirect(url_next)
 
 
+
+# 패스워드 초기화, 사용 안하고 있음.
 def reset_password(request, user_id):
     if request.method == "GET":
         form = CustomPasswordResetForm()
@@ -249,6 +254,7 @@ def reset_password(request, user_id):
     return render(request, 'users/profile_edit_reset_password.html', context)
 
 
+# 아이디 찾기 
 def forgot_id(request):
     if request.method == 'POST':
         email = request.POST.get('email-input')
@@ -273,6 +279,7 @@ def forgot_id(request):
     return render(request, 'users/forgot_id.html', context)
 
 
+# 6자리 코드 확인 , 세션으로 확인
 def verify_code(request):
     # 추가
     if request.method == "POST":
@@ -293,16 +300,9 @@ def verify_code(request):
     return render(request, 'users/verify_code.html')
 
 
-def auth_email(request):
-    return render(request, 'users/auth_email.html')
 
 
-# def send_email(request):
-#     subject = "message"
-#     to = ["lsy3709@naver.com"]
-#     from_email = "lsy3709@gmail.com"
-#     message = "메지시 테스트, https://sylovestp.com"
-#     EmailMessage(subject=subject, body=message, to=to, from_email=from_email).send()
+# 테스트 메일 보내기
 def send_email(subject, to, message):
     subject_send = subject
     to_send = []
@@ -313,6 +313,8 @@ def send_email(subject, to, message):
     EmailMessage(subject=subject_send, body=message_send, to=to_send, from_email=from_email).send(fail_silently=False)
 
 
+
+# 테스트6자리 코드 , 메일 보내기, 세션 저장 버전
 def send_email_with_code(request):
     if request.method == 'POST':
         email = request.POST.get('verify_email')
@@ -328,7 +330,7 @@ def send_email_with_code(request):
         return render(request, 'users/verify_code.html')
 
 
-# rest 용 이메일 인증
+# rest 용 이메일 인증 , 6자리 코드, VerificationCode 테이블에 저장
 class SendEmailWithCode(APIView):
     def post(self, request, format=None):
         email = request.data.get('verify_email')

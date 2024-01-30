@@ -2,7 +2,7 @@ from django.contrib.auth.views import PasswordResetView
 from django.urls import path
 
 from users.views import login_view, logout_view, signup, profile, followers, following, follow, profile_edit, user_edit, \
-    update_password, delete_user, reset_password, send_email, forgot_id, verify_code, auth_email, send_email_with_code, \
+    update_password, delete_user, reset_password, send_email, forgot_id, verify_code, send_email_with_code, \
      SendEmailWithCode, VerifyCode
 
 # 추가
@@ -12,7 +12,6 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('signup/', signup, name='signup'),
     path('forgot_id/', forgot_id, name='forgot_id'),
-    path('auth_email/', auth_email, name='auth_email'),
     path('send_email_with_code/', send_email_with_code, name='send_email_with_code'),
     path('send_email_with_code_rest/', SendEmailWithCode.as_view(), name='send_email_with_code'),
 
