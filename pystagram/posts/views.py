@@ -34,9 +34,6 @@ def feeds(request):
     # 가져온 사용자의 로그인 여부 확인.
     # is_authenticated = user.is_authenticated
 
-    # print("user : ", user)
-    # print("is_authenticated : ", is_authenticated)
-
     # 추가 , 포스트 글 생성일로 최신순 변경
     posts = Post.objects.all().order_by('-created')
     # 추가
@@ -195,15 +192,11 @@ def post_search_do(request):
         # 수정
         searchDB = request.POST.get('searchDB')
         content = request.POST.get('content')
-        print("searchDB  POST : ", searchDB)
-        print("content POST : ", content)
+
     elif request.method == "GET":
             # 수정
         searchDB = request.GET.get('searchDB')
         content = request.GET.get('content')
-
-        print("searchDB GET :", searchDB)
-        print("content GET : ", content)
 
     if content :
         if searchDB == "content":

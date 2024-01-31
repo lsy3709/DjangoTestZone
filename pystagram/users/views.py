@@ -38,7 +38,7 @@ def login_view(request):
         form = LoginForm(data=request.POST)
         verify_email = request.POST.get('email-input')
         input_code = request.POST.get('input_code')
-        # print(f"verify_email code: {verify_email}, input code: {input_code}")
+
         # 추가
         if form.is_valid():
             username = form.cleaned_data["username"]
@@ -49,8 +49,6 @@ def login_view(request):
 
                 try:
                     verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
-                    # print(f"Verification code: {verification_code}")
-
                     login(request, user)
                     # 수정
                     # 로그인 시도 횟수 초기화
@@ -61,7 +59,6 @@ def login_view(request):
                 except:
                     form.add_error(None, "인증코드가 일치하지 않습니다..")
             else:
-                # print("로그인에 실패했습니다.")
                 form.add_error(None, "입력한 자격증명에 해당하는 사용자가 없습니다.")
 
         context = {
@@ -88,12 +85,10 @@ def signup(request):
         form = SignupForm(data=request.POST, files=request.FILES)
         verify_email = request.POST.get('email')
         input_code = request.POST.get('input_code')
-        print(f"verify_email code: {verify_email}, input code: {input_code}")
         if form.is_valid():
 
             try:
                 verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
-                print(f"Verification code: {verification_code}")
                 user = form.save()
                 verification_code.delete()
                 login(request, user)
@@ -113,10 +108,6 @@ def profile(request, user_id):
     user = get_object_or_404(User, id=user_id)
     login_user = request.user
     posts = Post.objects.filter(user=user).order_by('-created')
-    # print("user", user)
-    # print("login_user", login_user)
-    # print("request.user.is_authenticated",request.user.is_authenticated)
-    # print("posts",posts)
     page = request.GET.get('page')
     paginator = Paginator(posts, 18)
 
@@ -279,7 +270,6 @@ def reset_password(request, user_id):
 def forgot_id(request):
     if request.method == 'POST':
         email = request.POST.get('email-input')
-        print(" forgot_id email :", email)
         try:
             user = User.objects.get(email=email)
             if user is not None:
@@ -355,7 +345,6 @@ def send_email_with_code(request):
 class SendEmailWithCode(APIView):
     def post(self, request, format=None):
         email = request.data.get('verify_email')
-        # print(f"요청이 왔어 확인: {email}")
 
         if not email:
             return Response({'error': '이메일 주소를 입력하세요.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -368,12 +357,9 @@ class SendEmailWithCode(APIView):
             verification_code = VerificationCode(code=code, user_email=user_email)
             verification_code.save()
 
-        # print(f"요청이 왔어 확인 stored_code : {code}")
-
 
         message = f"인증코드: [{code}]"
         send_email("인증코드", email, message)
-        # print(f"요청이 왔어 확인: {email}")
 
         # 성공 시, JSON 응답 반환
         return Response({'message': '이메일 전송이 완료되었습니다.!!'}, status=status.HTTP_200_OK)
@@ -386,9 +372,6 @@ class VerifyCode(APIView):
             try:
                 # DB에서 데이터를 가져와서 확인
                 # verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
-                # print(f"코드 확인 요청이 왔어 verify_email 확인: {verify_email}")
-                # print(f"코드 확인 요청이 왔어 input_code 확인: {input_code}")
-                # print(f"코드 확인 요청이 왔어 verification_code 확인: {verification_code}")
 
                 # DB에서 데이터 삭제
                 verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
