@@ -38,7 +38,7 @@ def login_view(request):
         form = LoginForm(data=request.POST)
         verify_email = request.POST.get('email-input')
         input_code = request.POST.get('input_code')
-        print(f"verify_email code: {verify_email}, input code: {input_code}")
+        # print(f"verify_email code: {verify_email}, input code: {input_code}")
         # 추가
         if form.is_valid():
             username = form.cleaned_data["username"]
@@ -49,7 +49,7 @@ def login_view(request):
 
                 try:
                     verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
-                    print(f"Verification code: {verification_code}")
+                    # print(f"Verification code: {verification_code}")
 
                     login(request, user)
                     # 수정
@@ -86,11 +86,21 @@ def signup(request):
     # 추가
     if request.method == "POST":
         form = SignupForm(data=request.POST, files=request.FILES)
+        verify_email = request.POST.get('email')
+        input_code = request.POST.get('input_code')
+        print(f"verify_email code: {verify_email}, input code: {input_code}")
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            # 수정
-            return redirect("posts:feeds")
+
+            try:
+                verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
+                print(f"Verification code: {verification_code}")
+                user = form.save()
+                verification_code.delete()
+                login(request, user)
+                # 수정
+                return redirect("posts:feeds")
+            except:
+                form.add_error(None, "인증코드가 일치하지 않습니다..")
 
     else:
         form = SignupForm()
