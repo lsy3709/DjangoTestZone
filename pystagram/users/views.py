@@ -36,6 +36,9 @@ def login_view(request):
     if request.method == "POST":
         # 인증 코드 6자리 가져와서, 세션과 일치 여부 확인 후 로그인 처리하기.
         form = LoginForm(data=request.POST)
+        verify_email = request.POST.get('email-input')
+        input_code = request.POST.get('input_code')
+        print(f"verify_email code: {verify_email}, input code: {input_code}")
         # 추가
         if form.is_valid():
             username = form.cleaned_data["username"]
@@ -43,12 +46,20 @@ def login_view(request):
 
             user = authenticate(username=username, password=password)
             if user:
-                login(request, user)
-                # 수정
-                # 로그인 시도 횟수 초기화
-                user.login_attempts = 0
-                user.save()
-                return redirect("posts:feeds")
+
+                try:
+                    verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
+                    print(f"Verification code: {verification_code}")
+
+                    login(request, user)
+                    # 수정
+                    # 로그인 시도 횟수 초기화
+                    user.login_attempts = 0
+                    verification_code.delete()
+                    user.save()
+                    return redirect("posts:feeds")
+                except:
+                    form.add_error(None, "인증코드가 일치하지 않습니다..")
             else:
                 # print("로그인에 실패했습니다.")
                 form.add_error(None, "입력한 자격증명에 해당하는 사용자가 없습니다.")
@@ -343,16 +354,16 @@ class SendEmailWithCode(APIView):
         code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
         user_email = email
         if code:
-            # 세션에서 데이터를 가져와서 DB에 저장
+            # 데이터를 DB에 저장
             verification_code = VerificationCode(code=code, user_email=user_email)
             verification_code.save()
 
-        print(f"요청이 왔어 확인 stored_code : {code}")
+        # print(f"요청이 왔어 확인 stored_code : {code}")
 
 
         message = f"인증코드: [{code}]"
         send_email("인증코드", email, message)
-        print(f"요청이 왔어 확인: {email}")
+        # print(f"요청이 왔어 확인: {email}")
 
         # 성공 시, JSON 응답 반환
         return Response({'message': '이메일 전송이 완료되었습니다.!!'}, status=status.HTTP_200_OK)
@@ -364,10 +375,10 @@ class VerifyCode(APIView):
             input_code = request.data.get('verify_input_code')
             try:
                 # DB에서 데이터를 가져와서 확인
-                verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
-                print(f"코드 확인 요청이 왔어 verify_email 확인: {verify_email}")
-                print(f"코드 확인 요청이 왔어 input_code 확인: {input_code}")
-                print(f"코드 확인 요청이 왔어 verification_code 확인: {verification_code}")
+                # verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
+                # print(f"코드 확인 요청이 왔어 verify_email 확인: {verify_email}")
+                # print(f"코드 확인 요청이 왔어 input_code 확인: {input_code}")
+                # print(f"코드 확인 요청이 왔어 verification_code 확인: {verification_code}")
 
                 # DB에서 데이터 삭제
                 verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
@@ -377,6 +388,18 @@ class VerifyCode(APIView):
 
             except VerificationCode.DoesNotExist:
                 return Response({'error': '코드가 일치하지 않거나 DB에 없습니다..'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class VerifyCode_noDelete(APIView):
+    def post(self, request, format=None):
+        verify_email = request.data.get('verify_email')
+        input_code = request.data.get('verify_input_code')
+        try:
+            verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
+            return Response({'message': '인증 확인 성공2.'}, status=status.HTTP_200_OK)
+
+        except VerificationCode.DoesNotExist:
+            return Response({'error': '코드가 일치하지 않거나 DB에 없습니다..'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 
