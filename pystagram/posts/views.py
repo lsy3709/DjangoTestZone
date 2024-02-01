@@ -303,7 +303,7 @@ def post_add(request):
             post.save()
 
             for image_file in request.FILES.getlist("images"):
-                image = rescale_image(image_file, 700)
+                image = rescale_image(image_file, 600)
                 PostImage.objects.create(
                     post=post,
                     photo=image,

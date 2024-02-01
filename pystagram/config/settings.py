@@ -107,9 +107,16 @@ CORS_ALLOW_ALL_ORIGINS = False  # 모든 오리진을 허용하지 않음
 CORS_ALLOW_CREDENTIALS = True  # 자격증명(Credentials) 허용
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',  # 허용하려는 오리진(Origin) 추가
-    'http://localhost:8000',  # 다른 오리진(Origin)도 추가할 수 있음
+    'http://10.100.104.13:8000',  # 다른 오리진(Origin)도 추가할 수 있음
     'http://10.100.104.13:8000',
 ]
+
+# settings.py
+
+# 접근 목록자 , 임시로 전체 허용 했고,
+ALLOWED_HOSTS = ['*']
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

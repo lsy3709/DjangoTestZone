@@ -351,6 +351,7 @@ class SendEmailWithCode(APIView):
 
         # 임시 세션에 6자리 랜덤 숫자 저장
         code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+        print(f"생성된 6자리 코드 : {code}")
         user_email = email
         if code:
             # 데이터를 DB에 저장
