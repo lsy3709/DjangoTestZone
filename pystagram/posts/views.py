@@ -6,7 +6,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 # 추가
-from posts.forms import CommentForm, PostForm, PostImageForm
+from posts.forms import CommentForm, PostForm, PostImageForm, SendMessageForm
 # 추가
 from posts.models import Post, Comment, PostImage, HashTag
 
@@ -86,6 +86,23 @@ def comment_add(reqeust):
         comment = form.save(commit=False)
         comment.user = reqeust.user
         comment.save()
+
+        # 추가
+        if reqeust.GET.get("next"):
+            url_next = reqeust.GET.get("next")
+        else:
+            url_next = reverse("posts:feeds") + f"#post-{comment.post.id}"
+
+        return HttpResponseRedirect(url_next)
+
+# 쪽지 보내기 기능
+@require_POST
+def message_send(reqeust):
+    form = SendMessageForm(data=reqeust.POST)
+    if form.is_valid():
+        # comment = form.save(commit=False)
+        # comment.user = reqeust.user
+        # comment.save()
 
         # 추가
         if reqeust.GET.get("next"):

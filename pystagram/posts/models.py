@@ -53,6 +53,22 @@ class Comment(models.Model):
     content = models.TextField("내용")
     created = models.DateTimeField("생성일시", auto_now_add=True)
 
+class Message(models.Model):
+    sender = models.ForeignKey(
+        "users.User",
+        verbose_name="보낸사람",
+        on_delete=models.CASCADE,
+        related_name='sent_messages'
+    )
+    receiver = models.ForeignKey(
+        "users.User",
+        verbose_name="받는사람",
+        on_delete=models.CASCADE,
+        related_name='received_messages'
+    )
+    content = models.TextField("내용")
+    created = models.DateTimeField("생성일시", auto_now_add=True)
+
 class HashTag(models.Model):
     name = models.CharField("태그명", max_length=50)
 

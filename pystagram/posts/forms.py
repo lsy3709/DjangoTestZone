@@ -18,6 +18,21 @@ class CommentForm(forms.ModelForm):
             )
         }
 
+class SendMessageForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = [
+            'post',
+            'content',
+        ]
+        widgets = {
+            'content': forms.Textarea(
+                attrs={
+                    'placeholder': '쪽지 내용...',
+                }
+            )
+        }
+
 
 
 class PostForm(forms.ModelForm):
