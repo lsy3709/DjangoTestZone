@@ -13,6 +13,8 @@ $(document).ready(function () {
         // data-post-id를 통해 post.id 값을 가져오기
         const postId = $(this).data("post-id");
 
+
+        // alert("postId " + postId)
         // 가져온 post.id를 사용하여 원하는 동작 수행
         toggleCommentForm(postId)
     });
@@ -27,15 +29,18 @@ function toggleCommentForm(postId) {
     const showFormBtn = document.getElementById(`comment_form_btn_${postId}`);
     const commentForm = document.getElementById(`comment_form_${postId}`);
 
-    showFormBtn.addEventListener('click', function () {
+
         const computedStyle = getComputedStyle(commentForm);
 
-        if (computedStyle.display === 'none') {
+        console.log(("computedStyle.display : " + computedStyle.display))
+
+        if (computedStyle.display === 'none' ) {
             commentForm.style.display = 'flex';
+
         } else {
             commentForm.style.display = 'none';
         }
-    });
+
 }
 
     // script.js
