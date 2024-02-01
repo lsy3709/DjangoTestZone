@@ -43,10 +43,15 @@
          {% if page_obj.has_next %}
     <li style="margin:3px;"><a style="text-decoration:none; color: blue;" href="?page={{page_obj.next_page_number}}&searchDB={{searchDB}}&content={{content}}">Next &#10095;</a></li>
     {% endif %}
+
     </ul>
+          <h3 style="text-align: center"> 전체 페이지 : {{paginator.num_pages}} </h3>
      {% endif%}
+
 </div>
+
     </div>
+
 </div>
 
 

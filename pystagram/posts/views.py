@@ -40,7 +40,7 @@ def feeds(request):
     comment_form = CommentForm()
 
     page = request.GET.get('page')
-    paginator = Paginator(posts, 10)
+    paginator = Paginator(posts, 3)
 
     try:
         page_obj = paginator.page(page)
@@ -180,9 +180,7 @@ def post_edit(request, post_id):
 
 
 def post_search(request):
-
     context = {
-
     }
     return render(request, 'posts/post_search.html', context)
 
