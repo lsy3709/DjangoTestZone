@@ -55,17 +55,21 @@
         <div class="funtion-btn">
 <span>
                   {% if user == post.user %}
-                      <form action="{% url 'posts:post_delete' post_id=post.id %}" method="POST"
+                      <form id="deleteFeedForm" action="{% url 'posts:post_delete' post_id=post.id %}" method="POST"
                             onsubmit="return confirm('정말 게시글 삭제 하시나요?');">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">
-                        글 삭제
+                    <button style="border: none; background: #ffffff" type="submit">
+                          <div class="image-container">
+                        <img class="hoverable" id="deletesubmitButton" src="/static/image/delete_icon.png" alt="이미지 삭제">
+                                <div class="tooltip" id="tooltip">삭제</div>
+                              </div>
                     </button>
                 </form>
 
 
                   {% endif %}
               </span>
+
             <span>
                   {% if user == post.user %}
 
@@ -73,25 +77,44 @@
                       <!--                          <a href="{% url 'posts:post_edit' post_id=post.id %}">글 수정</a>-->
                       <!--                    </button>-->
                       <form action="{% url 'posts:post_edit' post_id=post.id %}" method="GET">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">
-                        글 수정
+{#                    {% csrf_token %}#}
+                    <button style="border: none; background: #ffffff" type="submit">
+                          <div class="image-container">
+
+                        <img class="hoverable " id="deletesubmitButton" src="/static/image/edit_icon.png">
+                                <div class="tooltip" id="tooltip">수정</div>
+                              </div>
                     </button>
                 </form>
-                          {% endif %}
-                      <span>
+                  {% endif %}
+                <span>
                       <form action="{% url 'posts:post_download_images' post_id=post.id %}" method="POST"
                             onsubmit="return confirm('이미지를 다운로드 하시나요?');">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">
-                        사진받기
+                   <button style="border: none; background: #ffffff" type="submit">
+                          <div class="image-container">
+                        <img class="hoverable" id="deletesubmitButton" src="/static/image/download_icon.png">
+                               <div class="tooltip" id="tooltip">이미지 받기</div>
+                              </div>
+                    </button>
+                </form>
+
+              </span>
+
+             <span>
+                      <form action="{% url 'posts:post_download_images' post_id=post.id %}" method="GET">
+                   <button style="border: none; background: #ffffff" type="submit">
+                          <div class="image-container">
+                        <img class="hoverable" id="deletesubmitButton" src="/static/image/download_icon.png">
+                               <div class="tooltip" id="tooltip">이미지 받기</div>
+                              </div>
                     </button>
                 </form>
 
               </span>
 
 
-              </span>
+
         </div>
     </div>
 

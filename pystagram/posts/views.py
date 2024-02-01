@@ -44,7 +44,7 @@ def feeds(request):
     comment_form = CommentForm()
 
     page = request.GET.get('page')
-    paginator = Paginator(posts, 3)
+    paginator = Paginator(posts, 10)
 
     try:
         page_obj = paginator.page(page)
@@ -303,10 +303,10 @@ def post_add(request):
             post.save()
 
             for image_file in request.FILES.getlist("images"):
-                image = rescale_image(image_file, 600)
+                # image = rescale_image(image_file, 600)
                 PostImage.objects.create(
                     post=post,
-                    photo=image,
+                    photo=image_file,
                 )
             # 추가
             tag_string = request.POST.get("tags")
