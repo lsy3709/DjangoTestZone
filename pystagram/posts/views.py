@@ -1,6 +1,8 @@
 import os
 import zipfile
+from io import BytesIO
 
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 # 추가
@@ -21,6 +23,8 @@ from django.urls import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from users.models import User
+
+from PIL import Image
 
 
 # Create your views here.
@@ -268,6 +272,27 @@ def post_download_images(request, post_id):
     return response
 
 
+# 이미지 리사이즈 함수
+def rescale_image(image, max_width):
+    img = Image.open(image)
+    # width_percent = (max_width / float(img.size[0]))
+    # new_height = int((float(img.size[1]) * float(width_percent)))
+
+    src_width, src_height = img.size
+    src_ratio = float(src_height) / float(src_width)
+    dst_height = round(src_ratio * max_width)
+
+    img = img.resize((max_width, dst_height), Image.LANCZOS)
+
+    # 이미지를 BytesIO 객체에 저장
+    output_buffer = BytesIO()
+    img.save(output_buffer, format='JPEG')
+
+    # BytesIO에서 InMemoryUploadedFile로 변환
+    image_file = InMemoryUploadedFile(output_buffer, None, image.name, 'image/jpeg', output_buffer.tell(), None)
+
+    return image_file
+
 def post_add(request):
     if request.method == "POST":
         form = PostForm(request.POST)
@@ -278,9 +303,10 @@ def post_add(request):
             post.save()
 
             for image_file in request.FILES.getlist("images"):
+                image = rescale_image(image_file, 700)
                 PostImage.objects.create(
                     post=post,
-                    photo=image_file,
+                    photo=image,
                 )
             # 추가
             tag_string = request.POST.get("tags")

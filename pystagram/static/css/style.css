@@ -299,8 +299,10 @@ article.post .post-images {
 
 article.post .post-images img {
 
-    width: 100%;
-    height: auto;
+    /*width: 100%;*/
+    /*height: auto;*/
+    width: 600px;
+    height: 400px;
 }
 
 article.post .post-content {

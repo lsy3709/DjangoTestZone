@@ -79,10 +79,9 @@ PASSWORD_RESET_TIMEOUT = 600  # 비밀번호 초기화 요청의 유효시간 (�
 # PASSWORD_RESET_TIMEOUT_DAYS = 1  # 비밀번호 초기화 요청의 유효일수 (일)
 PASSWORD_RESET_EMAIL_TEMPLATE_NAME = 'registration/password_reset_email.txt'
 
-
 # crontab 설정. 잠시 보류
 # CRONJOBS = [
-    # ('*/1 * * * *', 'users.tasks.delete_records'),  # 매 5분마다 테이블 레코드 삭제 작업 실행
+# ('*/1 * * * *', 'users.tasks.delete_records'),  # 매 5분마다 테이블 레코드 삭제 작업 실행
 # yourapp.models.YourModel' 부분을 삭제하려는 모델로 변경
 #     ('*/1 * * * *', 'python manage.py sqlsequencereset users.models.VerificationCode'),  # 매일 자정에 모델 시퀀스 리셋
 # ]
@@ -109,6 +108,7 @@ CORS_ALLOW_CREDENTIALS = True  # 자격증명(Credentials) 허용
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',  # 허용하려는 오리진(Origin) 추가
     'http://localhost:8000',  # 다른 오리진(Origin)도 추가할 수 있음
+    'http://10.100.104.13:8000',
 ]
 
 MIDDLEWARE = [
