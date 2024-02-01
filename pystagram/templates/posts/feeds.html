@@ -11,6 +11,7 @@
         {% url 'posts:feeds' as action_redirect_to %}
 <!--    수정-->
         {% include 'posts/post.html' with action_redirect_url=action_redirect_to|concat:'#post-'|concat:post.id %}
+
     {% endfor %}
     <br/>
 <br/>

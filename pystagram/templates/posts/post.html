@@ -102,17 +102,43 @@
               </span>
 
              <span>
-                      <form action="{% url 'posts:post_download_images' post_id=post.id %}" method="GET">
-                   <button style="border: none; background: #ffffff" type="submit">
+
+                   <button class="comment_form_btn" id="comment_form_btn_{{ post.id }}"  data-post-id="{{ post.id }}" style="border: none; background: #ffffff" type="submit">
                           <div class="image-container">
-                        <img class="hoverable" id="deletesubmitButton" src="/static/image/download_icon.png">
-                               <div class="tooltip" id="tooltip">이미지 받기</div>
+                        <img class="hoverable" src="/static/image/comment_icon.png">
+                               <div class="tooltip" id="tooltip">댓글달기</div>
+                              </div>
+                    </button>
+
+
+              </span>
+
+             <span>
+                      <form method="GET">
+                   <button id="comment_form_btn" style="border: none; background: #ffffff" type="submit">
+                          <div class="image-container">
+                        <img class="hoverable" id="deletesubmitButton" src="/static/image/send_icon.png">
+                               <div class="tooltip" id="tooltip">쪽지 보내기</div>
                               </div>
                     </button>
                 </form>
 
               </span>
+             <button id="openModalBtn">쪽지 보내기</button>
 
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModalBtn">&times;</span>
+            <h2>쪽지 보내기</h2>
+            <form id="messageForm">
+                <label for="messageTitle">제목:</label>
+                <input type="text" id="messageTitle" name="messageTitle" required><br>
+                <label for="messageContent">내용:</label>
+                <textarea id="messageContent" name="messageContent" rows="4" required></textarea><br>
+                <button type="submit">보내기</button>
+            </form>
+        </div>
+    </div>
 
 
         </div>
@@ -160,10 +186,10 @@
         </ul>
     </div>
 
-    <small>{{ post.created }}</small>
+    <small>작성일 : {{ post.created }}</small>
     <div class="post-comment-create">
         <!--            추가 및 수정 2 -->
-        <form method="post"
+        <form style="display: none;" id="comment_form_{{ post.id }}" method="post"
               action="{% url 'posts:comment_add' %}?next={{ action_redirect_url }}">
             {% csrf_token %}
             <!--                추가-->
@@ -172,5 +198,6 @@
             <button type="submit">게시</button>
         </form>
     </div>
+
 </article>
 
