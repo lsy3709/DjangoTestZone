@@ -206,7 +206,7 @@
             {% csrf_token %}
             <!--                추가-->
             <input type="hidden" name="post" value="{{ post.id }}">
-            {{ comment_form.content }}
+            {{ sendMessage_form.content }}
             <button type="submit">쪽지 보내기</button>
         </form>
     </div>

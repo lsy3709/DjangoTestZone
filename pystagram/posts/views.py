@@ -42,6 +42,7 @@ def feeds(request):
     posts = Post.objects.all().order_by('-created')
     # 추가
     comment_form = CommentForm()
+    sendMessage_form = SendMessageForm()
 
     page = request.GET.get('page')
     paginator = Paginator(posts, 10)
@@ -71,6 +72,7 @@ def feeds(request):
         "posts": posts,
         # 추가
         "comment_form": comment_form,
+        "sendMessage_form": sendMessage_form,
         "page_obj": page_obj,
         "paginator": paginator,
         # 추가
@@ -99,10 +101,11 @@ def comment_add(reqeust):
 @require_POST
 def message_send(reqeust):
     form = SendMessageForm(data=reqeust.POST)
+    # 해당 게시글 post.id 받아와서, 디비에서 불러온 후에, url_next , 넘기기
     if form.is_valid():
-        # comment = form.save(commit=False)
-        # comment.user = reqeust.user
-        # comment.save()
+        comment = form.save(commit=False)
+        comment.user = reqeust.user
+        comment.save()
 
         # 추가
         if reqeust.GET.get("next"):
