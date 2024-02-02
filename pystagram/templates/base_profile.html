@@ -73,6 +73,10 @@
                     <dd>
                         <a href="{% url 'users:following' user_id=user.id %}">{{ user.following.count }}</a>
                     </dd>
+                    <dt>MessageBox</dt>
+                    <dd>
+                        <a href="{% url 'users:following' user_id=user.id %}">{{ user.following.count }}</a>
+                    </dd>
                 </dl>
             </div>
             <p>소개글 : {{ user.short_description }}</p>
