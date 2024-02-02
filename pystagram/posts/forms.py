@@ -1,6 +1,6 @@
 from django import forms
 # 추가
-from posts.models import Comment, Post, PostImage
+from posts.models import Comment, Post, PostImage, Message
 
 
 class CommentForm(forms.ModelForm):
@@ -20,9 +20,8 @@ class CommentForm(forms.ModelForm):
 
 class SendMessageForm(forms.ModelForm):
     class Meta:
-        model = Comment
+        model = Message
         fields = [
-            'post',
             'content',
         ]
         widgets = {

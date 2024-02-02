@@ -31,7 +31,7 @@ $(document).ready(function () {
 
 
         // alert("postId " + postId)
-        console.log("postId " + postId)
+        // console.log("postId " + postId)
         // 가져온 post.id를 사용하여 원하는 동작 수행
         // sendMessageToggleModalForm(postId)
         toggleSendMessageForm(postId)
@@ -79,7 +79,7 @@ $(document).ready(function () {
 
         const computedStyle = getComputedStyle(commentForm);
 
-        console.log(("computedStyle.display : " + computedStyle.display))
+        // console.log(("computedStyle.display : " + computedStyle.display))
 
         if (computedStyle.display === 'none') {
             commentForm.style.display = 'flex';
@@ -98,7 +98,7 @@ $(document).ready(function () {
 
         const computedStyle = getComputedStyle(commentForm);
 
-        console.log(("computedStyle.display : " + computedStyle.display))
+        // console.log(("computedStyle.display : " + computedStyle.display))
 
         if (computedStyle.display === 'none') {
             commentForm.style.display = 'flex';

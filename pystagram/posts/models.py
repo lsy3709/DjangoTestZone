@@ -61,7 +61,7 @@ class Message(models.Model):
         related_name='sent_messages'
     )
     receiver = models.ForeignKey(
-        "Post",
+        "users.User",
         verbose_name="받는사람",
         on_delete=models.CASCADE,
         related_name='received_messages'
