@@ -99,19 +99,27 @@ def comment_add(reqeust):
 
 # 쪽지 보내기 기능
 @require_POST
-def message_send(reqeust):
+def message_add(reqeust):
     form = SendMessageForm(data=reqeust.POST)
+    post_id = reqeust.POST.get("post")
+    print(f"메세지 보내기 post_id: {post_id}")
+    post = Post.objects.get(id=post_id)
+    print(f"메세지 보내기 보내는 사람 reqeust.user: {reqeust.user}")
+    print(f"메세지 보내기 받는사람 post.user: {post.user}")
+
+
     # 해당 게시글 post.id 받아와서, 디비에서 불러온 후에, url_next , 넘기기
     if form.is_valid():
-        comment = form.save(commit=False)
-        comment.user = reqeust.user
-        comment.save()
+        message = form.save(commit=False)
+        message.sender = reqeust.user
+        message.receiver = post.user
+        message.save()
 
         # 추가
         if reqeust.GET.get("next"):
             url_next = reqeust.GET.get("next")
         else:
-            url_next = reverse("posts:feeds") + f"#post-{comment.post.id}"
+            url_next = reverse("posts:feeds") + f"#post-{post_id}"
 
         return HttpResponseRedirect(url_next)
 

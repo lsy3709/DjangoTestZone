@@ -214,7 +214,7 @@
     <div class="post-comment-create">
         <!--            추가 및 수정 2 -->
         <form style="display: none;" id="send_message_form_{{ post.id }}" method="post"
-              action="{% url 'posts:comment_add' %}?next={{ action_redirect_url }}">
+              action="{% url 'posts:message_add' %}?next={{ action_redirect_url }}">
             {% csrf_token %}
             <!--                추가-->
             <input type="hidden" name="post" value="{{ post.id }}">
