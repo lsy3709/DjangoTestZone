@@ -2,6 +2,7 @@
 
 {% block bottom_data %}
 
+    <h2 style="margin-left: 10px">총 게시글 : {{paginator.count}} 개</h2>
         <div class="post-grid-container">
             {% for post in page_obj %}
                 {% if post.postimage_set.first and post.postimage_set.first.photo %}
@@ -35,6 +36,7 @@
     <li style="margin:3px;"><a style="text-decoration:none; color: blue;" href="?page={{page_obj.next_page_number}}">Next &#10095;</a></li>
     {% endif %}
     </ul>
+          <h3 style="text-align: center"> 전체 페이지 : {{paginator.num_pages}} </h3>
      {% endif%}
 </div>
  <button id="scroll-to-top" class="btn btn-primary" >Top</button>

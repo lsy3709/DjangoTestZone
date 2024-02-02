@@ -209,10 +209,38 @@ def followers(request, user_id):
     user = get_object_or_404(User, id=user_id)
     relationships = user.follower_relationships.all()
     login_user = request.user
+    # 페이징 추가
+    page = request.GET.get('page')
+    paginator = Paginator(relationships, 18)
+
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        page_obj = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        page_obj = paginator.page(page)
+
+    leftIndex = (int(page) - 2)
+    if leftIndex < 1:
+        leftIndex = 1
+
+    rightIndex = (int(page) + 2)
+
+    if rightIndex > paginator.num_pages:
+        rightIndex = paginator.num_pages
+
+    custom_range = range(leftIndex, rightIndex + 1)
+
     context = {
         "user": user,
         "relationships": relationships,
         "login_user": login_user,
+        "page_obj": page_obj,
+        "paginator": paginator,
+        # 추가
+        "custom_range": custom_range
     }
     return render(request, 'users/followers.html', context)
 
@@ -221,10 +249,38 @@ def following(request, user_id):
     user = get_object_or_404(User, id=user_id)
     relationships = user.following_relationships.all()
     login_user = request.user
+    # 페이징 추가
+    page = request.GET.get('page')
+    paginator = Paginator(relationships, 18)
+
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        page_obj = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        page_obj = paginator.page(page)
+
+    leftIndex = (int(page) - 2)
+    if leftIndex < 1:
+        leftIndex = 1
+
+    rightIndex = (int(page) + 2)
+
+    if rightIndex > paginator.num_pages:
+        rightIndex = paginator.num_pages
+
+    custom_range = range(leftIndex, rightIndex + 1)
+
     context = {
         "user": user,
         "relationships": relationships,
         "login_user": login_user,
+        "page_obj": page_obj,
+        "paginator": paginator,
+        # 추가
+        "custom_range": custom_range
     }
     return render(request, 'users/following.html', context)
 

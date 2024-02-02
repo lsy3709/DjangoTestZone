@@ -2,10 +2,10 @@
 {% extends 'base_profile.html' %}
 
 {% block bottom_data %}
-
+<h2 style="margin-left: 10px">총 팔로워 : {{paginator.count}} 명</h2>
     <div class="relationships">
       <h3>Followers</h3>
-      {% for relationship in relationships %}
+      {% for relationship in page_obj %}
         <div class="relationship">
           <a href="{% url 'users:profile' user_id=relationship.from_user.id %}">
             {% if relationship.from_user.profile_image %}
@@ -19,4 +19,34 @@
         </div>
       {% endfor %}
     </div>
+     <div style="margin-bottom: 100px">
+        {% if page_obj.has_other_pages %}
+            <ul style="display: flex;  justify-content: center;   align-items: center;">
+                <!--        이전 버튼-->
+                {% if page_obj.has_previous %}
+                    <li style="margin:3px;"><a style="text-decoration:none; color: blue;"
+                                               href="?page={{ page_obj.previous_page_number }}">&#10094; Prev</a></li>
+                {% endif %}
+
+                {% for page in custom_range %}
+                    {% if page == page_obj.number %}
+                        <li style="margin:3px;"><a
+                                style="text-decoration:underline; color: red; font-size:1.5rem ; font-weight: 700 "
+                                href="?page={{ page }}">{{ page }}</a></li>
+                    {% else %}
+                        <li style="margin:3px;"><a style="text-decoration:none; color: blue;"
+                                                   href="?page={{ page }}">{{ page }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                <!--        이후버튼-->
+                {% if page_obj.has_next %}
+                    <li style="margin:3px;"><a style="text-decoration:none; color: blue;"
+                                               href="?page={{ page_obj.next_page_number }}">Next &#10095;</a></li>
+                {% endif %}
+            </ul>
+             <h3 style="text-align: center"> 전체 페이지 : {{paginator.num_pages}} </h3>
+        {% endif %}
+    </div>
+    <button id="scroll-to-top" class="btn btn-primary">Top</button>
 {% endblock %}
