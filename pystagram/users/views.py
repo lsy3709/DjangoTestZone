@@ -107,9 +107,6 @@ def signup(request):
 def profile(request, user_id):
     user = get_object_or_404(User, id=user_id)
     messages = Message.objects.filter(receiver=user).order_by('-created')
-    # messages2 = get_object_or_404(Message, receiver=user_id)
-    # print(f"messages2: {messages2}")
-    print(f"messages: {messages}")
     login_user = request.user
     posts = Post.objects.filter(user=user).order_by('-created')
     page = request.GET.get('page')
@@ -212,6 +209,7 @@ def delete_user(request, user_id):
 
 def followers(request, user_id):
     user = get_object_or_404(User, id=user_id)
+    messages = Message.objects.filter(receiver=user).order_by('-created')
     relationships = user.follower_relationships.all()
     login_user = request.user
     # 페이징 추가
@@ -241,6 +239,7 @@ def followers(request, user_id):
     context = {
         "user": user,
         "relationships": relationships,
+        "messages" : messages,
         "login_user": login_user,
         "page_obj": page_obj,
         "paginator": paginator,
@@ -252,6 +251,7 @@ def followers(request, user_id):
 
 def following(request, user_id):
     user = get_object_or_404(User, id=user_id)
+    messages = Message.objects.filter(receiver=user).order_by('-created')
     relationships = user.following_relationships.all()
     login_user = request.user
     # 페이징 추가
@@ -281,6 +281,7 @@ def following(request, user_id):
     context = {
         "user": user,
         "relationships": relationships,
+        "messages": messages,
         "login_user": login_user,
         "page_obj": page_obj,
         "paginator": paginator,
