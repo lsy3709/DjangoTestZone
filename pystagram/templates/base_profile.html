@@ -75,7 +75,7 @@
                     </dd>
                     <dt>MessageBox</dt>
                     <dd>
-                        <a href="{% url 'users:following' user_id=user.id %}">{{ user.following.count }}</a>
+                        <a href="{% url 'users:messageBox' user_id=user.id %}">{{ messages.count }}</a>
                     </dd>
                 </dl>
             </div>

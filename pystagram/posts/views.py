@@ -112,10 +112,11 @@ def comment_add(reqeust):
 def message_add(reqeust):
     form = SendMessageForm(data=reqeust.POST)
     post_id = reqeust.POST.get("post")
-    print(f"메세지 보내기 post_id: {post_id}")
+    # print(f"메세지 보내기 post_id: {post_id}")
     post = Post.objects.get(id=post_id)
-    print(f"메세지 보내기 보내는 사람 reqeust.user: {reqeust.user}")
-    print(f"메세지 보내기 받는사람 post.user: {post.user}")
+    comment_content = reqeust.POST.get("message_content_" + post_id)
+    # print(f"메세지 보내기 보내는 사람 reqeust.user: {reqeust.user}")
+    # print(f"메세지 보내기 받는사람 post.user: {post.user}")
 
 
     # 해당 게시글 post.id 받아와서, 디비에서 불러온 후에, url_next , 넘기기
@@ -123,6 +124,7 @@ def message_add(reqeust):
         message = form.save(commit=False)
         message.sender = reqeust.user
         message.receiver = post.user
+        message.content = comment_content
         message.save()
 
         # 추가

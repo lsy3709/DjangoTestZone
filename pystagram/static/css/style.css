@@ -551,6 +551,8 @@ article.post .post-comment-create button:hover {
     position: relative;
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;
+    height: 100px;
+    padding-top: 10px;
 }
 
 #profile .relationships .relationship > a {

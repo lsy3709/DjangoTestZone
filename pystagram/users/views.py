@@ -14,7 +14,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 # 추가
 from django.shortcuts import render, redirect, get_object_or_404
 
-from posts.models import Post
+from posts.models import Post, Message
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -106,6 +106,10 @@ def signup(request):
 
 def profile(request, user_id):
     user = get_object_or_404(User, id=user_id)
+    messages = Message.objects.filter(receiver=user).order_by('-created')
+    # messages2 = get_object_or_404(Message, receiver=user_id)
+    # print(f"messages2: {messages2}")
+    print(f"messages: {messages}")
     login_user = request.user
     posts = Post.objects.filter(user=user).order_by('-created')
     page = request.GET.get('page')
@@ -133,6 +137,7 @@ def profile(request, user_id):
 
     context = {
         "user": user,
+        "messages" : messages,
         "login_user": login_user,
         "page_obj": page_obj,
         "paginator": paginator,
@@ -283,6 +288,45 @@ def following(request, user_id):
         "custom_range": custom_range
     }
     return render(request, 'users/following.html', context)
+
+def messageBox(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    messages = Message.objects.filter(receiver=user).order_by('-created')
+    login_user = request.user
+    # 페이징 추가
+    page = request.GET.get('page')
+    paginator = Paginator(messages, 2)
+
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        page_obj = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        page_obj = paginator.page(page)
+
+    leftIndex = (int(page) - 2)
+    if leftIndex < 1:
+        leftIndex = 1
+
+    rightIndex = (int(page) + 2)
+
+    if rightIndex > paginator.num_pages:
+        rightIndex = paginator.num_pages
+
+    custom_range = range(leftIndex, rightIndex + 1)
+
+    context = {
+        "user": user,
+        "messages": messages,
+        "login_user": login_user,
+        "page_obj": page_obj,
+        "paginator": paginator,
+        # 추가
+        "custom_range": custom_range
+    }
+    return render(request, 'users/messageInbox.html', context)
 
 
 def follow(request, user_id):

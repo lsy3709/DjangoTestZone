@@ -16,6 +16,14 @@ class User(AbstractUser):
         related_name="like_users",
         blank=True,
     )
+
+    # # 메세지함
+    # message_box = models.ManyToManyField(
+    #     "posts.Message",
+    #     verbose_name="전달받은 메세지 목록",
+    #     related_name="message_inbox",
+    #     blank=True,
+    # )
     # 팔로잉
     following = models.ManyToManyField(
         "self",
