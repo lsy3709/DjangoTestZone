@@ -50,8 +50,14 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
     )
     post = models.ForeignKey(Post, verbose_name="포스트", on_delete=models.CASCADE)
-    content = models.TextField("내용")
+    content = models.TextField("내용", max_length=200)
     created = models.DateTimeField("생성일시", auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        # content 필드의 길이가 2000자를 초과할 경우 ValidationError을 발생시킵니다.
+        if len(self.content) > 200:
+            raise ValidationError("댓글은 200자를 초과할 수 없습니다.")
+        super().save(*args, **kwargs)
 
 class Message(models.Model):
     sender = models.ForeignKey(
@@ -66,8 +72,17 @@ class Message(models.Model):
         on_delete=models.CASCADE,
         related_name='received_messages'
     )
-    content = models.TextField("내용")
+    content = models.TextField("내용", max_length=300)
     created = models.DateTimeField("생성일시", auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.sender}가 {self.receiver} 에게 보낸 메세지)"
+
+    def save(self, *args, **kwargs):
+        # content 필드의 길이가 2000자를 초과할 경우 ValidationError을 발생시킵니다.
+        if len(self.content) > 300:
+            raise ValidationError("메세지는 300자를 초과할 수 없습니다.")
+        super().save(*args, **kwargs)
 
 class HashTag(models.Model):
     name = models.CharField("태그명", max_length=50)

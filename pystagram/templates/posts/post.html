@@ -94,7 +94,7 @@
                    <button style="border: none; background: #ffffff" type="submit">
                           <div class="image-container">
                         <img class="hoverable" id="deletesubmitButton" src="/static/image/download_icon.png">
-                               <div class="tooltip" id="tooltip">이미지 받기</div>
+                               <div class="tooltip" id="tooltip">ImageDownload</div>
                               </div>
                     </button>
                 </form>
@@ -107,7 +107,7 @@
                            style="border: none; background: #ffffff" type="submit">
                           <div class="image-container">
                         <img class="hoverable" src="/static/image/comment_icon.png">
-                               <div class="tooltip" id="tooltip">댓글달기</div>
+                               <div class="tooltip" id="tooltip">Comment</div>
                               </div>
                     </button>
 
@@ -120,7 +120,7 @@
                            data-post-id="{{ post.id }}" style="border: none; background: #ffffff" type="submit">
                           <div class="image-container">
                         <img class="hoverable" id="deletesubmitButton" src="/static/image/send_icon.png">
-                               <div class="tooltip" id="tooltip">쪽지 보내기</div>
+                               <div class="tooltip" id="tooltip">Send Message</div>
                               </div>
                     </button>
 
@@ -207,8 +207,14 @@
             <!--                추가-->
             <input type="hidden" name="post" value="{{ post.id }}">
             {{ comment_form.content }}
-            <button type="submit">게시</button>
+            <textarea name="comment_content_{{ post.id }}" cols="40" rows="10" placeholder="댓글 달기..." maxlength="200" required id="comment_content_{{ post.id }}" data-post-id="{{ post.id }}">
+</textarea>
+            <p id="charCount_{{ post.id }}" data-post-id="{{ post.id }}">남은 글자수: 200</p>
+            <button id="comment_send_btn_{{ post.id }}" data-post-id="{{ post.id }}" type="submit">게시</button>
         </form>
+
+
+
     </div>
 
     <div class="post-comment-create">
@@ -218,8 +224,10 @@
             {% csrf_token %}
             <!--                추가-->
             <input type="hidden" name="post" value="{{ post.id }}">
-            {{ sendMessage_form.content }}
-            <button type="submit">쪽지 보내기</button>
+            <textarea name="message_content" cols="40" rows="10" placeholder="쪽지 내용..." maxlength="300" required id="message_content_{{ post.id }}" data-post-id="{{ post.id }}">
+</textarea>
+            <p id="messageCharCount_{{ post.id }}" data-post-id="{{ post.id }}">남은 글자수: 300</p>
+            <button id="message_send_btn_{{ post.id }}" data-post-id="{{ post.id }}" type="submit">쪽지 보내기</button>
         </form>
     </div>
 

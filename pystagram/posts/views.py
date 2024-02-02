@@ -72,10 +72,10 @@ def feeds(request):
         "posts": posts,
         # 추가
         "comment_form": comment_form,
-        "sendMessage_form": sendMessage_form,
         "page_obj": page_obj,
         "paginator": paginator,
         # 추가
+        "SendMessageForm" : SendMessageForm,
         "custom_range": custom_range
     }
     return render(request, 'posts/feeds.html', context)
@@ -84,9 +84,15 @@ def feeds(request):
 @require_POST
 def comment_add(reqeust):
     form = CommentForm(data=reqeust.POST)
+    post_id = reqeust.POST.get("post")
+    comment_content = reqeust.POST.get("comment_content_"+post_id)
+
+    comment_post_id = None
     if form.is_valid():
         comment = form.save(commit=False)
         comment.user = reqeust.user
+        comment_post_id = comment.post.id
+        comment.content = comment_content
         comment.save()
 
         # 추가
@@ -95,6 +101,10 @@ def comment_add(reqeust):
         else:
             url_next = reverse("posts:feeds") + f"#post-{comment.post.id}"
 
+        return HttpResponseRedirect(url_next)
+    else:
+
+        url_next = reverse("posts:feeds") + f"#post-{comment_post_id}"
         return HttpResponseRedirect(url_next)
 
 # 쪽지 보내기 기능

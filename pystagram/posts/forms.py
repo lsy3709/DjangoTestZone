@@ -8,29 +8,16 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = [
             'post',
-            'content',
         ]
-        widgets = {
-            'content': forms.Textarea(
-                attrs={
-                    'placeholder': '댓글 달기...',
-                }
-            )
-        }
+
 
 class SendMessageForm(forms.ModelForm):
     class Meta:
         model = Message
         fields = [
-            'content',
+            'sender'
         ]
-        widgets = {
-            'content': forms.Textarea(
-                attrs={
-                    'placeholder': '쪽지 내용...',
-                }
-            )
-        }
+
 
 
 
