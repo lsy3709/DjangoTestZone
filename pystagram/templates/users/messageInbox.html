@@ -2,68 +2,108 @@
 {% extends 'base_profile.html' %}
 
 {% block bottom_data %}
- <h2 style="margin-left: 10px">총 메세지  : {{paginator.count}} 개</h2>
-    <div class="relationships">
-        <h3>MessageBox</h3>
-        {% for message in page_obj %}
-            <div class="relationship">
-                <a >
-                    {% if message.sender.profile_image %}
-                        <img src="{{ message.sender.profile_image.url }}">
-                    {% endif %}
-                    <div class="message-info" style="padding-top: 10px">
-                        <sapn >{{ message.sender.username }}</sapn>
-                        <br>
-                        <sapn>{{ message.content }}</sapn>
-                        <br>
-                        <span>{{ message.created|date:"y.m.d"}}</span>
-                        <!--              추가 부분-->
-                        <span>
-{#                  <form action="{% url 'users:follow' user_id=message.sender.id %}?next={{ action_redirect_url }} "#}
-{#                        method="POST">#}
-{#                    {% csrf_token %}#}
-{#                    <button type="submit" class="btn btn-primary">#}
-{#                        {% if message.sender in user.following.all %}#}
-{#                            Unfollow#}
-{#                        {% else %}#}
-{#                            Follow#}
-{#                        {% endif %}#}
-{#                    </button>#}
-{#                </form>#}
-              </span>
-                    </div>
-                </a>
+<h2 style="margin-left: 10px">총 메세지 : {{paginator.count}} 개</h2>
+<div class="relationships">
+    <h3>MessageBox</h3>
+    <div class="funtion-btn">
+        <span><button onclick="selectAll()" class="btn btn-primary">전체선택</button></span>
+        <span><button onclick="deselectAll()" class="btn btn-primary">모두해제</button></span>
+        <span><button onclick="fetchSelected()" class="btn btn-primary">삭제</button></span>
+    </div>
+    {% for message in page_obj %}
+    <div class="relationship">
+        <a>
+            {% if message.sender.profile_image %}
+            <input type="checkbox" class="select-one" data-id="item_{{message.id}}">
+            <img src="{{ message.sender.profile_image.url }}">
+            {% endif %}
+            <div class="message-info" style="padding-top: 10px">
+                <sapn>{{ message.sender.username }}</sapn>
+                <br>
+                <sapn>{{ message.content }}</sapn>
+                <br>
+                <span>{{ message.created|date:"y.m.d"}}</span>
+                <!--              추가 부분-->
+
             </div>
-        {% endfor %}
+        </a>
     </div>
-    <div style="margin-bottom: 100px">
-        {% if page_obj.has_other_pages %}
-            <ul style="display: flex;  justify-content: center;   align-items: center;">
-                <!--        이전 버튼-->
-                {% if page_obj.has_previous %}
-                    <li style="margin:3px;"><a style="text-decoration:none; color: blue;"
-                                               href="?page={{ page_obj.previous_page_number }}">&#10094; Prev</a></li>
-                {% endif %}
+    <script>
+        function selectOne(dataId) {
+            var checkbox = document.querySelector(`[data-id="${dataId}"]`);
+            if (checkbox) {
+                checkbox.checked = true;
+            }
+        }
 
-                {% for page in custom_range %}
-                    {% if page == page_obj.number %}
-                        <li style="margin:3px;"><a
-                                style="text-decoration:underline; color: red; font-size:1.5rem ; font-weight: 700 "
-                                href="?page={{ page }}">{{ page }}</a></li>
-                    {% else %}
-                        <li style="margin:3px;"><a style="text-decoration:none; color: blue;"
-                                                   href="?page={{ page }}">{{ page }}</a></li>
-                    {% endif %}
-                {% endfor %}
+        // Function to deselect one item by its data-id
+        function deselectOne(dataId) {
+            var checkbox = document.querySelector(`[data-id="${dataId}"]`);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+        }
 
-                <!--        이후버튼-->
-                {% if page_obj.has_next %}
-                    <li style="margin:3px;"><a style="text-decoration:none; color: blue;"
-                                               href="?page={{ page_obj.next_page_number }}">Next &#10095;</a></li>
-                {% endif %}
-            </ul>
-             <h3 style="text-align: center"> 전체 페이지 : {{paginator.num_pages}} </h3>
+        // Function to select all items with the class "select-one"
+        function selectAll() {
+            var checkboxes = document.querySelectorAll('.select-one');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = true;
+            });
+        }
+
+        // Function to deselect all items with the class "select-one"
+        function deselectAll() {
+            var checkboxes = document.querySelectorAll('.select-one');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = false;
+            });
+        }
+
+        // Function to fetch selected items
+        function fetchSelected() {
+            var selectedItems = [];
+            var checkboxes = document.querySelectorAll('.select-one');
+            checkboxes.forEach(function (checkbox) {
+                if (checkbox.checked) {
+                    selectedItems.push(checkbox.getAttribute('data-id'));
+                }
+            });
+
+            // Display selected items in the console
+            console.log("Selected items: " + selectedItems.join(', '));
+        }
+    </script>
+    {% endfor %}
+</div>
+<div style="margin-bottom: 100px">
+    {% if page_obj.has_other_pages %}
+    <ul style="display: flex;  justify-content: center;   align-items: center;">
+        <!--        이전 버튼-->
+        {% if page_obj.has_previous %}
+        <li style="margin:3px;"><a style="text-decoration:none; color: blue;"
+                                   href="?page={{ page_obj.previous_page_number }}">&#10094; Prev</a></li>
         {% endif %}
-    </div>
-    <button id="scroll-to-top" class="btn btn-primary">Top</button>
+
+        {% for page in custom_range %}
+        {% if page == page_obj.number %}
+        <li style="margin:3px;"><a
+                style="text-decoration:underline; color: red; font-size:1.5rem ; font-weight: 700 "
+                href="?page={{ page }}">{{ page }}</a></li>
+        {% else %}
+        <li style="margin:3px;"><a style="text-decoration:none; color: blue;"
+                                   href="?page={{ page }}">{{ page }}</a></li>
+        {% endif %}
+        {% endfor %}
+
+        <!--        이후버튼-->
+        {% if page_obj.has_next %}
+        <li style="margin:3px;"><a style="text-decoration:none; color: blue;"
+                                   href="?page={{ page_obj.next_page_number }}">Next &#10095;</a></li>
+        {% endif %}
+    </ul>
+    <h3 style="text-align: center"> 전체 페이지 : {{paginator.num_pages}} </h3>
+    {% endif %}
+</div>
+<button id="scroll-to-top" class="btn btn-primary">Top</button>
 {% endblock %}

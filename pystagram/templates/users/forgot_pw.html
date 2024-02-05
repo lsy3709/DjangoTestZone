@@ -169,7 +169,7 @@
                 var csrfToken = getCSRFToken();
 
 // Fetch API를 사용하여 POST 요청 보내기
-                fetch('http://10.100.104.13:8000/users/send_email_with_code_rest/', {
+                fetch('http://localhost:8000/users/send_email_with_code_rest/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',  // 폼 데이터 형식으로 전송
@@ -243,7 +243,7 @@
                 var csrfToken = getCSRFToken();
 
 // Fetch API를 사용하여 POST 요청 보내기
-                fetch('http://10.100.104.13:8000/users/verify_code_rest/', {
+                fetch('http://localhost:8000/users/verify_code_rest/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',  // 폼 데이터 형식으로 전송
