@@ -24,6 +24,7 @@ from users.models import User
 from django.http import JsonResponse
 
 from users.models import VerificationCode
+import json
 
 
 # Create your views here.
@@ -296,7 +297,7 @@ def messageBox(request, user_id):
     login_user = request.user
     # 페이징 추가
     page = request.GET.get('page')
-    paginator = Paginator(messages, 2)
+    paginator = Paginator(messages, 5)
 
     try:
         page_obj = paginator.page(page)
@@ -465,6 +466,29 @@ class SendEmailWithCode(APIView):
 
         # 성공 시, JSON 응답 반환
         return Response({'message': '이메일 전송이 완료되었습니다.!!'}, status=status.HTTP_200_OK)
+
+# 메세지 단수 또는 복수개 삭제 하는 기능, Rest 용
+class DeleteMessage(APIView):
+        def post(self, request, format=None):
+           # 리스트로 넘어온 메세지 아이디를 , 리스트로 담기.
+           # 반복문으로 해당 메세지 삭제.
+           # 다시 메세지 박스로 복귀
+
+           if request.method == "POST":
+
+               # print("도착은 했니?")
+               # JSON 데이터를 받음
+               received_data = request.data
+               # print("받은 데이터:", received_data)
+
+               for data in received_data:
+                   # 특정 사용자에게 수신된 메시지 필터링
+                   message = Message.objects.get(id=data)
+
+                   # 메시지 삭제
+                   message.delete()
+
+               return Response({"message": "데이터를 삭제했습니다."})
 
     # rest 용 6자리 코드 인증
 class VerifyCode(APIView):

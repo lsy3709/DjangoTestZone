@@ -3,7 +3,7 @@ from django.urls import path
 
 from users.views import login_view, logout_view, signup, profile, followers, following, follow, profile_edit, user_edit, \
     update_password, delete_user, reset_password, send_email, forgot_id, verify_code, send_email_with_code, \
-    SendEmailWithCode, VerifyCode, VerifyCode_noDelete, messageBox
+    SendEmailWithCode, VerifyCode, VerifyCode_noDelete, messageBox, DeleteMessage
 
 # 추가
 app_name = 'users'
@@ -14,6 +14,7 @@ urlpatterns = [
     path('forgot_id/', forgot_id, name='forgot_id'),
     path('send_email_with_code/', send_email_with_code, name='send_email_with_code'),
     path('send_email_with_code_rest/', SendEmailWithCode.as_view(), name='send_email_with_code'),
+    path('delete_message_rest/', DeleteMessage.as_view(), name='delete_message_rest'),
 
     path('verify_code_rest/', VerifyCode.as_view(), name='verify_code_rest'),
     path('verify_code_rest_noDelete/', VerifyCode_noDelete.as_view(), name='verify_code_rest_noDelete'),
