@@ -11,6 +11,7 @@
                 <span><button onclick="selectAll()" class="btn btn-primary">전체선택</button></span>
                 <span><button onclick="deselectAll()" class="btn btn-primary">모두해제</button></span>
                 <span><button onclick="fetchSelected()" class="btn btn-primary">삭제</button></span>
+
             </div>
             {% for message in page_obj %}
                 <div class="relationship">
@@ -109,7 +110,7 @@
                             }
 
                             // 결과 출력
-                            console.log("문자열을 숫자로 변환한 배열:", numberArray);
+                            <!-- console.log("문자열을 숫자로 변환한 배열:", numberArray); -->
 
                             // 배열을 JSON 문자열로 변환
                             var jsonData = JSON.stringify(selectedItems);
@@ -136,20 +137,20 @@
                                 .then(data => {
                                     // 서버 응답 데이터(data)를 처리
                                     location.reload()
-                                    console.log(data);
+                                  // console.log(data);
 
                                 })
                                 .catch(error => {
                                     // 오류 처리
-                                    console.error('There was a problem with the fetch operation:', error);
+                                    // console.error('There was a problem with the fetch operation:', error);
                                     alert("전송 실패")
                                 });
 
                             // Display selected items in the console
-                            console.log("Selected items: " + selectedItems.join(', '));
+                            // console.log("Selected items: " + selectedItems.join(', '));
                         } else {
                             // 사용자가 취소를 눌렀을 경우
-                            console.log("사용자가 삭제를 취소했습니다.");
+                            // console.log("사용자가 삭제를 취소했습니다.");
                         }
 
 
