@@ -2,8 +2,10 @@
 {% extends 'base_profile.html' %}
 
 {% block bottom_data %}
+{% if user == login_user %}
 <h2 style="margin-left: 10px">총 메세지 : {{paginator.count}} 개</h2>
 <div class="relationships">
+
     <h3>MessageBox</h3>
     <div class="funtion-btn">
         <span><button onclick="selectAll()" class="btn btn-primary">전체선택</button></span>
@@ -14,7 +16,7 @@
     <div class="relationship">
         <a>
             {% if message.sender.profile_image %}
-            <input type="checkbox" class="select-one" data-id="item_{{message.id}}">
+            <input type="checkbox" class="select-one" id="message_checkbox_btn_{{ message.id }}" data-id="item_{{message.id}}">
             <img src="{{ message.sender.profile_image.url }}">
             {% endif %}
             <div class="message-info" style="padding-top: 10px">
@@ -105,5 +107,8 @@
     <h3 style="text-align: center"> 전체 페이지 : {{paginator.num_pages}} </h3>
     {% endif %}
 </div>
+
+    {% endif %}
+<!--  메세지 박스 본인 꺼만 보이게 설정.  -->
 <button id="scroll-to-top" class="btn btn-primary">Top</button>
 {% endblock %}
