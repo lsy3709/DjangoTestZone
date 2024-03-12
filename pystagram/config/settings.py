@@ -116,7 +116,7 @@ CORS_ALLOWED_ORIGINS = [
 # test
 # test2
 # 접근 목록자 , 임시로 전체 허용 했고,
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['www.goldmagnetsoft.com']
 
 
 
