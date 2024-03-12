@@ -49,7 +49,7 @@ LOGIN_URL = '/users/login/'  # 변경된 URL
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.goldmagnetsoft.com']
 
 # Application definition
 
@@ -116,7 +116,7 @@ CORS_ALLOWED_ORIGINS = [
 # test
 # test2
 # 접근 목록자 , 임시로 전체 허용 했고,
-ALLOWED_HOSTS = ['www.goldmagnetsoft.com']
+ALLOWED_HOSTS = ['*']
 
 
 
