@@ -109,12 +109,14 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',  # 허용하려는 오리진(Origin) 추가
     'http://10.100.104.13:8000',  # 다른 오리진(Origin)도 추가할 수 있음
     'http://10.100.104.13:8000',
+    'www.goldmagnetsoft.com:80'
+
 ]
 
 # settings.py
 
 # 접근 목록자 , 임시로 전체 허용 했고,
-ALLOWED_HOSTS = ['52.78.54.206','www.goldmagnetsoft.com:80:']
+ALLOWED_HOSTS = ['52.78.54.206','www.goldmagnetsoft.com:80']
 
 
 
