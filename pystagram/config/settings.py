@@ -49,7 +49,7 @@ LOGIN_URL = '/users/login/'  # 변경된 URL
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.goldmagnetsoft.com']
+ALLOWED_HOSTS = ['www.localhost']
 
 # Application definition
 
@@ -109,7 +109,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',  # 허용하려는 오리진(Origin) 추가
     'http://10.100.104.13:8000',  # 다른 오리진(Origin)도 추가할 수 있음
     'http://10.100.104.13:8000',
-    'http://www.goldmagnetsoft.com:80'
+    'http://www.localhost:80'
 
 ]
 
