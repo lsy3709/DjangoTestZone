@@ -23,6 +23,7 @@ from django.urls import path, include, reverse_lazy
 from config.views import index
 from django.contrib.auth import views as auth_views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     # 추가
@@ -42,6 +43,8 @@ urlpatterns = [
          name='password_reset_confirm'),
     path('password_reset_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]
+
+handler404 = 'users.views.page_not_found'
 
 urlpatterns += static(
     prefix=settings.MEDIA_URL,

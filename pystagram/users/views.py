@@ -520,5 +520,8 @@ class VerifyCode_noDelete(APIView):
         except VerificationCode.DoesNotExist:
             return Response({'error': '코드가 일치하지 않거나 DB에 없습니다..'}, status=status.HTTP_400_BAD_REQUEST)
 
+# 404 페이지
+def page_not_found(request, exception):
+    return render(request, 'users/404.html', {})
 
 
