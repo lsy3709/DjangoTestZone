@@ -265,6 +265,10 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
+        'pystagram': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+        },
 
     }
 }

@@ -25,11 +25,12 @@ from django.http import JsonResponse
 
 from users.models import VerificationCode
 import json
-
+import logging
+logger = logging.getLogger('pystagram')
 
 # Create your views here.
 def login_view(request):
-    3 / 0  # 강제로 오류발생
+    logger.info("info 레벨 출력 확인")
     if request.user.is_authenticated:
         # 수정
         return redirect("posts:feeds")
