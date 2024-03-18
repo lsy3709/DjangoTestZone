@@ -526,6 +526,6 @@ def page_not_found(request, exception):
     return render(request, 'users/404.html', {})
 
 # 500 페이지
-def server_error_page(request, exception):
+def server_error_page(request):
     return render(request, 'users/500.html', {})
 
