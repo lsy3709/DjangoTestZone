@@ -29,6 +29,7 @@ import json
 
 # Create your views here.
 def login_view(request):
+    3 / 0  # 강제로 오류발생
     if request.user.is_authenticated:
         # 수정
         return redirect("posts:feeds")
