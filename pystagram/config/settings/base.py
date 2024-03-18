@@ -15,7 +15,8 @@ import os, json
 from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 secret_file = os.path.join(BASE_DIR, 'secrets.json')
 
 # 키분리 추가 코드
@@ -36,7 +37,7 @@ SECRET_KEY = get_secret("SECRET_KEY")
 AUTH_USER_MODEL = 'users.User'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = BASE_DIR / 'templates'
 
 # Quick-start development settings - unsuitable for production
@@ -49,7 +50,7 @@ LOGIN_URL = '/users/login/'  # 변경된 URL
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['52.78.54.206','www.goldmagnetsoft.com','goldmagnetsoft.com']
+# ALLOWED_HOSTS = ['52.78.54.206','www.goldmagnetsoft.com','goldmagnetsoft.com']
 
 # Application definition
 
@@ -114,10 +115,10 @@ CORS_ALLOWED_ORIGINS = [
 
 ]
 
-# settings.py
+# base.py
 
 # 접근 목록자 , 임시로 전체 허용 했고,
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
 
 
 
