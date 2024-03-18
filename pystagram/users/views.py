@@ -30,7 +30,7 @@ logger = logging.getLogger('pystagram')
 
 # Create your views here.
 def login_view(request):
-    logger.info("info 레벨 출력 확인")
+    # logger.info("info 레벨 출력 확인")
     if request.user.is_authenticated:
         # 수정
         return redirect("posts:feeds")
