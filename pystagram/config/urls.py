@@ -45,6 +45,7 @@ urlpatterns = [
 ]
 
 handler404 = 'users.views.page_not_found'
+handler500 = 'users.views.internal_server_error'
 
 urlpatterns += static(
     prefix=settings.MEDIA_URL,

@@ -524,4 +524,8 @@ class VerifyCode_noDelete(APIView):
 def page_not_found(request, exception):
     return render(request, 'users/404.html', {})
 
+# 500 페이지
+def internal_server_error(request, exception):
+    return render(request, 'users/500.html', {})
+
 
