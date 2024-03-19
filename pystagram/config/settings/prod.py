@@ -21,7 +21,7 @@ AWS_S3_ENDPOINT_URL = 'https://bucket-4whmj9.s3.ap-northeast-2.amazonaws.com/sta
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
-AWS_LOCATION = 'static'
+AWS_LOCATION = 'static2'
 # 이 설정으로 반응은 보임
 
 if AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME:
