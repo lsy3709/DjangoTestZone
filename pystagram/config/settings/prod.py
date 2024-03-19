@@ -1,4 +1,5 @@
 import environ
+import os
 
 from .base import *
 
@@ -30,10 +31,10 @@ DATABASES = {
     }
 }
 # get_secret("SECRET_KEY")
-AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_ACCESS_KEY_ID = env('AWS_S3_ACCESS_KEY_ID')
-AWS_S3_SECRET_ACCESS_KEY = env('AWS_S3_SECRET_ACCESS_KEY')
-AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_ACCESS_KEY_ID = os.environ.get('AWS_S3_ACCESS_KEY_ID')
+AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY')
+AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
 
 if AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME:
     # 장고 4.2부터 스토리지 클래스 지정방법이 변경되었습니다.
