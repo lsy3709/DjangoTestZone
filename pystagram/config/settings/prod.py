@@ -7,6 +7,26 @@ import django
 env = environ.Env()
 environ.Env.read_env(BASE_DIR / '.env')
 
+
+
+ALLOWED_HOSTS = ['52.78.54.206','www.goldmagnetsoft.com','goldmagnetsoft.com']
+STATIC_ROOT = BASE_DIR / 'static/'
+STATICFILES_DIRS = []
+DEBUG = False
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': '5432',
+    }
+}
+
 AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_ACCESS_KEY_ID = env('AWS_S3_ACCESS_KEY_ID')
 AWS_S3_SECRET_ACCESS_KEY = env('AWS_S3_SECRET_ACCESS_KEY')
@@ -26,21 +46,3 @@ if AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME
                 "BACKEND": "core.storages.aws.AwsStaticStorage",
             },
         }
-
-ALLOWED_HOSTS = ['52.78.54.206','www.goldmagnetsoft.com','goldmagnetsoft.com']
-STATIC_ROOT = BASE_DIR / 'static/'
-STATICFILES_DIRS = []
-DEBUG = False
-
-
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': '5432',
-    }
-}
