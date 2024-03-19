@@ -279,7 +279,7 @@ article.post header.post-header a {
 }
 
 article.post header.post-header img {
-    height: 32px;
+    height: 50px;
     border-radius: 50%;
     border: 1px solid #eee;
     box-sizing: border-box;
@@ -705,6 +705,9 @@ body > nav > a {
 .image-container {
     position: relative;
     display: inline-block;
+}
+.image-container img {
+    width: 50px;
 }
 
 .tooltip {
