@@ -4,6 +4,12 @@ from .base import *
 
 import django
 
+env = environ.Env()
+environ.Env.read_env(BASE_DIR / '.env')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_ACCESS_KEY_ID = env('AWS_S3_ACCESS_KEY_ID')
+AWS_S3_SECRET_ACCESS_KEY = env('AWS_S3_SECRET_ACCESS_KEY')
+
 if AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME:
     # 장고 4.2부터 스토리지 클래스 지정방법이 변경되었습니다.
     if django.VERSION < (4, 2):
@@ -24,8 +30,7 @@ STATIC_ROOT = BASE_DIR / 'static/'
 STATICFILES_DIRS = []
 DEBUG = False
 
-env = environ.Env()
-environ.Env.read_env(BASE_DIR / '.env')
+
 
 DATABASES = {
     'default': {
