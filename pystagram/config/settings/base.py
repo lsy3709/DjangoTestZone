@@ -99,7 +99,6 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'rest_framework',
     'corsheaders',
-    'storages'
     # corsheaders 앱 추가
     # 'django_crontab', # crontab 설정
     # 'django_extensions',# crontab 설정2
