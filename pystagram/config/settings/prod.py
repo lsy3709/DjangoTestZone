@@ -16,11 +16,11 @@ AWS_S3_ACCESS_KEY_ID = os.environ.get('AWS_S3_ACCESS_KEY_ID')
 AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY')
 AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
 
-AWS_S3_ENDPOINT_URL = 'https://your_lightsail_endpoint'
+AWS_S3_ENDPOINT_URL = 'https://bucket-4whmj9.s3.ap-northeast-2.amazonaws.com'
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
-AWS_LOCATION = 'the_path_within_your_bucket'
+AWS_LOCATION = 'media'
 
 if AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME:
     # 장고 4.2부터 스토리지 클래스 지정방법이 변경되었습니다.
