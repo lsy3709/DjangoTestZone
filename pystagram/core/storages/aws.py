@@ -3,20 +3,6 @@
 from storages.backends.s3boto3 import S3Boto3Storage
 from storages.backends.s3boto3 import S3StaticStorage
 
-import botocore
-import boto3
-
-boto3_session = boto3.Session(profile_name='dev')
-b3_client = boto3_session.client(service_name="s3")
-
-b = 'somebucketnamewhichdoesntexist'
-
-try:
-    response = b3_client.get_bucket_location(
-        Bucket=b
-    )
-except botocore.errorfactory.NoSuchBucket as e:
-    print('bucket %s doesnt exist')
 
 # 장고 MEDIA 파일을 다루는 각종 설정을 커스텀할 수 있습니다.
 #  - "media" 폴더에 저장되도록 location 설정을 해줍니다.
