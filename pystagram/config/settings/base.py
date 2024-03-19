@@ -199,7 +199,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 # 미디어 파일을 위한 스토리지 설정
-DEFAULT_FILE_STORAGE = 'config.asset_storage.MediaStorage'
+# DEFAULT_FILE_STORAGE = 'config.asset_storage.MediaStorage'
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
