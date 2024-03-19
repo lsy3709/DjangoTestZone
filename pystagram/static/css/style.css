@@ -250,7 +250,7 @@ article.post {
 
 @media (min-width: 700px) {
     article.post {
-        width: 600px;
+        width: 768px;
     }
 }
 
