@@ -4,7 +4,10 @@ from .base import *
 
 import django
 
-env = environ.Env()
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 environ.Env.read_env(BASE_DIR / '.env')
 
 
@@ -12,7 +15,7 @@ environ.Env.read_env(BASE_DIR / '.env')
 ALLOWED_HOSTS = ['52.78.54.206','www.goldmagnetsoft.com','goldmagnetsoft.com']
 STATIC_ROOT = BASE_DIR / 'static/'
 STATICFILES_DIRS = []
-DEBUG = False
+# DEBUG = False
 
 
 
