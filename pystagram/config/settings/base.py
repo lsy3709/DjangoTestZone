@@ -98,7 +98,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_cleanup.apps.CleanupConfig',
     'rest_framework',
-    'corsheaders',  # corsheaders 앱 추가
+    'corsheaders',
+    'storages'
+    # corsheaders 앱 추가
     # 'django_crontab', # crontab 설정
     # 'django_extensions',# crontab 설정2
 ]
@@ -195,6 +197,9 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
+
+# 미디어 파일을 위한 스토리지 설정
+DEFAULT_FILE_STORAGE = 'config.asset_storage.MediaStorage'
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
