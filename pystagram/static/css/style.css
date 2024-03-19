@@ -775,3 +775,7 @@ body > nav > a {
 /*#comment_form {*/
 /*    display: none;*/
 /*}*/
+
+.header-icon {
+    width: 50px;
+}
