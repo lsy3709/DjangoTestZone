@@ -49,7 +49,7 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # 미디어 파일 설정
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-DEFAULT_FILE_STORAGE = 'pystagram.storage_backends.MediaStorage'
+DEFAULT_FILE_STORAGE = 'core.storage_backends.MediaStorage'
 
 # 이 설정으로 반응은 보임
 
