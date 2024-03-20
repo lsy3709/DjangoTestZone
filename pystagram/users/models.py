@@ -1,4 +1,8 @@
+import io
+
+from PIL import Image
 from django.contrib.auth.models import AbstractUser
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 from django.utils import timezone
 
@@ -37,6 +41,26 @@ class User(AbstractUser):
     #추가
     def __str__(self):
         return self.username
+
+    def save(self, *args, **kwargs):
+        # 이미지를 열고 크기를 조절합니다.
+        img = Image.open(self.profile_image)
+        output = io.BytesIO()
+
+        # 이미지의 크기를 확인하고 조절합니다. 여기서는 너비가 800px을 넘지 않도록 합니다.
+        if img.width > 800:
+            output_size = (800, (800 * img.height) // img.width)
+            img = img.resize(output_size, Image.ANTIALIAS)
+
+        # 변경된 이미지를 저장합니다.
+        img.save(output, format='JPEG', quality=90)
+        output.seek(0)
+
+        # InMemoryUploadedFile을 사용하여 Django가 파일을 처리하도록 합니다.
+        self.image = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.image.name.split('.')[0], 'image/jpeg',
+                                          output.tell(), None)
+
+        super().save(*args, **kwargs)
 
 class Relationship(models.Model):
     from_user = models.ForeignKey(
