@@ -41,8 +41,9 @@ class session_timeout(APIView):
         expiration = request.session.get_expiry_date()
 
         remaining_seconds = (expiration - timezone.now()).total_seconds()
+        result = str(remaining_seconds)
 
-        return Response({'timeout': remaining_seconds}, status=status.HTTP_200_OK)
+        return Response({'timeout': result}, status=status.HTTP_200_OK)
 
 
 @require_POST
