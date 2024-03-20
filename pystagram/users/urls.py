@@ -8,7 +8,7 @@ from users.views import login_view, logout_view, signup, profile, followers, fol
 # 추가
 app_name = 'users'
 urlpatterns = [
-    path('session_timeout/', session_timeout.as_view(), name='session_timeout'),
+    path('session_timeout/', session_timeout, name='session_timeout'),
     path('extend_session/', extend_session, name='extend_session'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),

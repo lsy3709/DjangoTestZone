@@ -35,17 +35,18 @@ logger = logging.getLogger('pystagram')
 
 
 
-# rest 용 6자리 코드 인증
-class session_timeout(APIView):
-    def session_timeout(self, request, format=None):
+def session_timeout(request):
+    """
+    세션 타임아웃까지 남은 시간(초)을 반환합니다.
+    """
+    if '_auth_user_id' in request.session:
+        # 세션 만료 시간 계산
         expiration = request.session.get_expiry_date()
         remaining_seconds = (expiration - timezone.now()).total_seconds()
-
-        # JSON 문자열로 변환
-        data = json.dumps({'timeout': remaining_seconds})
-
-        # content_type을 'application/json'으로 설정하여 HttpResponse 반환
-        return HttpResponse(data, content_type="application/json")
+    else:
+        # 세션 없는 경우, -1 반환
+        remaining_seconds = -1
+    return JsonResponse({'timeout': remaining_seconds})
 
 
 @require_POST
