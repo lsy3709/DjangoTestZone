@@ -46,7 +46,7 @@ def session_timeout(request):
         session_key = request.COOKIES["sessionid"]
         session = Session.objects.get(session_key=session_key)
 
-        remaining_seconds = session.get_expiry_age()
+        remaining_seconds = session.get_expiry_date()
         # expiration = request.session.get_expiry_date()
         remaining_seconds = max(0, (remaining_seconds - timezone.now()).total_seconds())
     else:
