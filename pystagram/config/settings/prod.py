@@ -55,4 +55,5 @@ DEFAULT_FILE_STORAGE = 'core.storage_backends.MediaStorage'
 
 # 세션 타임아웃
 SESSION_COOKIE_AGE = 300
+SESSION_SAVE_EVERY_REQUEST = True
 
