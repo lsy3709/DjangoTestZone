@@ -14,7 +14,7 @@ environ.Env.read_env(BASE_DIR / '.env')
 
 
 ALLOWED_HOSTS = ['52.78.54.206','www.goldmagnetsoft.com','goldmagnetsoft.com']
-STATIC_ROOT = BASE_DIR / 'static/'
+# STATIC_ROOT = BASE_DIR / 'static/'
 # STATICFILES_DIRS = []
 DEBUG = False
 
