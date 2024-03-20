@@ -18,9 +18,9 @@ AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
 
 # 이 설정으로 반응은 보임
 # AWS_S3_ENDPOINT_URL = 'https://bucket-4whmj9.s3.ap-northeast-2.amazonaws.com/static2'
-# AWS_S3_OBJECT_PARAMETERS = {
-#     'CacheControl': 'max-age=86400',
-# }
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
 # AWS_LOCATION = 'static2'
 # 이 설정으로 반응은 보임
 
