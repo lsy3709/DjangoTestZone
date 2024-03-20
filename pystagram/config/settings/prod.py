@@ -53,4 +53,6 @@ DEFAULT_FILE_STORAGE = 'core.storage_backends.MediaStorage'
 
 # 이 설정으로 반응은 보임
 
-#
+# 세션 타임아웃
+SESSION_COOKIE_AGE = 60
+
