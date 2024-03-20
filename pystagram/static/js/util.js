@@ -8,10 +8,25 @@ $(document).ready(function () {
         }
     });
 
-        $('#scroll-to-top').click(function () {
+    $('#scroll-to-top').click(function () {
         $('html, body').animate({scrollTop: 0}, 500);
         return false;
     });
+
+    function updateSessionTimeout() {
+        $.getJSON('/users/session-timeout/', function (data) {
+            $('#session-timeout').text(data.timeout.toFixed());
+            if (data.timeout < 60) {
+                // 남은 시간이 1분 미만일 경우 세션 연장
+                $.post('/users/extend-session/', function (data) {
+                    console.log('Session extended');
+                });
+            }
+        });
+    }
+
+    // 5초마다 세션 타임아웃 시간 업데이트
+    setInterval(updateSessionTimeout, 5000);
 
     //댓글 버튼 각 포스트 아이디별 폼 불러오기
     $(".comment_form_btn").click(function () {
@@ -46,64 +61,64 @@ $(document).ready(function () {
 
     // 메세지 글자수 제한
     function messageHandleCharacterCount(postId) {
-            // Get the textarea element, character count paragraph, and the button
-            const textarea = document.getElementById(`message_content_${postId}`);
-            const charCount = document.getElementById(`messageCharCount_${postId}`);
-            const myButton = document.getElementById(`message_send_btn_${postId}`);
+        // Get the textarea element, character count paragraph, and the button
+        const textarea = document.getElementById(`message_content_${postId}`);
+        const charCount = document.getElementById(`messageCharCount_${postId}`);
+        const myButton = document.getElementById(`message_send_btn_${postId}`);
 
-            // Set the maximum character limit
-            const maxChars = 300;
+        // Set the maximum character limit
+        const maxChars = 300;
 
-            // Add an input event listener to the textarea
-            textarea.addEventListener('input', function() {
-                const currentChars = textarea.value.length;
-                const remainingChars = maxChars - currentChars;
+        // Add an input event listener to the textarea
+        textarea.addEventListener('input', function () {
+            const currentChars = textarea.value.length;
+            const remainingChars = maxChars - currentChars;
 
-                // Update the character count display
-                charCount.textContent = `남은 글자수 : ${remainingChars}`;
+            // Update the character count display
+            charCount.textContent = `남은 글자수 : ${remainingChars}`;
 
-                // Limit the input to the maximum characters
-                if (currentChars > maxChars) {
-                    textarea.value = textarea.value.substring(0, maxChars);
-                    charCount.textContent = '최대 글자수를 초과 했어요.';
-                }
+            // Limit the input to the maximum characters
+            if (currentChars > maxChars) {
+                textarea.value = textarea.value.substring(0, maxChars);
+                charCount.textContent = '최대 글자수를 초과 했어요.';
+            }
 
-                // Disable the button when the character count exceeds the limit
-                myButton.disabled = currentChars > maxChars;
-            });
-        }
-    
+            // Disable the button when the character count exceeds the limit
+            myButton.disabled = currentChars > maxChars;
+        });
+    }
+
     // 댓글 글자수 제한
     function commentHandleCharacterCount(postId) {
-            // Get the textarea element, character count paragraph, and the button
-            const textarea = document.getElementById(`comment_content_${postId}`);
-            const charCount = document.getElementById(`charCount_${postId}`);
-            const myButton = document.getElementById(`comment_send_btn_${postId}`);
+        // Get the textarea element, character count paragraph, and the button
+        const textarea = document.getElementById(`comment_content_${postId}`);
+        const charCount = document.getElementById(`charCount_${postId}`);
+        const myButton = document.getElementById(`comment_send_btn_${postId}`);
 
-            // Set the maximum character limit
-            const maxChars = 200;
+        // Set the maximum character limit
+        const maxChars = 200;
 
-            // Add an input event listener to the textarea
-            textarea.addEventListener('input', function() {
-                const currentChars = textarea.value.length;
-                const remainingChars = maxChars - currentChars;
+        // Add an input event listener to the textarea
+        textarea.addEventListener('input', function () {
+            const currentChars = textarea.value.length;
+            const remainingChars = maxChars - currentChars;
 
-                // Update the character count display
-                charCount.textContent = `남은 글자수 : ${remainingChars}`;
+            // Update the character count display
+            charCount.textContent = `남은 글자수 : ${remainingChars}`;
 
-                // Limit the input to the maximum characters
-                if (currentChars > maxChars) {
-                    textarea.value = textarea.value.substring(0, maxChars);
-                    charCount.textContent = '최대 글자수를 초과 했어요.';
-                }
+            // Limit the input to the maximum characters
+            if (currentChars > maxChars) {
+                textarea.value = textarea.value.substring(0, maxChars);
+                charCount.textContent = '최대 글자수를 초과 했어요.';
+            }
 
-                // Disable the button when the character count exceeds the limit
-                myButton.disabled = currentChars > maxChars;
-            });
-        }
+            // Disable the button when the character count exceeds the limit
+            myButton.disabled = currentChars > maxChars;
+        });
+    }
 
 
-     // 메시지 폼 모달 기능
+    // 메시지 폼 모달 기능
     function sendMessageToggleModalForm(postId) {
         const openModalBtn = document.getElementById(`send_message_form_btn_${postId}`);
         const closeModalBtn = document.getElementById('closeModalBtn');
@@ -152,7 +167,7 @@ $(document).ready(function () {
 
     }
 
-      // 쪽지 보내기 폼 토글 기능
+    // 쪽지 보내기 폼 토글 기능
     function toggleSendMessageForm(postId) {
         const showFormBtn = document.getElementById(`send_message_form_btn_${postId}`);
         const commentForm = document.getElementById(`send_message_form_${postId}`);
