@@ -28,17 +28,22 @@ from django.views.decorators.http import require_POST
 from users.models import VerificationCode
 import json
 import logging
+
 logger = logging.getLogger('pystagram')
 
-def session_timeout(request):
-    """
-    세션의 타임아웃 시간을 반환합니다.
-    """
-    # request.session.set_expiry(300)  # 예시로 5분 후에 만료되도록 설정
-    # 세션 만료 시간 계산
-    expiration = request.session.get_expiry_date()
-    remaining_seconds = (expiration - timezone.now()).total_seconds()
-    return JsonResponse({'timeout': remaining_seconds})
+
+
+
+
+# rest 용 6자리 코드 인증
+class session_timeout(APIView):
+    def session_timeout(self, request, format=None):
+        expiration = request.session.get_expiry_date()
+
+        remaining_seconds = (expiration - timezone.now()).total_seconds()
+
+        return Response({'timeout': remaining_seconds}, status=status.HTTP_200_OK)
+
 
 @require_POST
 def extend_session(request):
@@ -47,6 +52,7 @@ def extend_session(request):
     """
     request.session.set_expiry(300)  # 다시 5분 추가
     return JsonResponse({'status': 'Session extended'})
+
 
 # Create your views here.
 def login_view(request):
@@ -157,7 +163,7 @@ def profile(request, user_id):
 
     context = {
         "user": user,
-        "messages" : messages,
+        "messages": messages,
         "login_user": login_user,
         "page_obj": page_obj,
         "paginator": paginator,
@@ -262,7 +268,7 @@ def followers(request, user_id):
     context = {
         "user": user,
         "relationships": relationships,
-        "messages" : messages,
+        "messages": messages,
         "login_user": login_user,
         "page_obj": page_obj,
         "paginator": paginator,
@@ -312,6 +318,7 @@ def following(request, user_id):
         "custom_range": custom_range
     }
     return render(request, 'users/following.html', context)
+
 
 def messageBox(request, user_id):
     user = get_object_or_404(User, id=user_id)
@@ -363,7 +370,6 @@ def follow(request, user_id):
         user.following.add(target_user)
     url_next = request.GET.get('next') or reverse('users:profile', args=[user.id])
     return HttpResponseRedirect(url_next)
-
 
 
 # 패스워드 초기화, 사용 안하고 있음.
@@ -435,8 +441,6 @@ def verify_code(request):
     return render(request, 'users/verify_code.html')
 
 
-
-
 # 테스트 메일 보내기
 def send_email(subject, to, message):
     subject_send = subject
@@ -446,7 +450,6 @@ def send_email(subject, to, message):
     message_send = message
     # 프로덕션 환경에서는 : fail_silently=Trun 로 진행
     EmailMessage(subject=subject_send, body=message_send, to=to_send, from_email=from_email).send(fail_silently=False)
-
 
 
 # 테스트6자리 코드 , 메일 보내기, 세션 저장 버전
@@ -482,53 +485,54 @@ class SendEmailWithCode(APIView):
             verification_code = VerificationCode(code=code, user_email=user_email)
             verification_code.save()
 
-
         message = f"인증코드: [{code}]"
         send_email("인증코드", email, message)
 
         # 성공 시, JSON 응답 반환
         return Response({'message': '이메일 전송이 완료되었습니다.!!'}, status=status.HTTP_200_OK)
 
+
 # 메세지 단수 또는 복수개 삭제 하는 기능, Rest 용
 class DeleteMessage(APIView):
-        def post(self, request, format=None):
-           # 리스트로 넘어온 메세지 아이디를 , 리스트로 담기.
-           # 반복문으로 해당 메세지 삭제.
-           # 다시 메세지 박스로 복귀
+    def post(self, request, format=None):
+        # 리스트로 넘어온 메세지 아이디를 , 리스트로 담기.
+        # 반복문으로 해당 메세지 삭제.
+        # 다시 메세지 박스로 복귀
 
-           if request.method == "POST":
+        if request.method == "POST":
 
-               # print("도착은 했니?")
-               # JSON 데이터를 받음
-               received_data = request.data
-               # print("받은 데이터:", received_data)
+            # print("도착은 했니?")
+            # JSON 데이터를 받음
+            received_data = request.data
+            # print("받은 데이터:", received_data)
 
-               for data in received_data:
-                   # 특정 사용자에게 수신된 메시지 필터링
-                   message = Message.objects.get(id=data)
+            for data in received_data:
+                # 특정 사용자에게 수신된 메시지 필터링
+                message = Message.objects.get(id=data)
 
-                   # 메시지 삭제
-                   message.delete()
+                # 메시지 삭제
+                message.delete()
 
-               return Response({"message": "데이터를 삭제했습니다."})
+            return Response({"message": "데이터를 삭제했습니다."})
 
-    # rest 용 6자리 코드 인증
+
+# rest 용 6자리 코드 인증
 class VerifyCode(APIView):
-        def post(self, request, format=None):
-            verify_email = request.data.get('verify_email')
-            input_code = request.data.get('verify_input_code')
-            try:
-                # DB에서 데이터를 가져와서 확인
-                # verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
+    def post(self, request, format=None):
+        verify_email = request.data.get('verify_email')
+        input_code = request.data.get('verify_input_code')
+        try:
+            # DB에서 데이터를 가져와서 확인
+            # verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
 
-                # DB에서 데이터 삭제
-                verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
-                verification_code.delete()
+            # DB에서 데이터 삭제
+            verification_code = VerificationCode.objects.get(user_email=verify_email, code=input_code)
+            verification_code.delete()
 
-                return Response({'message': '인증 확인 성공.'}, status=status.HTTP_200_OK)
+            return Response({'message': '인증 확인 성공.'}, status=status.HTTP_200_OK)
 
-            except VerificationCode.DoesNotExist:
-                return Response({'error': '코드가 일치하지 않거나 DB에 없습니다..'}, status=status.HTTP_400_BAD_REQUEST)
+        except VerificationCode.DoesNotExist:
+            return Response({'error': '코드가 일치하지 않거나 DB에 없습니다..'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class VerifyCode_noDelete(APIView):
@@ -542,11 +546,12 @@ class VerifyCode_noDelete(APIView):
         except VerificationCode.DoesNotExist:
             return Response({'error': '코드가 일치하지 않거나 DB에 없습니다..'}, status=status.HTTP_400_BAD_REQUEST)
 
+
 # 404 페이지
 def page_not_found(request, exception):
     return render(request, 'users/404.html', {})
 
+
 # 500 페이지
 def server_error_page(request):
     return render(request, 'users/500.html', {})
-
