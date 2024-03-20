@@ -8,7 +8,7 @@
        const timeoutDisplay = document.getElementById('timeout');
 
         function updateSessionTimeout() {
-            fetch('https://goldmagnetsoft.com/users/session_timeout/')
+            fetch('https://goldmagnetsoft.com/users/session_timeout/',{ cache: 'no-store' })
                 .then(response => response.json())
                 .then(data => {
                     if (data.timeout >= 0) {

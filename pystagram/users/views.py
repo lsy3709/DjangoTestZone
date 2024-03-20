@@ -14,6 +14,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 # 추가
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
+from django.views.decorators.cache import never_cache
 
 from posts.models import Post, Message
 from rest_framework import status
@@ -34,7 +35,7 @@ logger = logging.getLogger('pystagram')
 
 
 
-
+@never_cache
 def session_timeout(request):
     """
     세션 타임아웃까지 남은 시간(초)을 반환합니다.
