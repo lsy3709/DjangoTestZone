@@ -13,20 +13,7 @@ $(document).ready(function () {
         return false;
     });
 
-    function updateSessionTimeout() {
-        $.getJSON('/users/session-timeout/', function (data) {
-            $('#session-timeout').text(data.timeout.toFixed());
-            if (data.timeout < 60) {
-                // 남은 시간이 1분 미만일 경우 세션 연장
-                $.post('/users/extend-session/', function (data) {
-                    console.log('Session extended');
-                });
-            }
-        });
-    }
 
-    // 5초마다 세션 타임아웃 시간 업데이트
-    setInterval(updateSessionTimeout, 5000);
 
     //댓글 버튼 각 포스트 아이디별 폼 불러오기
     $(".comment_form_btn").click(function () {
