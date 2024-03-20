@@ -34,7 +34,7 @@ def session_timeout(request):
     """
     세션의 타임아웃 시간을 반환합니다.
     """
-    request.session.set_expiry(300)  # 예시로 5분 후에 만료되도록 설정
+    # request.session.set_expiry(300)  # 예시로 5분 후에 만료되도록 설정
     # 세션 만료 시간 계산
     expiration = request.session.get_expiry_date()
     remaining_seconds = (expiration - timezone.now()).total_seconds()
