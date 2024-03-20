@@ -13,6 +13,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 # 추가
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
 
 from posts.models import Post, Message
 from rest_framework import status
@@ -22,11 +23,30 @@ from rest_framework.views import APIView
 from users.forms import LoginForm, SignupForm, CustomUserChangeForm, CustomPasswordResetForm
 from users.models import User
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 from users.models import VerificationCode
 import json
 import logging
 logger = logging.getLogger('pystagram')
+
+def session_timeout(request):
+    """
+    세션의 타임아웃 시간을 반환합니다.
+    """
+    request.session.set_expiry(300)  # 예시로 5분 후에 만료되도록 설정
+    # 세션 만료 시간 계산
+    expiration = request.session.get_expiry_date()
+    remaining_seconds = (expiration - timezone.now()).total_seconds()
+    return JsonResponse({'timeout': remaining_seconds})
+
+@require_POST
+def extend_session(request):
+    """
+    세션 타임아웃을 연장합니다.
+    """
+    request.session.set_expiry(300)  # 다시 5분 추가
+    return JsonResponse({'status': 'Session extended'})
 
 # Create your views here.
 def login_view(request):
