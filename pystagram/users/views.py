@@ -39,11 +39,13 @@ logger = logging.getLogger('pystagram')
 class session_timeout(APIView):
     def session_timeout(self, request, format=None):
         expiration = request.session.get_expiry_date()
-
         remaining_seconds = (expiration - timezone.now()).total_seconds()
-        result = str(remaining_seconds)
 
-        return Response({'timeout': result}, status=status.HTTP_200_OK)
+        # JSON 문자열로 변환
+        data = json.dumps({'timeout': remaining_seconds})
+
+        # content_type을 'application/json'으로 설정하여 HttpResponse 반환
+        return HttpResponse(data, content_type="application/json")
 
 
 @require_POST
