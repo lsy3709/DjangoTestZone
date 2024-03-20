@@ -44,17 +44,17 @@ AWS_S3_OBJECT_PARAMETERS = {
 # AWS_LOCATION = 'static'
 # 이 설정으로 반응은 보임
 
-# if AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME:
-#     # 장고 4.2부터 스토리지 클래스 지정방법이 변경되었습니다.
-#     if django.VERSION < (4, 2):
-#         DEFAULT_FILE_STORAGE = "core.storages.aws.AwsMediaStorage"
-#         STATICFILES_STORAGE = "core.storages.aws.AwsStaticStorage"
-#     else:
-#         STORAGES = {
-#             "default": {
-#                 "BACKEND": "core.storages.aws.AwsMediaStorage",
-#             },
-#             "staticfiles": {
-#                 "BACKEND": "core.storages.aws.AwsStaticStorage",
-#             },
-#         }
+if AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME:
+    # 장고 4.2부터 스토리지 클래스 지정방법이 변경되었습니다.
+    if django.VERSION < (4, 2):
+        DEFAULT_FILE_STORAGE = "core.storages.aws.AwsMediaStorage"
+        STATICFILES_STORAGE = "core.storages.aws.AwsStaticStorage"
+    else:
+        STORAGES = {
+            "default": {
+                "BACKEND": "core.storages.aws.AwsMediaStorage",
+            },
+            "staticfiles": {
+                "BACKEND": "core.storages.aws.AwsStaticStorage",
+            },
+        }
