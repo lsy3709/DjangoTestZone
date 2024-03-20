@@ -43,12 +43,12 @@ def session_timeout(request):
     """
     if '_auth_user_id' in request.session:
         # 세션 만료 시간 계산
-        session_key = request.COOKIES["sessionid"]
-        session = Session.objects.get(session_key=session_key)
-
-        remaining_seconds = session.get_expiry_date()
-        # expiration = request.session.get_expiry_date()
-        remaining_seconds = max(0, (remaining_seconds - timezone.now()).total_seconds())
+        # session_key = request.COOKIES["sessionid"]
+        # session = Session.objects.get(session_key=session_key)
+        #
+        # remaining_seconds = session.get_expiry_date()
+        expiration = request.session.get_expiry_date()
+        remaining_seconds = max(0, (expiration - timezone.now()).total_seconds())
     else:
         # 세션 없는 경우, -1 반환
         remaining_seconds = -1
