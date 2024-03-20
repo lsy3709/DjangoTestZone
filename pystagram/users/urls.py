@@ -3,11 +3,13 @@ from django.urls import path
 
 from users.views import login_view, logout_view, signup, profile, followers, following, follow, profile_edit, user_edit, \
     update_password, delete_user, reset_password, send_email, forgot_id, verify_code, send_email_with_code, \
-    SendEmailWithCode, VerifyCode, VerifyCode_noDelete, messageBox, DeleteMessage
+    SendEmailWithCode, VerifyCode, VerifyCode_noDelete, messageBox, DeleteMessage, session_timeout, extend_session
 
 # 추가
 app_name = 'users'
 urlpatterns = [
+    path('session_timeout/', session_timeout, name='session_timeout'),
+    path('extend_session/', extend_session, name='extend_session'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('signup/', signup, name='signup'),
