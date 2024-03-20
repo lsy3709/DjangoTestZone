@@ -54,6 +54,11 @@ DEFAULT_FILE_STORAGE = 'core.storage_backends.MediaStorage'
 # 이 설정으로 반응은 보임
 
 # 세션 타임아웃
-SESSION_COOKIE_AGE = 300
+# settings.py
+# SESSION_COOKIE_AGE = 300  # 5분(300초)
+
+SESSION_EXPIRE_SECONDS = 300
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 60 # group by minute
 
 
