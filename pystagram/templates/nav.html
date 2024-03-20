@@ -11,6 +11,7 @@
                 .then(response => response.json())  // 응답을 JSON으로 변환
                 .then(data => {
                     // 세션 타임아웃 시간을 화면에 표시
+                    console.log(data)
                     document.getElementById('session-timeout-display').innerText = data.timeout.toFixed();
                 })
                 .catch(error => console.error('Error fetching session timeout:', error));
