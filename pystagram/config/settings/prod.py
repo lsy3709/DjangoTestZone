@@ -36,14 +36,25 @@ AWS_S3_ACCESS_KEY_ID = os.environ.get('AWS_S3_ACCESS_KEY_ID')
 AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY')
 AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
 
-# AWS_S3_CUSTOM_DOMAIN = "%s.s3.%s.amazonaws.com" % (AWS_STORAGE_BUCKET_NAME, AWS_S3_REGION_NAME)
+# 이 설정으로 반응은 보임
+# AWS_S3_ENDPOINT_URL = 'https://bucket-4whmj9.s3.ap-northeast-2.amazonaws.com'
 AWS_S3_OBJECT_PARAMETERS = {
-    "CacheControl": "max-age=86400",
+    'CacheControl': 'max-age=86400',
 }
+# AWS_LOCATION = 'static'
+# 이 설정으로 반응은 보임
 
-AWS_PUBLIC_MEDIA_LOCATION = "media/public"
-DEFAULT_FILE_STORAGE = "core.asset_storage.MediaStorage"
-
-# AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
-# PRIVATE_FILE_STORAGE = 'mysite.storage_backends.PrivateMediaStorage'
-
+if AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME:
+    # 장고 4.2부터 스토리지 클래스 지정방법이 변경되었습니다.
+    if django.VERSION < (4, 2):
+        DEFAULT_FILE_STORAGE = "core.storages.aws.AwsMediaStorage"
+        STATICFILES_STORAGE = "core.storages.aws.AwsStaticStorage"
+    else:
+        STORAGES = {
+            "default": {
+                "BACKEND": "core.storages.aws.AwsMediaStorage",
+            },
+            "staticfiles": {
+                "BACKEND": "core.storages.aws.AwsStaticStorage",
+            },
+        }
