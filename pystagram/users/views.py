@@ -43,7 +43,7 @@ def session_timeout(request):
     if '_auth_user_id' in request.session:
         # 세션 만료 시간 계산
         expiration = request.session.get_expiry_date()
-        remaining_seconds = (expiration - timezone.now()).total_seconds()
+        remaining_seconds = max(0, (expiration - timezone.now()).total_seconds())
     else:
         # 세션 없는 경우, -1 반환
         remaining_seconds = -1
