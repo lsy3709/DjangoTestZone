@@ -5,11 +5,13 @@
      <p>세션 타임 아웃: <span id="session-timeout"></span> seconds</p>
      <script>
  function updateSessionTimeout() {
-        $.getJSON('/users/session-timeout/', function (data) {
+     console.log("test")
+        $.getJSON('https://goldmagnetsoft.com/users/session-timeout/', function (data) {
+            console.log("test 함수 호출")
             $('#session-timeout').text(data.timeout.toFixed());
             if (data.timeout < 60) {
                 // 남은 시간이 1분 미만일 경우 세션 연장
-                $.post('/users/extend-session/', function (data) {
+                $.post('https://goldmagnetsoft.com/users/extend-session/', function (data) {
                     console.log('Session extended');
                 });
             }
