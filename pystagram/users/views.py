@@ -3,6 +3,7 @@ import random
 
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
+from django.contrib.sessions.models import Session
 from django.core.mail import EmailMessage
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect, HttpResponse
@@ -42,12 +43,16 @@ def session_timeout(request):
     """
     if '_auth_user_id' in request.session:
         # 세션 만료 시간 계산
-        expiration = request.session.get_expiry_date()
-        remaining_seconds = max(0, (expiration - timezone.now()).total_seconds())
+        session_key = request.COOKIES["sessionid"]
+        session = Session.objects.get(session_key=session_key)
+
+        remaining_seconds = session.get_expiry_age()
+        # expiration = request.session.get_expiry_date()
+        remaining_seconds = max(0, (remaining_seconds - timezone.now()).total_seconds())
     else:
         # 세션 없는 경우, -1 반환
         remaining_seconds = -1
-    return JsonResponse({'timeout': remaining_seconds})
+    return JsonResponse({'timeout': remaining_seconds })
 
 
 @require_POST
