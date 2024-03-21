@@ -1,4 +1,5 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+@import url('https://fonts.googleapis.com/css2?family=Cute+Font&display=swap');
 
 @font-face {
     font-family: 'CuteFont';
@@ -6,7 +7,7 @@
 }
 
 body {
-    font-family: 'CuteFont', sans-serif;
+    font-family: "Cute Font", sans-serif;
 }
 
 ul, ol {
@@ -35,12 +36,12 @@ a {
 }
 
 textarea {
-    font-family: "Noto Sans KR", serif;
+    font-family: "Cute Font", sans-serif;
 }
 
 html {
     margin: 0;
-    font-family: "Noto Sans KR", serif;
+    font-family: "Cute Font", sans-serif;
     font-weight: 300;
     font-size: 14px;
     color: #333;
@@ -207,7 +208,7 @@ input:-webkit-autofill:active {
     outline: 0;
     margin: 0 0 10px 0;
     font-size: 1.5rem;
-    font-family: 'CuteFont', sans-serif;
+    font-family: "Cute Font", sans-serif;
     color: #333;
     border: 1px solid #ddd;
     border-radius: 2px;
@@ -224,7 +225,7 @@ input:-webkit-autofill:active {
     margin-top: 2px;
     color: #666;
     font-size: 1.5rem;
-    font-family: 'CuteFont', sans-serif;
+    font-family: "Cute Font", sans-serif;
 }
 
 #login .btn-login, #login .btn-signup, #signup .btn-login, #signup .btn-signup {
@@ -236,7 +237,7 @@ input:-webkit-autofill:active {
     margin-top: 10px;
     border-radius: 4px;
     font-size: 2rem;
-    font-family: 'CuteFont', sans-serif;
+    font-family: "Cute Font", sans-serif;
 }
 
 .post-container {
@@ -351,7 +352,7 @@ article.post .post-buttons form {
 article.post .post-buttons a, article.post .post-buttons button, article.post .post-buttons span {
     background-color: transparent;
     font-size: 13px;
-    font-family: "Noto Sans KR", serif;
+    font-family: "Cute Font", sans-serif;
     line-height: 1;
     font-weight: 400;
     height: 25px;
