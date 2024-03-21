@@ -500,15 +500,15 @@ article.post .post-comment-create input, article.post .post-comment-create texta
 }
 
 @media (max-width: 700px) {
-  article.post .post-comment-create > form > p , article.post .post-comment-create > form > button {
+    article.post .post-comment-create > form > p, article.post .post-comment-create > form > button {
         font-size: 1rem;
     }
 }
 
 @media (max-width: 700px) {
-.sub_text_p {
+    .sub_text_p {
         font-size: 1rem;
-    margin-left: 10px;
+        margin-left: 10px;
     }
 }
 
@@ -732,6 +732,10 @@ body > nav > h1 {
         font-size: 1.5rem;
     }
 }
+
+body > nav > p > span, body > nav > p {
+        color: red;
+    }
 
 @media (max-width: 700px) {
     body > nav > p > span {
