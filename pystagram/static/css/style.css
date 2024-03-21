@@ -113,6 +113,7 @@ a.btn {
 
 select {
     font-family: "Cute Font", sans-serif;
+    font-size: 1rem;
 }
 
 .btn-primary {
@@ -482,12 +483,20 @@ article.post .post-comment-create button:hover {
     font-weight: bold;
 }
 
-#post-add input, #post-add textarea {
+#post-add input {
+    border: 1px solid #ddd;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+#post-add textarea {
     border: 1px solid #ddd;
     width: 100%;
     box-sizing: border-box;
     font-size: 1.5rem;
 }
+
 
 #post-add #id_delete_images {
     display: flex; /* 요소들을 가로로 나란히 배치 */
@@ -499,19 +508,22 @@ article.post .post-comment-create button:hover {
 
 
 #post-add button {
-    color: #0095f6;
-    background-color: transparent;
-    border: 1px solid #0095f6;
-    border-radius: 5px;
-    box-sizing: border-box;
-    padding: 8px 55px;
+    width: 100px;
+    height: 25px;
+    line-height: 25px;
+    background-color: #fff;
+    border-radius: 15px;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+    font-family: "Cute Font", sans-serif;
+    font-size: 0.75rem;
     cursor: pointer;
-    transition-duration: 0.25s;
+    text-align: center;
 }
 
 #post-add button:hover {
     color: white;
-    background-color: #0095f6;
+    background-color: #00c3bd;
 }
 
 #profile {
