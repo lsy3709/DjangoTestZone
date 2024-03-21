@@ -23,7 +23,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    font-size: 3rem;
+    font-size: 2rem;
 }
 
 h2 {
@@ -160,17 +160,18 @@ input:-webkit-autofill:active {
     -webkit-text-fill-color: #666;
 }
 
+
+
 #login, #signup {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
     background-color: #fafafa;
 }
 
 #login > form, #signup > form {
-    width: 90%; /* 폭을 100%로 설정하여 부모 요소에 맞춥니다. */
-    max-width: 400px; /* 최대 폭을 설정하여 너무 넓어지지 않도록 합니다. */
+    width: 100%; /* 폭을 100%로 설정하여 부모 요소에 맞춥니다. */
+    max-width: 500px; /* 최대 폭을 설정하여 너무 넓어지지 않도록 합니다. */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -179,6 +180,14 @@ input:-webkit-autofill:active {
     padding: 30px 40px 40px;
     border-radius: 2px;
     background-color: white;
+}
+
+@media (max-width: 700px) {
+    #login > form, #signup > form {
+        width: 80%;
+
+
+    }
 }
 
 #login > form > h1, #signup > form > h1 {
@@ -191,6 +200,12 @@ input:-webkit-autofill:active {
     margin: 0;
 }
 
+@media (max-width: 700px) {
+    #login > form > p, #signup > form > p {
+        width: 300px;
+    }
+}
+
 #login > form > p > label, #signup > form > p > label {
 
     display: block;
@@ -201,6 +216,13 @@ input:-webkit-autofill:active {
     color: #333;
 }
 
+@media (max-width: 700px) {
+    #login > form > p > label, #signup > form > p > label {
+        width: 300px;
+        font-size: 1rem;
+    }
+}
+
 #login > form > p > label::after, #signup > form > p > label::after {
     bottom: 0;
     color: white;
@@ -209,9 +231,15 @@ input:-webkit-autofill:active {
     transform: translate(-100%, 0);
 }
 
+@media (max-width: 700px) {
+   #login > form > p > label::after, #signup > form > p > label::after {
+       transform: translate(50%, 0);
+    }
+}
+
 #login > form > p > input, #signup > form > p > input {
     padding: 11px 0 10px 10px;
-    min-width: 400px;
+    min-width: 500px;
     outline: 0;
     margin: 0 0 10px 0;
     font-size: 1.5rem;
@@ -219,6 +247,12 @@ input:-webkit-autofill:active {
     color: #333;
     border: 1px solid #ddd;
     border-radius: 2px;
+}
+@media (max-width: 700px) {
+   #login > form > p > input, #signup > form > p > input {
+        font-size: 1rem;
+       min-width: 300px;
+    }
 }
 
 #login > form > ul.errorlist, #signup > form > ul.errorlist {
@@ -235,6 +269,12 @@ input:-webkit-autofill:active {
     font-family: "Cute Font", sans-serif;
 }
 
+@media (max-width: 700px) {
+   #login > form > a, #signup > form > a {
+        font-size: 1rem;
+    }
+}
+
 #login .btn-login, #login .btn-signup, #signup .btn-login, #signup .btn-signup {
     width: 412px;
     height: 52px;
@@ -245,6 +285,14 @@ input:-webkit-autofill:active {
     border-radius: 4px;
     font-size: 2rem;
     font-family: "Cute Font", sans-serif;
+}
+
+@media (max-width: 700px) {
+    #login .btn-login, #login .btn-signup, #signup .btn-login, #signup .btn-signup {
+        font-size: 1rem;
+        width: 300px;
+        height: 32px;
+    }
 }
 
 .post-container {
