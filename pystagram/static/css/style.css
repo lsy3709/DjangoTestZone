@@ -812,7 +812,7 @@ body > nav > a {
     }
 }
 
-@media (max-width: 1024px) {
+@media (min-width: 701px) and (max-width: 1024px) {
     .post-grid-container .post-grid img {
         width: 300px;
         object-fit: cover;
