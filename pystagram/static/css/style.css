@@ -509,9 +509,11 @@ article.post .post-comment-create button:hover {
 
 #post-add button {
     width: 100px;
-    height: 25px;
+    height: 40px;
     line-height: 25px;
     background-color: #fff;
+    border: 1px solid #00c3bd;
+    color: #00c3bd;
     border-radius: 15px;
     transition-duration: 0.3s;
     transition-timing-function: ease;
