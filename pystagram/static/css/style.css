@@ -812,6 +812,14 @@ body > nav > a {
     }
 }
 
+@media (max-width: 1024px) {
+    .post-grid-container .post-grid img {
+        width: 300px;
+        object-fit: cover;
+        object-position: center center;
+    }
+}
+
 #tags {
     padding: 70px 10px 10px 10px;
 }
