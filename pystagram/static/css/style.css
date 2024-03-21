@@ -712,6 +712,18 @@ body > nav > h1 {
     flex-grow: 1;
 }
 
+@media (max-width: 700px) {
+   body > nav > h1 {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 700px) {
+   body > nav > p > span {
+        font-size: 0.5rem;
+    }
+}
+
 body > nav > a {
     font-weight: 400;
     color: #0095f6;
@@ -809,7 +821,7 @@ body > nav > a {
 
 @media (max-width: 700px) {
    .image-container img {
-        width:20px;
+        width:30px;
     }
 }
 
@@ -887,6 +899,6 @@ body > nav > a {
 }
 @media (max-width: 700px) {
  .header-icon {
-        width:20px;
+        width:30px;
     }
 }

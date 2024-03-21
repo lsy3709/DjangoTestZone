@@ -176,9 +176,10 @@
                 <li>
                     <span>{{ comment.user.username }}</span>
                     <span style="font-weight: bold">{{ comment.content }}</span>
-                     <h5>__{{ comment.created }}</h5>
+                    <h5>__{{ comment.created }}</h5>
                     {% if user == comment.user %}
-                        <form method="post" action="{% url 'posts:comment_delete' comment_id=comment.id %}" onsubmit="return confirm('정말 게시글 삭제 하시나요?');">
+                        <form method="post" action="{% url 'posts:comment_delete' comment_id=comment.id %}"
+                              onsubmit="return confirm('정말 게시글 삭제 하시나요?');">
                             {% csrf_token %}
                             <span>
 
@@ -207,12 +208,14 @@
             <!--                추가-->
             <input type="hidden" name="post" value="{{ post.id }}">
             {{ comment_form.content }}
-            <textarea name="comment_content_{{ post.id }}" cols="40" rows="10" placeholder="댓글 달기..." maxlength="200" required id="comment_content_{{ post.id }}" data-post-id="{{ post.id }}">
+            <textarea name="comment_content_{{ post.id }}" cols="40" rows="10" placeholder="댓글 달기..." maxlength="200"
+                      required id="comment_content_{{ post.id }}" data-post-id="{{ post.id }}">
 </textarea>
             <p id="charCount_{{ post.id }}" data-post-id="{{ post.id }}">남은 글자수: 200</p>
-            <button id="comment_send_btn_{{ post.id }}" data-post-id="{{ post.id }}" type="submit">게시</button>
+            <div>
+                <button id="comment_send_btn_{{ post.id }}" data-post-id="{{ post.id }}" type="submit">게시</button>
+            </div>
         </form>
-
 
 
     </div>
@@ -224,10 +227,13 @@
             {% csrf_token %}
             <!--                추가-->
             <input type="hidden" name="post" value="{{ post.id }}">
-            <textarea name="message_content_{{ post.id }}" cols="40" rows="10" placeholder="쪽지 내용..." maxlength="300" required id="message_content_{{ post.id }}" data-post-id="{{ post.id }}">
+            <textarea name="message_content_{{ post.id }}" cols="40" rows="10" placeholder="쪽지 내용..." maxlength="300"
+                      required id="message_content_{{ post.id }}" data-post-id="{{ post.id }}">
 </textarea>
             <p id="messageCharCount_{{ post.id }}" data-post-id="{{ post.id }}">남은 글자수: 300</p>
-            <button id="message_send_btn_{{ post.id }}" data-post-id="{{ post.id }}" type="submit">쪽지 보내기</button>
+            <div>
+                <button id="message_send_btn_{{ post.id }}" data-post-id="{{ post.id }}" type="submit">쪽지 보내기</button>
+            </div>
         </form>
     </div>
 
