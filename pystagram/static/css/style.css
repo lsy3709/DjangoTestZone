@@ -518,7 +518,7 @@ article.post .post-comment-create button:hover {
     transition-duration: 0.3s;
     transition-timing-function: ease;
     font-family: "Cute Font", sans-serif;
-    font-size: 0.75rem;
+    font-size: 1rem;
     cursor: pointer;
     text-align: center;
 }
