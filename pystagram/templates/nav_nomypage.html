@@ -2,6 +2,38 @@
     <h1>
         <a href="{% url 'posts:feeds' %}">Pystagram</a>
     </h1>
+    <p>세션: <span id="timer">05:00</span> 초</p>
+
+    <script>
+      // 카운트다운을 위한 초기 시간 설정 (5분 = 300초)
+        let timeLeft = 300;
+
+        // 카운트다운을 진행하는 함수
+        function countdown() {
+            // 분과 초를 계산
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+
+            // 두 자리 숫자 형식으로 표시
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            // 페이지에 시간 표시
+            document.getElementById('timer').textContent = `${minutes}:${seconds}`;
+
+            // 시간 감소
+            timeLeft--;
+
+            // 시간이 0에 도달하면 완료 메시지 표시
+            if (timeLeft < 0) {
+                clearInterval(timerId);
+                alert('시간이 만료되었습니다!');
+            }
+        }
+
+        // 1초마다 countdown 함수를 호출하는 타이머 설정
+        let timerId = setInterval(countdown, 1000);
+    </script>
    <span>
         <a href="{% url 'posts:post_search' %}">
           <div class="image-container">
