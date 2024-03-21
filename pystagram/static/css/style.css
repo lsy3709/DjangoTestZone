@@ -498,6 +498,12 @@ article.post .post-comment-create input, article.post .post-comment-create texta
     height: calc(1.5em + 30px);
 }
 
+@media (max-width: 700px) {
+   .post-comment-create > form > p {
+        font-size: 1rem;
+    }
+}
+
 article.post .post-comment-create button {
     color: #0095f6;
     background-color: transparent;
@@ -714,13 +720,18 @@ body > nav > h1 {
 
 @media (max-width: 700px) {
    body > nav > h1 {
-        font-size: 1rem;
+        font-size: 1.5rem;
     }
 }
 
 @media (max-width: 700px) {
    body > nav > p > span {
-        font-size: 0.5rem;
+        font-size: 0.75rem;
+    }
+}
+@media (max-width: 700px) {
+   body > nav > p  {
+        font-size: 0.75rem;
     }
 }
 
@@ -821,7 +832,7 @@ body > nav > a {
 
 @media (max-width: 700px) {
    .image-container img {
-        width:30px;
+        width:40px;
     }
 }
 
@@ -899,6 +910,6 @@ body > nav > a {
 }
 @media (max-width: 700px) {
  .header-icon {
-        width:30px;
+        width:40px;
     }
 }
