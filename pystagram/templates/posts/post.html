@@ -208,12 +208,12 @@
             <!--                추가-->
             <input type="hidden" name="post" value="{{ post.id }}">
             {{ comment_form.content }}
-            <textarea name="comment_content_{{ post.id }}" cols="40" rows="10" placeholder="댓글 달기..." maxlength="200"
+            <textarea class="sub_text_p" name="comment_content_{{ post.id }}" cols="40" rows="10" placeholder="댓글 달기..." maxlength="200"
                       required id="comment_content_{{ post.id }}" data-post-id="{{ post.id }}">
 </textarea>
-            <p id="charCount_{{ post.id }}" data-post-id="{{ post.id }}">남은 글자수: 200</p>
+            <p class="sub_text_p" id="charCount_{{ post.id }}" data-post-id="{{ post.id }}">남은 글자수: 200</p>
             <div>
-                <button id="comment_send_btn_{{ post.id }}" data-post-id="{{ post.id }}" type="submit">게시</button>
+                <button class="sub_text_p" id="comment_send_btn_{{ post.id }}" data-post-id="{{ post.id }}" type="submit">게시</button>
             </div>
         </form>
 
@@ -227,12 +227,12 @@
             {% csrf_token %}
             <!--                추가-->
             <input type="hidden" name="post" value="{{ post.id }}">
-            <textarea name="message_content_{{ post.id }}" cols="40" rows="10" placeholder="쪽지 내용..." maxlength="300"
+            <textarea class="sub_text_p" name="message_content_{{ post.id }}" cols="40" rows="10" placeholder="쪽지 내용..." maxlength="300"
                       required id="message_content_{{ post.id }}" data-post-id="{{ post.id }}">
 </textarea>
-            <p id="messageCharCount_{{ post.id }}" data-post-id="{{ post.id }}">남은 글자수: 300</p>
+            <p class="sub_text_p" id="messageCharCount_{{ post.id }}" data-post-id="{{ post.id }}">남은 글자수: 300</p>
             <div>
-                <button id="message_send_btn_{{ post.id }}" data-post-id="{{ post.id }}" type="submit">쪽지 보내기</button>
+                <button class="sub_text_p" id="message_send_btn_{{ post.id }}" data-post-id="{{ post.id }}" type="submit">쪽지 보내기</button>
             </div>
         </form>
     </div>
