@@ -99,7 +99,7 @@ body {
     border-radius: 15px;
     transition-duration: 0.3s;
     transition-timing-function: ease;
-    font-size: 1rem;
+    font-size: 0.5rem;
     cursor: pointer;
     text-align: center;
 }
