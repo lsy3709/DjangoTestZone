@@ -487,7 +487,7 @@ article.post .post-comment-create {
 article.post .post-comment-create form {
     display: flex;
     flex-grow: 1;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 article.post .post-comment-create input, article.post .post-comment-create textarea {
@@ -807,6 +807,12 @@ body > nav > a {
     width: 50px;
 }
 
+@media (max-width: 700px) {
+   .image-container img {
+        width:20px;
+    }
+}
+
 .tooltip {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.7);
@@ -878,4 +884,9 @@ body > nav > a {
 
 .header-icon {
     width: 50px;
+}
+@media (max-width: 700px) {
+ .header-icon {
+        width:20px;
+    }
 }
