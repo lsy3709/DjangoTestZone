@@ -9,7 +9,7 @@
         {% csrf_token %}
         <p>
             <label for="searchDB">검색:</label>
-            <select name="searchDB" id="searchDB" >
+            <select  name="searchDB" id="searchDB" >
                 <option value="tag">태그 검색</option>
                 <option value="content" selected>내용 검색</option>
                 <option value="user">작성자 검색</option>
@@ -17,7 +17,7 @@
             <input type="text" name="content"  id="id_content">
             </input>
         </p>
-        <button type="submit">검색</button>
+        <button class="btn btn-primary " type="submit">검색</button>
     </form>
 
 

@@ -37,6 +37,7 @@ a {
 
 textarea {
     font-family: "Cute Font", sans-serif;
+    font-size: 2rem;
 }
 
 html {
@@ -99,6 +100,7 @@ body {
     border-radius: 15px;
     transition-duration: 0.3s;
     transition-timing-function: ease;
+    font-family: "Cute Font", sans-serif;
     font-size: 0.75rem;
     cursor: pointer;
     text-align: center;
@@ -107,6 +109,10 @@ body {
 a.btn {
     height: 28px;
 
+}
+
+select {
+    font-family: "Cute Font", sans-serif;
 }
 
 .btn-primary {
@@ -434,6 +440,7 @@ article.post .post-comment-create form {
 article.post .post-comment-create input, article.post .post-comment-create textarea {
     padding: 15px 15px 15px 10px;
     box-sizing: border-box;
+    font-size: 1.5rem;
     flex-grow: 1;
     height: calc(1.5em + 30px);
 }
@@ -479,6 +486,7 @@ article.post .post-comment-create button:hover {
     border: 1px solid #ddd;
     width: 100%;
     box-sizing: border-box;
+    font-size: 1.5rem;
 }
 
 #post-add #id_delete_images {
