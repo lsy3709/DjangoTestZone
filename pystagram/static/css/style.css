@@ -789,8 +789,7 @@ body > nav > a {
 
 .post-grid-container  {
     width: 100%;
-    object-fit: cover;
-    object-position: center center;
+
 }
 
 .post-grid  {
