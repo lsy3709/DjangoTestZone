@@ -787,31 +787,23 @@ body > nav > a {
     display: flex;
 }
 
-.post-grid-container {
+.post-grid-container  {
     width: 400px;
     object-fit: cover;
     object-position: center center;
 }
 
-.post-grid {
+.post-grid  {
     flex: 1; /* 자동으로 남은 공간을 채우도록 합니다. */
     max-width: 100%; /* 이미지 컨테이너의 최대 너비를 설정합니다. */
     max-height: 100%; /* 이미지 컨테이너의 최대 높이를 설정합니다. */
 }
 
 .post-grid img {
-    width: 100%; /* 이미지의 너비를 100%로 설정하여 부모 요소에 맞춥니다. */
+     width: 100%; /* 이미지의 너비를 100%로 설정하여 부모 요소에 맞춥니다. */
     height: auto; /* 이미지의 높이를 자동으로 조정하여 비율을 유지합니다. */
     object-fit: cover;
     object-position: center center;
-}
-
-@media (max-width: 700px) {
-    .post-grid {
-        flex: 1; /* 자동으로 남은 공간을 채우도록 합니다. */
-        max-width: 100%; /* 이미지 컨테이너의 최대 너비를 설정합니다. */
-        max-height: 100%; /* 이미지 컨테이너의 최대 높이를 설정합니다. */
-    }
 }
 
 @media (max-width: 700px) {
