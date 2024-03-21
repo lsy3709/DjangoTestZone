@@ -788,7 +788,7 @@ body > nav > a {
 }
 
 .post-grid-container .post-grid img {
-    width: 400vw;
+    width: 400px;
     object-fit: cover;
     object-position: center center;
 }
