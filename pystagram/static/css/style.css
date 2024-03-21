@@ -247,8 +247,9 @@ input:-webkit-autofill:active {
     border: 1px solid #ddd;
     border-radius: 2px;
 }
+
 #id_profile_image {
-        width: 300px;
+    width: 300px;
 }
 
 @media (max-width: 700px) {
@@ -499,7 +500,7 @@ article.post .post-comment-create input, article.post .post-comment-create texta
 }
 
 @media (max-width: 700px) {
-   .post-comment-create > form > p {
+  article.post .post-comment-create > form > p , article.post .post-comment-create > form > button {
         font-size: 1rem;
     }
 }
@@ -719,19 +720,22 @@ body > nav > h1 {
 }
 
 @media (max-width: 700px) {
-   body > nav > h1 {
+    body > nav > h1 {
         font-size: 1.5rem;
     }
 }
 
 @media (max-width: 700px) {
-   body > nav > p > span {
+    body > nav > p > span {
         font-size: 0.75rem;
+        color: red;
     }
 }
+
 @media (max-width: 700px) {
-   body > nav > p  {
+    body > nav > p {
         font-size: 0.75rem;
+        color: red;
     }
 }
 
@@ -831,8 +835,8 @@ body > nav > a {
 }
 
 @media (max-width: 700px) {
-   .image-container img {
-        width:40px;
+    .image-container img {
+        width: 40px;
     }
 }
 
@@ -908,8 +912,9 @@ body > nav > a {
 .header-icon {
     width: 50px;
 }
+
 @media (max-width: 700px) {
- .header-icon {
-        width:40px;
+    .header-icon {
+        width: 40px;
     }
 }
