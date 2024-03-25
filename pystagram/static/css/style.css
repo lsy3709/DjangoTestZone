@@ -795,7 +795,7 @@ body > nav > a {
 
 @media (max-width: 700px) {
     .post-grid-container .post-grid img {
-        min-width: 50%;
+        width: 150px;
         object-fit: cover;
         object-position: center center;
     }
