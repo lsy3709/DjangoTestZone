@@ -787,41 +787,20 @@ body > nav > a {
     display: flex;
 }
 
-.post-grid-container  {
-    width: 100%;
-
-}
-
-.post-grid  {
-    flex: 1; /* 자동으로 남은 공간을 채우도록 합니다. */
-    max-width: 100%; /* 이미지 컨테이너의 최대 너비를 설정합니다. */
-    max-height: 100%; /* 이미지 컨테이너의 최대 높이를 설정합니다. */
-}
-
-.post-grid img {
-       flex: 1; /* 자동으로 남은 공간을 채우도록 합니다. */
-     width: 100%; /* 이미지의 너비를 100%로 설정하여 부모 요소에 맞춥니다. */
+.post-grid-container .post-grid img {
+    min-width: 100%;
     object-fit: cover;
     object-position: center center;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 700px) {
     .post-grid-container .post-grid img {
-           flex: 1; /* 자동으로 남은 공간을 채우도록 합니다. */
-        width: 150px;
+        min-width: 50%;
         object-fit: cover;
         object-position: center center;
     }
 }
 
-@media (min-width: 701px) and (max-width: 1024px) {
-    .post-grid-container .post-grid img {
-           flex: 1; /* 자동으로 남은 공간을 채우도록 합니다. */
-        width: 300px;
-        object-fit: cover;
-        object-position: center center;
-    }
-}
 
 #tags {
     padding: 70px 10px 10px 10px;
