@@ -199,7 +199,7 @@
         </ul>
     </div>
 
-    <small>작성일 : {{ post.created }} 페이지 체크 {{ page_obj.number }}</small>
+    <small>작성일 : {{ post.created }}</small>
     <div class="post-comment-create">
         <!--            추가 및 수정 2 -->
         <form style="display: none;" id="comment_form_{{ post.id }}" method="post"
@@ -223,10 +223,11 @@
     <div class="post-comment-create">
         <!--            추가 및 수정 2 -->
         <form style="display: none;" id="send_message_form_{{ post.id }}" method="post"
-              action="{% url 'posts:message_add' %}?next={{ action_redirect_url }}&page={{ page_obj.number }}">
+              action="{% url 'posts:message_add' %}?next={{ action_redirect_url }}">
             {% csrf_token %}
             <!--                추가-->
             <input type="hidden" name="post" value="{{ post.id }}">
+            <input type="hidden" name="page" value="{{ page_obj.number }}">
             <textarea class="sub_text_p" name="message_content_{{ post.id }}" cols="40" rows="10" placeholder="쪽지 내용..." maxlength="300"
                       required id="message_content_{{ post.id }}" data-post-id="{{ post.id }}">
 </textarea>
