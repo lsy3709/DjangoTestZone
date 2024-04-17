@@ -88,6 +88,8 @@ def comment_add(request):
     comment_content = request.POST.get("comment_content_"+post_id)
 
     comment_post_id = None
+    page = request.GET.get('page')
+
     if form.is_valid():
         comment = form.save(commit=False)
         comment.user = request.user
@@ -99,7 +101,7 @@ def comment_add(request):
         if request.GET.get("next"):
             url_next = request.GET.get("next")
         else:
-            url_next = reverse("posts:feeds") + f"#post-{comment.post.id}"
+            url_next = reverse("posts:feeds") + f"?page={page}#post-{comment.post.id}"
 
         return HttpResponseRedirect(url_next)
     else:
