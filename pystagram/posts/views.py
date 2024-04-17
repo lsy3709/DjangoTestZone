@@ -88,7 +88,7 @@ def comment_add(request):
     comment_content = request.POST.get("comment_content_"+post_id)
 
     comment_post_id = None
-    page = request.GET.get('page')
+    page = request.GET.post('page')
 
     if form.is_valid():
         comment = form.save(commit=False)
