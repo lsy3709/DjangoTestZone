@@ -207,6 +207,7 @@
             {% csrf_token %}
             <!--                추가-->
             <input type="hidden" name="post" value="{{ post.id }}">
+            <input type="hidden" name="page" value="{{ page_obj.number }}">
             {{ comment_form.content }}
             <textarea class="sub_text_p" name="comment_content_{{ post.id }}" cols="40" rows="10" placeholder="댓글 달기..." maxlength="200"
                       required id="comment_content_{{ post.id }}" data-post-id="{{ post.id }}">

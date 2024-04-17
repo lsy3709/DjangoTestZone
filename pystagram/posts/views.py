@@ -99,7 +99,6 @@ def comment_add(request):
 
         # 추가
         if request.GET.get("next"):
-            page = request.POST.get('page')
             url_next = request.GET.get("next") + f"?page={page}#post-{comment.post.id}"
         else:
             url_next = reverse("posts:feeds") + f"?page={page}#post-{comment.post.id}"
