@@ -117,7 +117,6 @@ def message_add(request):
     # print(f"메세지 보내기 post_id: {post_id}")
     post = Post.objects.get(id=post_id)
     comment_content = request.POST.get("message_content_" + post_id)
-    comment_post_id = None
     page = request.POST.get('page')
     # print(f"메세지 보내기 보내는 사람 request.user: {request.user}")
     # print(f"메세지 보내기 받는사람 post.user: {post.user}")
@@ -128,20 +127,15 @@ def message_add(request):
         message = form.save(commit=False)
         message.sender = request.user
         message.receiver = post.user
-        comment_post_id = message.post.id
         message.content = comment_content
         message.save()
 
         # 추가
         if request.GET.get("next"):
-            url_next = request.GET.get("next") + f"?page={page}#post-{message.post.id}"
+            url_next = request.GET.get("next")
         else:
-            url_next = reverse("posts:feeds") + f"?page={page}#post-{message.post.id}"
+            url_next = reverse("posts:feeds") + f"#post-{post_id}"
 
-        return HttpResponseRedirect(url_next)
-    else:
-
-        url_next = reverse("posts:feeds") + f"?page={page}#post-{comment_post_id}"
         return HttpResponseRedirect(url_next)
 
 
