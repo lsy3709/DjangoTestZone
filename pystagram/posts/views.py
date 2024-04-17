@@ -99,9 +99,9 @@ def comment_add(request):
 
         # 추가
         if request.GET.get("next"):
-            url_next = request.GET.get("next") + f"?page={3}#post-{comment.post.id}"
+            url_next = request.GET.get("next") + f"?page={page}#post-{comment.post.id}"
         else:
-            url_next = reverse("posts:feeds") + f"?page={3}#post-{comment.post.id}"
+            url_next = reverse("posts:feeds") + f"?page={page}#post-{comment.post.id}"
 
         return HttpResponseRedirect(url_next)
     else:
