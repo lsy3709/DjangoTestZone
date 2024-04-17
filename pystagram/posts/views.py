@@ -82,22 +82,22 @@ def feeds(request):
 
 
 @require_POST
-def comment_add(reqeust):
-    form = CommentForm(data=reqeust.POST)
-    post_id = reqeust.POST.get("post")
-    comment_content = reqeust.POST.get("comment_content_"+post_id)
+def comment_add(request):
+    form = CommentForm(data=request.POST)
+    post_id = request.POST.get("post")
+    comment_content = request.POST.get("comment_content_"+post_id)
 
     comment_post_id = None
     if form.is_valid():
         comment = form.save(commit=False)
-        comment.user = reqeust.user
+        comment.user = request.user
         comment_post_id = comment.post.id
         comment.content = comment_content
         comment.save()
 
         # 추가
-        if reqeust.GET.get("next"):
-            url_next = reqeust.GET.get("next")
+        if request.GET.get("next"):
+            url_next = request.GET.get("next")
         else:
             url_next = reverse("posts:feeds") + f"#post-{comment.post.id}"
 
@@ -109,27 +109,27 @@ def comment_add(reqeust):
 
 # 쪽지 보내기 기능
 @require_POST
-def message_add(reqeust):
-    form = SendMessageForm(data=reqeust.POST)
-    post_id = reqeust.POST.get("post")
+def message_add(request):
+    form = SendMessageForm(data=request.POST)
+    post_id = request.POST.get("post")
     # print(f"메세지 보내기 post_id: {post_id}")
     post = Post.objects.get(id=post_id)
-    comment_content = reqeust.POST.get("message_content_" + post_id)
-    # print(f"메세지 보내기 보내는 사람 reqeust.user: {reqeust.user}")
+    comment_content = request.POST.get("message_content_" + post_id)
+    # print(f"메세지 보내기 보내는 사람 request.user: {request.user}")
     # print(f"메세지 보내기 받는사람 post.user: {post.user}")
 
 
     # 해당 게시글 post.id 받아와서, 디비에서 불러온 후에, url_next , 넘기기
     if form.is_valid():
         message = form.save(commit=False)
-        message.sender = reqeust.user
+        message.sender = request.user
         message.receiver = post.user
         message.content = comment_content
         message.save()
 
         # 추가
-        if reqeust.GET.get("next"):
-            url_next = reqeust.GET.get("next")
+        if request.GET.get("next"):
+            url_next = request.GET.get("next")
         else:
             url_next = reverse("posts:feeds") + f"#post-{post_id}"
 
