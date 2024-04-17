@@ -132,7 +132,7 @@ def message_add(request):
 
         # 추가
         if request.GET.get("next"):
-            url_next = request.GET.get("next")
+            url_next = request.GET.get("next") + f"?page={page}#post-{message.post.id}"
         else:
             url_next = reverse("posts:feeds") + f"#post-{post_id}"
 
