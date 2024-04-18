@@ -11,6 +11,8 @@
         {% if user != post.user %}
             <form action="{% url 'users:follow' user_id=post.user.id %}?next={{ action_redirect_url }} " method="POST">
                 {% csrf_token %}
+            <input type="hidden" name="page" value="{{ page_obj.number }}">
+            <input type="hidden" name="post" value="{{ post.id }}">
                 <button type="submit" class="btn btn-primary">
                     {% if post.user in user.following.all %}
                         Unfollow

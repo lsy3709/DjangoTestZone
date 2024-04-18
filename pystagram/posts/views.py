@@ -194,6 +194,7 @@ def post_tag_delete(request, post_id, tag_id):
 
 def post_edit(request, post_id):
     post = Post.objects.get(id=post_id)
+    page = request.POST.get('page')
     if request.method == "POST":
         if post.user == request.user:
             post_form = PostForm(request.POST, instance=post)
@@ -217,7 +218,7 @@ def post_edit(request, post_id):
                         tag, _ = HashTag.objects.get_or_create(name=tag_name)
                         post.tags.add(tag)
             # 수정
-            url = reverse("posts:feeds")
+            url = reverse("posts:feeds") + f"?page={page}#post-{post_id}"
             return HttpResponseRedirect(url)
 
     else:

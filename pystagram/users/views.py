@@ -373,12 +373,14 @@ def messageBox(request, user_id):
 def follow(request, user_id):
     user = request.user
     target_user = get_object_or_404(User, id=user_id)
+    page = request.POST.get('page')
+    post_id = request.POST.get('post')
 
     if target_user in user.following.all():
         user.following.remove(target_user)
     else:
         user.following.add(target_user)
-    url_next = request.GET.get('next') or reverse('users:profile', args=[user.id])
+    url_next = request.GET.get('next') + f"?page={page}#post-{post_id}" or reverse('users:profile', args=[user.id])
     return HttpResponseRedirect(url_next)
 
 
