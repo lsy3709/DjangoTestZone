@@ -153,6 +153,7 @@
     <div class="post-buttons">
         <form action="{% url 'posts:post_like' post_id=post.id %}?next={{ action_redirect_url }}" method="post">
             {% csrf_token %}
+        <input type="hidden" name="page" value="{{ page_obj.number }}">
             <button
                     type="submit"
                     {% if user in post.like_users.all %}

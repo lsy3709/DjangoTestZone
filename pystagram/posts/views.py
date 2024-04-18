@@ -432,11 +432,12 @@ def post_detail(request, post_id):
 # 추가
 def post_like(request, post_id):
     post = Post.objects.get(id=post_id)
+    page = request.POST.get('page')
     user = request.user
 
     if user.like_posts.filter(id=post.id).exists():
         user.like_posts.remove(post)
     else:
         user.like_posts.add(post)
-    url_next = request.GET.get("next") or reverse("posts:feeds") + f"#post-{post.id}"
+    url_next = request.GET.get("next") + f"?page={page}#post-{post_id}" or reverse("posts:feeds") + f"?page={page}#post-{post.id}"
     return HttpResponseRedirect(url_next)
