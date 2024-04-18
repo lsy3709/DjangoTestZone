@@ -64,7 +64,7 @@
         </a>
     </span>
 
-    <span>
+    <span onclick="return confirm('정말 게시글 삭제 하시나요?');">
         <a href="{% url 'users:logout' %}">
           <div class="image-container">
             <img class="hoverable header-icon" id="deletesubmitButton" src="/static/image/logout_icon.png" alt="Logout">
