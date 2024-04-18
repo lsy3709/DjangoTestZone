@@ -58,6 +58,7 @@
                       <form id="deleteFeedForm" action="{% url 'posts:post_delete' post_id=post.id %}" method="POST"
                             onsubmit="return confirm('정말 게시글 삭제 하시나요?');">
                     {% csrf_token %}
+                           <input type="hidden" name="page" value="{{ page_obj.number }}">
                     <button style="border: none; background: #ffffff" type="submit">
                           <div class="image-container">
                         <img class="hoverable" id="deletesubmitButton" src="/static/image/delete_icon.png" alt="이미지 삭제">
@@ -181,6 +182,7 @@
                         <form method="post" action="{% url 'posts:comment_delete' comment_id=comment.id %}"
                               onsubmit="return confirm('정말 게시글 삭제 하시나요?');">
                             {% csrf_token %}
+                             <input type="hidden" name="page" value="{{ page_obj.number }}">
                             <span>
 
                   <button style="border: none; background: #ffffff" type="submit">

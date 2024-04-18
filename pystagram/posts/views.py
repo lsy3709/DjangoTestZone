@@ -134,7 +134,7 @@ def message_add(request):
         if request.GET.get("next"):
             url_next = request.GET.get("next") + f"?page={page}#post-{post_id}"
         else:
-            url_next = reverse("posts:feeds")  + f"?page={page}#post-{post_id}"
+            url_next = reverse("posts:feeds") + f"?page={page}#post-{post_id}"
 
         return HttpResponseRedirect(url_next)
 
@@ -142,10 +142,11 @@ def message_add(request):
 @require_POST
 def comment_delete(request, comment_id):
     comment = Comment.objects.get(id=comment_id)
+    page = request.POST.get('page')
     if comment.user == request.user:
         comment.delete()
         # 수정
-        url = reverse("posts:feeds") + f"#post-{comment.post.id}"
+        url = reverse("posts:feeds") + f"?page={page}#post-{comment.post.id}"
         return HttpResponseRedirect(url)
         # return HttpResponseRedirect(f"/posts/feeds/#post-{comment.post.id}")
     else:
@@ -155,10 +156,11 @@ def comment_delete(request, comment_id):
 @require_POST
 def post_delete(request, post_id):
     post = Post.objects.get(id=post_id)
+    page = request.POST.get('page')
     if post.user == request.user:
         post.delete()
         # 수정
-        url = reverse("posts:feeds")
+        url = reverse("posts:feeds") + f"?page={page}"
         return HttpResponseRedirect(url)
     else:
         return HttpResponseForbidden("게시글 삭제 권한이 없습니다.")
